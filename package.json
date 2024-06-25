@@ -1,0 +1,24 @@
+{
+  "name": "sw-joba-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "SM MOON",
+  "license": "ISC",
+  "description": "A schedule management platform that intergrates with KakoTalk Calendar API to help users manage their schedules and provides a certificate recommendation system using machine learning and deep learning",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2024-SW-LangIntelligence/JOB-A_Repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/2024-SW-LangIntelligence/JOB-A_Repo/issues"
+  },
+  "homepage": "https://github.com/2024-SW-LangIntelligence/JOB-A_Repo#readme"
+}
