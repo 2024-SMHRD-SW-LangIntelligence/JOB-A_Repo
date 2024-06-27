@@ -5,7 +5,6 @@ function openModal() {
 
     blurBg.style.display = "block"; // 배경 블러 표시
     modal.style.opacity  = "1";
-    modal.style.transform = "translateY(0)";
 
   }
   
@@ -16,7 +15,7 @@ function openModal() {
 
     blurBg.style.display = "none"; // 배경 블러 숨기기
     modal.style.opacity  = "0";
-    modal.style.transform = "translateY(150%)";
+
   }
 
 
