@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="css/styles2.css">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -49,7 +50,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top">   
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -69,18 +70,22 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
+            <% 
+            if(id!=""){%>
+                <!-- 소개탭 -->
+            <% }else{ %>
             <li class="nav-item active">
                 <a class="nav-link" href="/">
                     <i class="fas fa-fw fa-calendar"></i>
                     <span>캘린더</span></a>
             </li>
-
+            <% } %>
             <!-- Divider -->
 
 
             <!-- Nav Item - Pages Collapse Menu -->
             <hr class="sidebar-divider my-0">
-            <% var id=""
+            <%
             if(id==""){ %>
             <li class="nav-item">
                 <a class="nav-link" id="login_plz">
@@ -104,7 +109,7 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <% var id = ""
+                        <%
                         if(id==""){ %>
                         <a id="login_plz" class="collapse-item">맞춤자격증추천</a>
                         <a id="login_plz" class="collapse-item">자격증정보</a>
@@ -133,7 +138,7 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <% var id = ""
+                        <%
                         if(id==""){%>
                         <a id="login_plz" class="collapse-item" >스터디그룹찾기</a>
                         <a id="login_plz" class="collapse-item" >내 스터디그룹</a>
@@ -283,12 +288,65 @@
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
+                        <div class="login-wrap" id="myModal">
+                            <div class="login-html">
+                              <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+                              <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+                              <div class="login-form">
+                                <div class="sign-in-htm">
+                                  <div class="group">
+                                    <label for="user" class="label">Username</label>
+                                    <input id="user" type="text" class="input">
+                                  </div>
+                                  <div class="group">
+                                    <label for="pass" class="label">Password</label>
+                                    <input id="pass" type="password" class="input" data-type="password">
+                                  </div>
+                                  <div class="group">
+                                    <input id="check" type="checkbox" class="check" checked>
+                                    <label for="check"><span class="icon"></span> Keep me Signed in</label>
+                                  </div>
+                                  <div class="group">
+                                    <input type="submit" class="button" value="Sign In">
+                                  </div>
+                                  <div class="hr"></div>
+                                </div>
+                                <div class="sign-up-htm">
+                                  <div class="group">
+                                    <label for="user" class="label">Username</label>
+                                    <input id="user" type="text" class="input">
+                                  </div>
+                                  <div class="group">
+                                    <label for="pass" class="label">Password</label>
+                                    <input id="pass" type="password" class="input" data-type="password">
+                                  </div>
+                                  <div class="group">
+                                    <label for="pass" class="label">Repeat Password</label>
+                                    <input id="pass" type="password" class="input" data-type="password">
+                                  </div>
+                                  <div class="group">
+                                    <label for="pass" class="label">Email Address</label>
+                                    <input id="pass" type="text" class="input">
+                                  </div>
+                                  <div class="group">
+                                    <input type="submit" class="button" value="Sign Up">
+                                  </div>
+                                  <div class="hr"></div>
+                                  
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- 배경을 블러 처리할 요소 -->
+                          <div id="blurBgg"></div>
                         
+                          <script src="js/script.js"></script>
                         <% var id="" ; 
                         if (id == "") { %>
                             <li>
                                 <div>
-                                    <button class="button" id="login_plz">로그인</button>
+                                    <button class="button" id="loginBtn">로그인</button>
                                 </div>
                             </li>
                             <% } else { %>
