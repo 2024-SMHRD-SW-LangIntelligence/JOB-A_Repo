@@ -10,9 +10,9 @@
   "license": "ISC",
   "description": "A schedule management platform that intergrates with KakoTalk Calendar API to help users manage their schedules and provides a certificate recommendation system using machine learning and deep learning",
   "dependencies": {
+    "ejs": "^3.1.10",
     "express": "^4.19.2"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/2024-SW-LangIntelligence/JOB-A_Repo.git"

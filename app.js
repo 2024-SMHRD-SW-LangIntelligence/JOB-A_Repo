@@ -3,12 +3,16 @@ const path = require('path');
 
 const app = express();
 
+// Set the view engine to ejs
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'public')); // Change views directory to public
+
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.render('index', { title: 'My EJS Page' });
 });
 
 const PORT = process.env.PORT || 3379;
