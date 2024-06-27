@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,6 +10,12 @@
 
     <title>SB Admin 2 - Dashboard</title>
     <style style>
+        .button {
+            position: relative;
+            top: 20px; /* 아래로 20px 이동 */
+            width: 100px; /* 너비 설정 */
+            height: 30px; /* 높이 설정 */
+        }
         .hidden {
             display: none;
         }
@@ -20,7 +25,20 @@
             display: none;
         }
     </style>
-    <!-- Custom fonts for this template-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <script>
+    $(document).on('click', '#login_plz', function(e) {
+        swal(
+        '로그인해주세요!',
+        'You clicked the <b style="color:red;">error</b> button!',
+        'error'
+      )
+      });
+    </script>
+
+    
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -62,11 +80,20 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <hr class="sidebar-divider my-0">
+            <% var id=""
+            if(id==""){ %>
             <li class="nav-item">
-                <a class="nav-link" href="buttons.html">
+                <a class="nav-link" id="login_plz">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>워크시트</span></a>
             </li>
+            <%}else{ %>
+            <li class="nav-item">
+                <a class="nav-link" href="workSheet.html">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>워크시트</span></a>
+            </li>
+            <% } %>
 
             <hr class="sidebar-divider my-0">
             <li class="nav-item">
@@ -77,9 +104,14 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
+                        <% var id = ""
+                        if(id==""){ %>
+                        <a id="login_plz" class="collapse-item">맞춤자격증추천</a>
+                        <a id="login_plz" class="collapse-item">자격증정보</a>
+                        <% }else{ %>
                         <a class="collapse-item" href="certificate.html">맞춤자격증추천</a>
                         <a class="collapse-item" href="certificate_info.html">자격증정보</a>
+                        <% } %>
                     </div>
                 </div>
             </li>
@@ -101,20 +133,29 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-
-                        <a class="collapse-item" href="utilities-color.html">맞춤자격증추천</a>
-                        <a class="collapse-item" href="utilities-border.html">자격증 정보</a>
-
+                        <% var id = ""
+                        if(id==""){%>
+                        <a id="login_plz" class="collapse-item" >스터디그룹찾기</a>
+                        <a id="login_plz" class="collapse-item" >내 스터디그룹</a>
+                        <% }else{ %>
+                        <a class="collapse-item" href="studyGruop.html">스터디그룹찾기</a>
+                        <a class="collapse-item" href="my_studyGruop.html">내 스터디그룹</a>
+                        <% } %>
                     </div>
                 </div>
             </li>
 
             <hr class="sidebar-divider my-0">
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>내 정보</span></a>
-            </li>
+
+            <% var id=""
+            if (id!="") { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="tables.html">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>내 정보</span></a>
+                </li>
+            <% } %>
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -237,83 +278,22 @@
                             </div>
                         </li>
 
-                        <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
+                        
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
+                        
                         <% var id="" ; 
-                        if (id!="") { %>
-                            <li class='nav-item dropdown no-arrow' id='login' class='hidden'>
-                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <a href='#'
-                                        class='d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm'>로그인</a>
+                        if (id == "") { %>
+                            <li>
+                                <div>
+                                    <button class="button" id="login_plz">로그인</button>
                                 </div>
                             </li>
                             <% } else { %>
-                                <li class='nav-item dropdown no-arrow' id='logout' class='hidden'>
-                                    <a id='logout' class='hidden nav-link dropdown-toggle' href='#' id='userDropdown'
+                                <li class='nav-item dropdown no-arrow' >
+                                    <a class=' nav-link dropdown-toggle' href='#' id='userDropdown'
                                         role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                         <span class='mr-2 d-none d-lg-inline text-gray-600 small'>Douglas McGee</span>
                                         <img class='img-profile rounded-circle' src='img/undraw_profile.svg'>
@@ -349,7 +329,6 @@
                                     </li>
 
                     </ul>
-                    <script src="js/loginout.js"></script>
 
 
                 </nav>
