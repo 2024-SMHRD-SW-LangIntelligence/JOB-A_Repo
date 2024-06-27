@@ -2,18 +2,21 @@
 function openModal() {
     var modal = document.getElementById("myModal");
     var blurBg = document.getElementById("blurBgg");
-  
-    modal.style.display = "block"; // 모달 표시
+
     blurBg.style.display = "block"; // 배경 블러 표시
+    modal.style.opacity  = "1";
+    modal.style.transform = "translateY(0)";
+
   }
   
   // 모달 닫기 함수
   function closeModal() {
     var modal = document.getElementById("myModal");
     var blurBg = document.getElementById("blurBgg");
-  
-    modal.style.display = "none"; // 모달 숨기기
+
     blurBg.style.display = "none"; // 배경 블러 숨기기
+    modal.style.opacity  = "0";
+    modal.style.transform = "translateY(150%)";
   }
 
 
