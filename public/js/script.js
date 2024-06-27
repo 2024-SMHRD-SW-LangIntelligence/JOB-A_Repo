@@ -3,6 +3,7 @@ function openModal() {
     var modal = document.getElementById("myModal");
     var blurBg = document.getElementById("blurBgg");
 
+    modal.style.transition = "opacity .6s ease-in-out";
     blurBg.style.display = "block"; // 배경 블러 표시
     modal.style.opacity  = "1";
 
@@ -14,6 +15,7 @@ function openModal() {
     var blurBg = document.getElementById("blurBgg");
 
     blurBg.style.display = "none"; // 배경 블러 숨기기
+    modal.style.transition = "none";
     modal.style.opacity  = "0";
 
   }
