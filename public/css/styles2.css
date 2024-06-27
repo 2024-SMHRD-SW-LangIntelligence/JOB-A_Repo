@@ -11,7 +11,7 @@ a{color:inherit;text-decoration:none}
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+    background-color: rgba(0, 0, 0, 0.25); /* 반투명한 검은 배경 */
     backdrop-filter: blur(5px); /* 배경을 블러 처리합니다 */
   }
   .login-wrap {
