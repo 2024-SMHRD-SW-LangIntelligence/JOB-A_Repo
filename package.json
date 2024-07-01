@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "A schedule management platform that intergrates with KakoTalk Calendar API to help users manage their schedules and provides a certificate recommendation system using machine learning and deep learning",
   "dependencies": {
+    "@supabase/supabase-js": "^2.44.2",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-ejs-layouts": "^2.5.1",
