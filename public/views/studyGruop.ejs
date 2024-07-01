@@ -1,0 +1,50 @@
+<script>
+    // 채팅방 생성
+    $(document).ready(function () {
+        const chatRooms = [
+            { name: '채팅방 1', description: 'Description for Chat Room 1' },
+            { name: '채팅방 2', description: 'Description for Chat Room 2' },
+            { name: '채팅방 3', description: 'Description for Chat Room 3' },
+        ];
+
+        function renderChatRooms() {
+            $('#chatRoomsList').empty();
+            chatRooms.forEach(room => {
+                $('#chatRoomsList').append(
+                    `<div class="card mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">${room.name}</h6>
+                            </div>
+                            <div class="card-body">
+                                ${room.description}
+                            </div>
+                        </div>`
+                );
+            });
+        }
+
+        // Initial render
+        renderChatRooms();
+
+        // Handle create chat room button click
+        $('#createChatRoom').click(function () {
+            const newRoomName = prompt('채팅방 이름');
+            const newRoomDescription = prompt('채팅방 설명');
+            if (newRoomName && newRoomDescription) {
+                chatRooms.push({ name: newRoomName, description: newRoomDescription });
+                renderChatRooms();
+            } else {
+                swal(
+                    '생성실패!',
+                    'Chat room name and description are required.',
+                    'error'
+                );
+            }
+        });
+    });
+</script>
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Chat Rooms</h1>
+    <div id="chatRoomsList"></div>
+    <button id="createChatRoom" class="btn btn-primary mt-4">Create Chat Room</button>
+</div>

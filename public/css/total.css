@@ -3,6 +3,11 @@
 .clearfix:after{clear:both;display:block}
 a{color:inherit;text-decoration:none}
 
+.hidden {
+  display: none;
+}
+
+/* 회원가입 블러처리 */
 #blurBgg {
     display: none; /* 초기에는 숨깁니다 */
     position: fixed;
@@ -14,6 +19,7 @@ a{color:inherit;text-decoration:none}
     background-color: rgba(0, 0, 0, 0); /* 반반투명한 검은 배경 */
     backdrop-filter: blur(1px); /* 배경을 블러 처리합니다 */
   }
+  /* 회원가입 창 */
   .login-wrap {
     visibility: hidden;
     width: 100%;
@@ -31,7 +37,7 @@ a{color:inherit;text-decoration:none}
     opacity : 0;
   }
   
-
+/* 회원가입창 */
 .login-html{
   width:100%;
   height:100%;
@@ -162,3 +168,4 @@ a{color:inherit;text-decoration:none}
 .foot-lnk{
   text-align:center;
 }
+/* 회원가입창 끝 */
