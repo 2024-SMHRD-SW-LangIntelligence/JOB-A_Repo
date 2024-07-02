@@ -7,165 +7,223 @@ a{color:inherit;text-decoration:none}
   display: none;
 }
 
-/* 회원가입 블러처리 */
-#blurBgg {
-    display: none; /* 초기에는 숨깁니다 */
-    position: fixed;
-    z-index: 9998; /* 모달보다 낮은 숫자로 설정하여 모달 위에 올라오게 합니다 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0); /* 반반투명한 검은 배경 */
-    backdrop-filter: blur(1px); /* 배경을 블러 처리합니다 */
-  }
-  /* 회원가입 창 */
-  .login-wrap {
-    visibility: hidden;
-    width: 100%;
-    left: 37%;
-    top: 10%;
-    z-index: 9999;
-    margin: auto;
-    max-width: 525px;
-    min-height: 670px;
-    position: fixed;
-    background-color: #4e73df;
-    border: 2px solid #333;
-    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
-    transition: opacity .6s ease-in-out;
-    opacity : 0;
-  }
-  
-/* 회원가입창 */
-.login-html{
-  width:100%;
-  height:100%;
-  position:absolute;
-  padding:50px 70px 50px 70px;
-  background:rgba(40,57,101,.9);
-}
-.login-html .sign-in-htm,
-.login-html .sign-up-htm{
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  position:fixed;
-  transform:rotateY(180deg);
-  backface-visibility:hidden;
-  transition:all .4s linear;
-}
-.login-html .sign-in,
-.login-html .sign-up,
-.login-form .group .check{
-  display:none;
-}
-.login-html .tab,
-.login-form .group .label,
-.login-form .group .button{
-  text-transform:uppercase;
-}
-.login-html .tab{
-  font-size:22px;
-  margin-right:15px;
-  padding-bottom:5px;
-  margin:0 15px 10px 0;
-  display:inline-block;
-  border-bottom:2px solid transparent;
-}
-.login-html .sign-in:checked + .tab,
-.login-html .sign-up:checked + .tab{
-  color:#fff;
-  border-color:#1161ee;
-}
-.login-form{
-  min-height:345px;
-  position:relative;
-  perspective:1000px;
-  transform-style:preserve-3d;
-}
-.login-form .group{
-  margin-bottom:15px;
-}
-.login-form .group .label,
-.login-form .group .input,
-.login-form .group .button{
-  width:100%;
-  height: 100%;
-  color:#fff;
-  display:block;
-}
-.login-form .group .input,
-.login-form .group .button{
-  border:none;
-  padding:15px 20px;
-  border-radius:25px;
-  background:rgba(255,255,255,.1);
-}
-.login-form .group input[data-type="password"]{
-  -webkit-text-security:circle;
-}
-.login-form .group .label{
-  color:#aaa;
-  font-size:12px;
-}
-.login-form .group .button{
-  background:#1161ee;
-}
-.login-form .group label .icon{
-  width:15px;
-  height:15px;
-  border-radius:2px;
-  position:relative;
-  display:inline-block;
-  background:rgba(255,255,255,.1);
-}
-.login-form .group label .icon:before,
-.login-form .group label .icon:after{
-  content:'';
-  width:10px;
-  height:2px;
-  background:#fff;
-  position:absolute;
-  transition:all .2s ease-in-out 0s;
-}
-.login-form .group label .icon:before{
-  left:3px;
-  width:5px;
-  bottom:6px;
-  transform:scale(0) rotate(0);
-}
-.login-form .group label .icon:after{
-  top:6px;
-  right:0;
-  transform:scale(0) rotate(0);
-}
-.login-form .group .check:checked + label{
-  color:#fff;
-}
-.login-form .group .check:checked + label .icon{
-  background:#1161ee;
-}
-.login-form .group .check:checked + label .icon:before{
-  transform:scale(1) rotate(45deg);
-}
-.login-form .group .check:checked + label .icon:after{
-  transform:scale(1) rotate(-45deg);
-}
-.login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
-  transform:rotate(0);
-}
-.login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
-  transform:rotate(0);
+/* 로그인 폼 내부 닫기 버튼 css */
+#close {
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
-.hr{
-  height:2px;
-  margin:60px 0 50px 0;
-  background:rgba(255,255,255,.2);
+.background{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  /* 색 및 투명도 조절 */
+  background-color: rgba(0,0,0,0.3);
+  z-index: 1000;
+
+  /* 숨기기 X */
+  z-index: -1;
+  opacity: 0;
 }
-.foot-lnk{
-  text-align:center;
+
+.window{
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
-/* 회원가입창 끝 */
+
+.popup_1{
+  position : absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  opacity: 1;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.3);
+
+  /* 임시 */
+  width: 500px;
+  height: 400px;
+
+  /* 아래에 배치 */
+  transform: translate(-50%,-40%);
+}
+
+
+.show {
+  opacity: 1;
+  z-index: 1000;
+  transition: all .5s;
+}
+
+.show .popup_1{
+  transform: translate(-50%,-50%);
+  transition: all .5s;
+}
+
+
+#close{
+  position: absolute;
+  right: 0;
+}
+
+
+.login-wrap {
+  width: 100%;
+  margin: auto;
+  max-width: 525px;
+  position: relative;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+}
+
+.login-html {
+  padding: 5px 20px 0px 20px;
+}
+
+.login-html .sign-in,
+.login-html .sign-up,
+.login-form .group .check {
+  display: none;
+}
+
+.login-html .sign-in-htm,
+.login-html .sign-up-htm {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  /* 회원가입과 로그인이 돌아가는 속도 조정 */
+  transition: all .4s linear;
+}
+
+
+
+
+/* 로그인,회원가입 탭 css */
+.login-html .sign-in:checked+.tab,
+.login-html .sign-up:checked+.tab {
+  border-color: #000000;
+  color: #000000;
+  margin-top: 5px;
+
+}
+
+.login-html .tab {
+  color: #adb5bd;
+  font-size: 22px;
+  margin-right: 15px;
+  padding-bottom: 5px;
+  margin: 0 15px 10px 0;
+  display: inline-block;
+  border-bottom: 2px solid transparent;
+}
+
+.login-html .tab,
+.login-form .group .label,
+.login-form .group .button {
+  text-transform: uppercase;
+}
+
+/* 로그인 버튼 div */
+#login_btn {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* 로그인 버튼 */
+#login_btn>button {
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+}
+
+/* 가입하기 버튼 div */
+
+#submit_btn {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* 가입하기 버튼 */
+
+#submit_btn>button {
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+}
+
+/* -3) 로그인/회원가입 폼 로그인/가입하기 버튼 css 끝 */
+
+/* 로그인 폼 */
+.login-form {
+  min-height: 345px;
+  position: relative;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* 로그인 폼 내부 class명 group의 세부 설정 값 */
+.login-form .group {
+  margin-bottom: 15px;
+}
+
+.login-form .group .label,
+.login-form .group .input,
+.login-form .group .button {
+  width: 100%;
+  color: white;
+  display: block;
+}
+
+.login-form .group .input,
+.login-form .group .button {
+  border: none;
+  padding: 10px 5px;
+  border-radius: 10px;
+  background-color: #212529;
+}
+
+.login-form .group input[data-type="password"] {
+  -webkit-text-security: circle;
+}
+
+/* 로그인 화면 보여주는 코드 */
+.login-html .sign-in:checked+.tab+.sign-up+.tab+.login-form .sign-in-htm {
+  transform: rotate(0);
+}
+
+/* 회원가입 화면 보여주는 코드 */
+.login-html .sign-up:checked+.tab+.login-form .sign-up-htm {
+  transform: rotate(0);
+}
+
+/* 버튼 */
+button {
+  display: inline-block;
+  border: 2px solid #212529;
+  background: #212529;
+  border-radius: 25px;
+  padding: 3px 12px 5px 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0px;
+  -webkit-transition: all 0.1s ease-out;
+  transition: all 0.1s ease-out;
+}
+
+/* 버튼 위에 마우스 올렸을 때 */
+button:hover {
+  color: #212529;
+  background: #fff;
+  border: 2px solid #212529;
+}
+
+button:active {
+  box-shadow: none;
+}
