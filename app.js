@@ -39,10 +39,6 @@ app.get('/studyGruop', (req, res) => {
   res.render('studyGruop', { title: 'studyGruop' });
 });
 
-app.get('/my_studyGruop', (req, res) => {
-  res.render('my_studyGruop', { title: 'my_studyGruop' });
-});
-
 app.get('/tables', (req, res) => {
   res.render('tables', { title: 'tables' });
 });

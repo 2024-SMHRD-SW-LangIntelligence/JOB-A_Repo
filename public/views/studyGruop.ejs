@@ -1,129 +1,172 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .content-wrapper {
+        /* 새로운 클래스 추가 */
+        display: flex;
+        flex: 1;
+        width: 100%;
+    }
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .head {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-        }
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-        .chat-list {
-            width: 40%;
-            height: 50%;
-            border-right: 1px solid #ddd;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .chat-detail {
-            width: 60%;
-            height: 50%;
-            padding: 20px;
-            background-color: #f5f5f5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .page-title {
-            font-size: 22px;
-            font-weight: bold;
-        }
-        #createChatRoom {
-            background-color: #137bdd;
-            color: #000;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        #searchInput {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .chat-room-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #f0f0f0;
-            cursor: pointer;
-        }
-        .chat-room-info {
-            flex-grow: 1;
-            margin-right: 15px;
-        }
-        .chat-room-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .chat-room-description {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 5px;
-        }
-        .chat-room-tags {
-            font-size: 12px;
-            color: #3b7dd7;
-        }
-        .chat-room-image img {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-        .chat-detail-content {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            max-width: 400px;
-        }
-        .chat-detail-image {
-            width: 100%;
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .chat-detail-name {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .chat-detail-owner {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 10px;
-        }
-        .chat-detail-tags {
-            margin-bottom: 20px;
-        }
-        .chat-detail-join {
-            background-color: #0d54ec;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
-    <div class="head">
-    <div class="container">
+    #chat-container {
+        max-width: 100%;
+        display: flex;
+        min-height: 100%;
+        /* 100vh에서 min-height로 변경 */
+        flex-direction: column;
+        /* 추가 */
+    }
+
+    .chat-list,
+    .chat-detail {
+        flex: 1;
+        /* 두 요소가 부모 요소 내에서 동일한 비율로 공간을 차지하도록 설정 */
+        min-height: 85vh;
+        max-height: 85vh;
+    }
+
+    .chat-list {
+        border-right: 1px solid #ddd;
+        overflow-y: auto;
+        padding: 50px;
+    }
+
+    .chat-detail {
+        padding: 20px;
+        background-color: #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .chat-list::-webkit-scrollbar {
+        width: 0;
+        /* 스크롤바를 숨김 */
+        height: 0;
+        /* 스크롤바를 숨김 */
+    }
+
+    .chat-list {
+        -ms-overflow-style: none;
+        /* IE와 Edge에서 스크롤바 숨기기 */
+        scrollbar-width: none;
+        /* Firefox에서 스크롤바 숨기기 */
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .page-title {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    #createChatRoom {
+        background-color: #137bdd;
+        color: #000;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    #searchInput {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .chat-room-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+    }
+
+    .chat-room-info {
+        flex-grow: 1;
+        margin-right: 15px;
+    }
+
+    .chat-room-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .chat-room-description {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 5px;
+    }
+
+    .chat-room-tags {
+        font-size: 12px;
+        color: #3b7dd7;
+    }
+
+    .chat-room-image img {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    .chat-detail-content {
+        display: none;
+        /* 초기에는 숨김 처리 */
+        height: 70%;
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        width: 90%;
+    }
+
+    .chat-detail-image {
+        width: 100%;
+        height: 300px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .chat-detail-name {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .chat-detail-owner {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 10px;
+    }
+
+    .chat-detail-tags {
+        margin-bottom: 20px;
+    }
+
+    .chat-detail-join {
+        background-color: #0d54ec;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+<div id="chat-container">
+    <div class="content-wrapper">
         <div class="chat-list">
             <div class="header-container">
                 <h1 class="page-title">스터디그룹</h1>
@@ -131,6 +174,19 @@
             </div>
             <input type="text" id="searchInput" placeholder="채팅방 검색...">
             <div id="chatRoomsList"></div>
+        </div>
+        <div class="dropdown mb-4">
+            <button class="btn btn-primary dropdown-toggle" type="button"
+                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                Dropdown
+            </button>
+            <div class="dropdown-menu animated--fade-in"
+                aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
         </div>
         <div class="chat-detail" id="chatDetail">
             <div class="chat-detail-content">
@@ -144,78 +200,89 @@
     </div>
 </div>
 
-    <script>
-        $(document).ready(function () {
-            let chatRooms = [
-                { id: 1, name: '코딩 스터디', description: '함께 코딩을 공부해요', tags: ['#코딩', '#스터디'], image: 'https://via.placeholder.com/400x200', owner: '코딩마스터' },
-                { id: 2, name: '영화 토론방', description: '최신 영화에 대해 이야기 나눠요', tags: ['#영화', '#토론'], image: 'https://via.placeholder.com/400x200', owner: '영화광' },
-                { id: 3, name: '맛집 탐방', description: '맛있는 식당을 공유해요', tags: ['#맛집', '#음식'], image: 'https://via.placeholder.com/400x200', owner: '미식가' },
-            ];
+<script>
+    $(document).ready(function () {
+        let chatRooms = [
+            { id: 1, name: '코딩 스터디', description: '함께 코딩을 공부해요', tags: ['#코딩', '#스터디'], image: 'https://via.placeholder.com/400x200', owner: '코딩마스터' },
+            { id: 2, name: '영화 토론방', description: '최신 영화에 대해 이야기 나눠요', tags: ['#영화', '#토론'], image: 'https://via.placeholder.com/400x200', owner: '영화광' },
+            { id: 3, name: '맛집 탐방', description: '맛있는 식당을 공유해요', tags: ['#맛집', '#음식'], image: 'https://via.placeholder.com/400x200', owner: '미식가' },
+            { id: 4, name: '맛집 탐방', description: '맛있는 식당을 공유해요', tags: ['#맛집', '#음식'], image: 'https://via.placeholder.com/400x200', owner: '미식가' },
+            { id: 5, name: '맛집 탐방', description: '맛있는 식당을 공유해요', tags: ['#맛집', '#음식'], image: 'https://via.placeholder.com/400x200', owner: '미식가' },
+            { id: 6, name: '맛집 탐방', description: '맛있는 식당을 공유해요', tags: ['#맛집', '#음식'], image: 'https://via.placeholder.com/400x200', owner: '미식가' },
+            { id: 7, name: '코딩 스터디', description: '함께 코딩을 공부해요', tags: ['#코딩', '#스터디'], image: 'https://via.placeholder.com/400x200', owner: '코딩마스터' },
+            { id: 8, name: '영화 토론방', description: '최신 영화에 대해 이야기 나눠요', tags: ['#영화', '#토론'], image: 'https://via.placeholder.com/400x200', owner: '영화광' }
+        ];
 
-            function renderChatRooms(rooms) {
-                $('#chatRoomsList').empty();
+        function renderChatRooms(rooms) {
+            $('#chatRoomsList').empty();
+            if (rooms.length === 0) {
+                $('#chatRoomsList').append('<p>검색 결과가 없습니다.</p>');
+            } else {
                 rooms.forEach((room) => {
                     $('#chatRoomsList').append(
                         `<div class="chat-room-item" data-id="${room.id}">
-                            <div class="chat-room-info">
-                                <div class="chat-room-name">${room.name}</div>
-                                <div class="chat-room-description">${room.description}</div>
-                                <div class="chat-room-tags">${room.tags.join(' ')}</div>
-                            </div>
-                            <div class="chat-room-image">
-                                <img src="${room.image}" alt="${room.name}">
-                            </div>
-                        </div>`
+                                <div class="chat-room-info">
+                                    <div class="chat-room-name">${room.name}</div>
+                                    <div class="chat-room-description">${room.description}</div>
+                                    <div class="chat-room-tags">${room.tags.join(' ')}</div>
+                                </div>
+                                <div class="chat-room-image">
+                                    <img src="${room.image}" alt="${room.name}">
+                                </div>
+                            </div>`
                     );
                 });
             }
+        }
 
-            renderChatRooms(chatRooms);
+        renderChatRooms(chatRooms);
 
-            $('#createChatRoom').click(function () {
-                const newRoomName = prompt('채팅방 이름');
-                const newRoomDescription = prompt('채팅방 설명');
-                const newRoomTags = prompt('해시태그 (쉼표로 구분)');
-                const newRoomOwner = prompt('방장 이름');
-                if (newRoomName && newRoomDescription && newRoomOwner) {
-                    const newId = chatRooms.length > 0 ? Math.max(...chatRooms.map(r => r.id)) + 1 : 1;
-                    chatRooms.push({
-                        id: newId,
-                        name: newRoomName,
-                        description: newRoomDescription,
-                        tags: newRoomTags.split(',').map(tag => '#' + tag.trim()),
-                        image: 'https://via.placeholder.com/400x200',
-                        owner: newRoomOwner
-                    });
-                    renderChatRooms(chatRooms);
-                } else {
-                    alert('모든 정보를 입력해주세요.');
-                }
-            });
-
-            $('#searchInput').on('input', function() {
-                const searchTerm = $(this).val().toLowerCase();
-                const filteredRooms = chatRooms.filter(room => 
-                    room.name.toLowerCase().includes(searchTerm) ||
-                    room.description.toLowerCase().includes(searchTerm) ||
-                    room.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-                );
-                renderChatRooms(filteredRooms);
-            });
-
-            $(document).on('click', '.chat-room-item', function() {
-                const roomId = $(this).data('id');
-                const room = chatRooms.find(r => r.id === roomId);
-                if (room) {
-                    $('.chat-detail-image').css('background-image', `url(${room.image})`);
-                    $('.chat-detail-name').text(room.name);
-                    $('.chat-detail-owner').text(`방장: ${room.owner}`);
-                    $('.chat-detail-tags').text(room.tags.join(' '));
-                }
-            });
-
-            $('.chat-detail-join').click(function() {
-                alert('채팅방에 참여했습니다!');
-            });
+        $('#createChatRoom').click(function () {
+            const newRoomName = prompt('채팅방 이름');
+            const newRoomDescription = prompt('채팅방 설명');
+            const newRoomTags = prompt('해시태그 (쉼표로 구분)');
+            const newRoomOwner = prompt('방장 이름');
+            if (newRoomName && newRoomDescription && newRoomOwner) {
+                const newId = chatRooms.length > 0 ? Math.max(...chatRooms.map(r => r.id)) + 1 : 1;
+                chatRooms.push({
+                    id: newId,
+                    name: newRoomName,
+                    description: newRoomDescription,
+                    tags: newRoomTags.split(',').map(tag => '#' + tag.trim()),
+                    image: 'https://via.placeholder.com/400x200',
+                    owner: newRoomOwner
+                });
+                renderChatRooms(chatRooms);
+            } else {
+                alert('모든 정보를 입력해주세요.');
+            }
         });
-    </script>
+
+        $('#searchInput').on('input', function () {
+            const searchTerm = $(this).val().toLowerCase();
+            const filteredRooms = chatRooms.filter(room =>
+                room.name.toLowerCase().includes(searchTerm) ||
+                room.description.toLowerCase().includes(searchTerm) ||
+                room.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+            renderChatRooms(filteredRooms);
+        });
+
+        $(document).on('click', '.chat-room-item', function () {
+            const roomId = $(this).data('id');
+            const room = chatRooms.find(r => r.id === roomId);
+            if (room) {
+                $('.chat-detail-image').css('background-image', `url(${room.image})`);
+                $('.chat-detail-name').text(room.name);
+                $('.chat-detail-owner').text(`방장: ${room.owner}`);
+                $('.chat-detail-tags').text(room.tags.join(' '));
+
+                // 채팅방 상세 내용을 보이게 함
+                $('.chat-detail-content').show();
+            }
+        });
+        $('.chat-detail-join').click(function () {
+            alert('채팅방에 참여했습니다!');
+        });
+    });
+</script>
