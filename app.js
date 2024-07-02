@@ -1,7 +1,6 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts')
 const path = require('path');
-const mongoose = require('mongoose'); // mongoose 객체 생성
 
 // express 객체 생성
 const app = express();
@@ -52,45 +51,6 @@ app.listen(3379, () => {
   console.log(`서버 가동`);
 });
 
-
-
-//----------------------------------------- MongoDB 연결 URL---------------------
-const uri = 'mongodb://localhost:27017/JOBA';
-
-// MongoDB 연결
-mongoose.connect(uri)
-    .then(() => {
-        console.log('MongoDB에 성공적으로 연결되었습니다.');
-    })
-    .catch((err) => {
-        console.error('MongoDB 연결 중 오류 발생:', err);
-    });
-
-// 간단한 스키마와 모델 정의
-const userSchema = new mongoose.Schema({
-    name: String,
-    age: Number,
-    email: String
-});
-
-const User = mongoose.model('User', userSchema);
-
-// 샘플 데이터 추가
-const newUser = new User({
-    name: 'John Doe',
-    age: 30,
-    email: 'john.doe@example.com'
-});
-
-newUser.save()
-    .then(() => {
-        console.log('사용자가 성공적으로 저장되었습니다.');
-        mongoose.connection.close(); // 연결 종료
-    })
-    .catch((err) => {
-        console.error('사용자 저장 중 오류 발생:', err);
-    });
-// ------------------------------MongoDB 관련 설정 끝---------------------------------
 
 // ------------------------------supabase 관련 설정 ----------------------------------
 const { createClient } = require('@supabase/supabase-js');
