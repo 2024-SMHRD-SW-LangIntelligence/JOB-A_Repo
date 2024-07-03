@@ -11,41 +11,34 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
             <a class="nav-link" href="/">
                 <i class="fas fa-fw fa-calendar"></i>
-                <span>캘린더</span></a>
+                <span>일정 관리</span></a>
         </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0">
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0">
+
 
         <!-- Nav Item - 자격증 -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <a class="nav-link collapsed" <% if (user) { %> href="/certificate" <% } else { %> id="login_plz" <% } %> data-target="#collapseTwo"
                 aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>자격증</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <% if (user) { %>
-                        <a class="collapse-item" href="/certificate">맞춤자격증추천</a>
-                        <a class="collapse-item" href="/certificate_info">자격증정보</a>
-                        <% } else { %>
-                            <a id="login_plz" class="collapse-item">맞춤자격증추천</a>
-                            <a id="login_plz" class="collapse-item">자격증정보</a>
-                            <% } %>
-                </div>
-            </div>
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>자격증 AI</span></a>
         </li>
 
         <!-- Divider -->
+        <hr class="sidebar-divider my-0">
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - 스터디그룹 -->
@@ -56,6 +49,7 @@
         </li>
 
         <!-- Divider -->
+        <hr class="sidebar-divider my-0">
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - 내 정보 -->

@@ -78,10 +78,6 @@ app.get('/certificate', (req, res) => {
   res.render('certificate', { title: 'certificate' });
 });
 
-app.get('/certificate_info', (req, res) => {
-  res.render('certificate_info', { title: 'certificate_info' });
-});
-
 app.get('/studyGruop', (req, res) => {
   res.render('studyGruop', { title: 'studyGruop' });
 });
