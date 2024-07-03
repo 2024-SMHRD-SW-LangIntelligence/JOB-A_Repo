@@ -9,6 +9,15 @@ async function registerUser(mem_id, mem_pw, mem_nick) {
     if (error) throw error;
     return data;
 }
+// 자격증 추가 로직 미완 ------------------------------------------------------------------------------------------------------------
+async function certi_add(certi_name, certified_at, certi_org) {
+    const { data, error } = await supabase
+        .from('tb_certificate')
+        .insert([{ certi_name, certified_at, certi_org }]);
+
+    if (error) throw error;
+    return data;
+}
 
 // 중복 아이디 체크 로직
 async function checkUserExists(mem_id) {
@@ -36,5 +45,6 @@ async function loginUser(mem_id, mem_pw) {
 module.exports = {
     registerUser,
     loginUser,
-    checkUserExists
+    checkUserExists,
+    certi_add
 };
