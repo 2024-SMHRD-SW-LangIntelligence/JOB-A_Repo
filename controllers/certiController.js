@@ -1,9 +1,10 @@
 const memberService = require('../services/certiService');
 
 async function add(req, res) {
-    const { certi_idx, mem_id, certi_name,certified_at,certi_org } = req.body;
+    const { certi_name,certi_org } = req.body;
+    const user = req.session.user;
     try {
-        const user = await memberService.addCerti(certi_idx, mem_id, certi_name,certified_at,certi_org);
+        await memberService.addCerti(user, certi_name,certi_org);
         res.redirect('/');
     } catch (error) {
         res.status(500).send(error.message);

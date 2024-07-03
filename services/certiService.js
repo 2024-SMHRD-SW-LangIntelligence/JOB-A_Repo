@@ -1,10 +1,17 @@
 const supabase = require('../config/superbase');
 
 // 자격증 추가certi_idx, mem_id,
-async function addCerti(certi_name,certi_org) {
+async function addCerti(user,certi_name,certi_org) {
     const { data, error } = await supabase
         .from('tb_certificate')
-        .insert([{ certi_idx:'1', mem_id:'1', certi_name,certified_at: new Date(),certi_org }]);
+        .insert([
+            {
+                mem_id: user,
+                certi_name: certi_name,
+                certified_at: new Date(),
+                certi_org: certi_org
+            }
+        ]);
 
     if (error) throw error;
     return data;
