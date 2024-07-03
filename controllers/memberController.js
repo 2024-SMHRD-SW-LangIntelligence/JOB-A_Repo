@@ -10,16 +10,7 @@ async function register(req, res) {
         res.status(500).send(error.message);
     }
 }
-// 자격증 추가 기능 미완--------------------------------------------------------------------------------------------
-async function certi_add(req, res) {
-    const { certi_name, certified_at, certi_org } = req.body;
-    try {
-        const user = await memberService.registerUser(certi_name, certified_at, certi_org);
-        res.redirect('/');
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-}
+
 
 // 로그인 기능
 async function login(req, res) {
@@ -64,5 +55,4 @@ module.exports = {
     login,
     checkId,
     logout,
-    certi_add
 };

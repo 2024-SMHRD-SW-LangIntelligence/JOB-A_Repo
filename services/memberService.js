@@ -37,5 +37,4 @@ module.exports = {
     registerUser,
     loginUser,
     checkUserExists,
-    certi_add
 };
