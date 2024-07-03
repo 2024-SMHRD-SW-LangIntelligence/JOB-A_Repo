@@ -28,8 +28,7 @@ async function loginUser(mem_id, mem_pw) {
         .from('tb_member')
         .select('*')
         .eq('mem_id', mem_id)
-        .eq('mem_pw', mem_pw);
-
+        .eq('mem_pw', mem_pw)
     if (error) throw error;
     return data;
 }
