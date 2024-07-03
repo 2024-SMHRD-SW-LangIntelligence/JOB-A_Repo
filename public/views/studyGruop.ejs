@@ -16,8 +16,7 @@
         /* 추가 */
     }
 
-    .chat-list,
-    .chat-detail {
+    .chat-list {
         flex: 1;
         /* 두 요소가 부모 요소 내에서 동일한 비율로 공간을 차지하도록 설정 */
         min-height: 85vh;
@@ -28,15 +27,6 @@
         border-right: 1px solid #ddd;
         overflow-y: auto;
         padding: 50px;
-    }
-
-    .chat-detail {
-        padding: 20px;
-        background-color: #f5f5f5;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
     }
 
     .chat-list::-webkit-scrollbar {
@@ -125,64 +115,6 @@
         object-fit: cover;
     }
 
-    .chat-detail-content {
-        display: none;
-        /* 초기에는 숨김 처리 */
-        height: 70%;
-        background-color: white;
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-        width: 90%;
-    }
-
-    .chat-detail-image {
-        width: 100%;
-        height: 300px;
-        background-size: cover;
-        background-position: center;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-
-    .chat-detail-name {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .chat-detail-owner {
-        font-size: 14px;
-        color: #888;
-        margin-bottom: 10px;
-    }
-
-    .chat-detail-tags {
-        margin-bottom: 20px;
-    }
-
-    .chat-detail-join {
-        background-color: #0d54ec;
-        color: #000;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    .chat-detail-header {
-        position: absolute;
-        top: 120px;
-        right: 20px;
-    }
-
-    .chat-detail-content,
-    .my-chat-rooms {
-        margin-top: 60px;
-        /* 메뉴 버튼 아래에 공간 확보 */
-    }
-
     cssCopy.header-container {
         display: flex;
         justify-content: space-between;
@@ -199,104 +131,11 @@
         margin-right: 10px;
     }
 
-    .dropdown {
-        position: relative;
-    }
 
-    .dropdown-menu {
-        position: absolute;
-        right: 0;
-        left: auto;
-        top: 100%;
-        z-index: 1000;
-        display: none;
-        float: left;
-        min-width: 10rem;
-        padding: .5rem 0;
-        margin: .125rem 0 0;
-        font-size: 1rem;
-        color: #212529;
-        text-align: left;
-        list-style: none;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid rgba(0, 0, 0, .15);
-        border-radius: .25rem;
-    }
 
-    .dropdown-menu.show {
-        display: block;
-    }
 
-    .dropdown-item {
-        display: block;
-        width: 100%;
-        padding: .25rem 1.5rem;
-        clear: both;
-        font-weight: 400;
-        color: #212529;
-        text-align: inherit;
-        white-space: nowrap;
-        background-color: transparent;
-        border: 0;
-    }
 
-    .dropdown-item:hover,
-    .dropdown-item:focus {
-        color: #16181b;
-        text-decoration: none;
-        background-color: #f8f9fa;
-    }
 
-    #myChatRoomsList {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    #myChatRoomsList .chat-room-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 10px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    #myChatRoomsList .chat-room-info {
-        flex-grow: 1;
-    }
-
-    #myChatRoomsList .chat-room-name {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    #myChatRoomsList .chat-room-members {
-        font-size: 12px;
-        color: #888;
-        margin-bottom: 5px;
-    }
-
-    #myChatRoomsList .chat-room-last-message {
-        font-size: 14px;
-        color: #333;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 200px;
-    }
-
-    #myChatRoomsList .unread-count {
-        background-color: #ff3b30;
-        color: white;
-        border-radius: 50%;
-        min-width: 20px;
-        height: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 12px;
-        font-weight: bold;
-    }
 </style>
 <div id="chat-container">
     <div class="content-wrapper">
@@ -305,36 +144,10 @@
                 <h1 class="page-title">스터디그룹</h1>
                 <div class="header-buttons">
                     <button id="createChatRoom">채팅방 만들기</button>
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            메뉴
-                        </button>
-                        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" id="myChatRooms">내 채팅방</a>
-                            <a class="dropdown-item" href="#">설정</a>
-                        </div>
-                    </div>
                 </div>
             </div>
             <input type="text" id="searchInput" placeholder="채팅방 검색...">
             <div id="chatRoomsList"></div>
-        </div>
-        <div class="chat-detail" id="chatDetail">
-            <div class="chat-detail-content">
-                <div class="chat-detail-image"></div>
-                <div class="chat-detail-name"></div>
-                <div class="chat-detail-owner"></div>
-                <div class="chat-detail-tags"></div>
-                <button class="chat-detail-join">참여하기</button>
-            </div>
-            <div class="my-chat-rooms" style="display: none;">
-                <div class="my-chat-rooms-header">
-                    <button class="back-button">뒤로가기</button>
-                    <h2>내 채팅방 목록</h2>
-                </div>
-                <ul id="myChatRoomsList"></ul>
-            </div>
         </div>
     </div>
 </div>
@@ -411,59 +224,6 @@
             );
             renderChatRooms(filteredRooms);
         });
-
-        $(document).on('click', '.chat-room-item', function () {
-            const roomId = $(this).data('id');
-            const room = chatRooms.find(r => r.id === roomId);
-            if (room) {
-                $('.chat-detail-image').css('background-image', `url(${room.image})`);
-                $('.chat-detail-name').text(room.name);
-                $('.chat-detail-owner').text(`방장: ${room.owner}`);
-                $('.chat-detail-tags').text(room.tags.join(' '));
-
-                $('.chat-detail-content').show();
-                $('.my-chat-rooms').hide();
-            }
-        });
-
-        $('.chat-detail-join').click(function () {
-            const roomName = $('.chat-detail-name').text();
-            const room = chatRooms.find(r => r.name === roomName);
-            if (room && !myChatRooms.some(r => r.id === room.id)) {
-                myChatRooms.push(room);
-            }
-            alert('채팅방에 참여했습니다!');
-            $('.chat-detail-content').hide();
-        });
-
-        $('#myChatRooms').click(function () {
-            $('.chat-detail-content').hide();
-            $('.my-chat-rooms').show();
-            renderMyChatRooms();
-        });
-
-        $('.back-button').click(function () {
-            $('.my-chat-rooms').hide();
-            $('.chat-detail-content').show();
-        });
-
-        function renderMyChatRooms() {
-            const $list = $('#myChatRoomsList').empty();
-            myChatRooms.forEach(room => {
-                $list.append(`
-            <li class="chat-room-item">
-                <div class="chat-room-info">
-                    <div class="chat-room-name">${room.name}</div>
-                    <div class="chat-room-members">${room.members}명</div>
-                    <div class="chat-room-last-message">${room.lastMessage}</div>
-                </div>
-                ${room.unreadCount > 0 ? `<div class="unread-count">${room.unreadCount}</div>` : ''}
-            </li>
-        `);
-            });
-        }
-
-
     });
 
 
