@@ -31,26 +31,22 @@
     <div class="certi_modal">
     <div class="modal_body">
         <button class="certi_close_modal">x</button> <!-- 닫기 버튼 -->
-        <form action="/certi/add" method="post">
+        <form action="/certi/add" method="post" id="cform">
             <label><h4>보유 자격증 입력</h4></label>
             <div class="sign-in-htm">
                 <!-- 자격명 입력 -->
                 <div>
-                    <input id="certi_name" name="certi_name" type="text"
+                    <input id="cname" name="certi_name" type="text"
                         class="inputStyle" placeholder="자격명을 입력하세요." required>
                 </div>
                 <!-- 자격증 취득일자 입력 -->
                 <div>
-                    <input id="certified_at" name="certified_at" type="date"
-                    class="inputStyle" placeholder="자격증 취득일자를 입력하세요." required>
-                </div>
-                <div>
-                    <input id="certi_org" name="certi_org" type="text"
+                    <input id="corg" name="certi_org" type="text"
                     class="inputStyle" placeholder="발행 기관을 입력하세요." required>
                 </div>
                 <!-- 입력 버튼 -->
                 <div id="login_btn">
-                    <button type="submit" value="Sign In">입력</button>
+                    <button type="submit" value="Sign In">입력</button> <!-- 이거 어떻게든 mem_id 세션에서 받아와서 보내야됨 -->
                 </div>
             </div>
         </form>

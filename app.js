@@ -64,6 +64,9 @@ app.use(bodyParser.json());
 // 라우트 모듈 불러오기
 const memberRoutes = require('./routes/memberRoutes');
 app.use('/member', memberRoutes);
+// 라우트 모듈 불러오기
+const certiRoutes = require('./routes/certiRoutes');
+app.use('/certi', certiRoutes);
 
 // 루트 경로에 회원값이 있을 시 세션의 유저값을 user 변수에 담아 이동
 app.get('/', (req, res) => {
