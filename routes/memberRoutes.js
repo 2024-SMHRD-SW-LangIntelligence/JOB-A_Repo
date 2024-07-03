@@ -4,8 +4,10 @@ const router = express.Router();
 const memberController = require('../controllers/memberController');
 
 router.post('/register', memberController.register);
+router.post('/certi_add', memberController.certi_add);
 router.post('/login', memberController.login);
 router.post('/checkid', memberController.checkId);
 router.get('/logout', memberController.logout);
+
 
 module.exports = router;
