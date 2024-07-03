@@ -74,10 +74,6 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/workSheet', (req, res) => {
-  res.render('workSheet', { title: 'workSheet' });
-});
-
 app.get('/certificate', (req, res) => {
   res.render('certificate', { title: 'certificate' });
 });
