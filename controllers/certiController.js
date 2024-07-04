@@ -23,8 +23,18 @@ async function select_certi(req, res) {
     }
 }
 
+async function schedule(req, res) {
+    const user = req.session.user;
+    try {
+        const scheduleC = await certiService.scheduleCheck(user);
+        res.json(scheduleC);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
 
 module.exports = {
     add,
-    select_certi
+    select_certi,
+    schedule
 };

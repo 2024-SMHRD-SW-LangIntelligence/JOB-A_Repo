@@ -129,9 +129,9 @@
                         <div class="row no-gutters align-items-center">
                             
                             <div class="col">
-                                <div class="progress"> <!-- style 100%를  msche_status value개수 총합(일정 상태가 성공인것과, 실패인것 취합)/msche_status(성공한수)-->
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                        style="width: 50%"
+                                <div class="percent_stick"> <!-- style 100%를  msche_status value개수 총합(일정 상태가 성공인것과, 실패인것 취합)/msche_status(성공한수)-->
+                                    <div class="percent" role="progressbar"
+                                        
                                         aria-valuenow="50" aria-valuemin="0"
                                         aria-valuemax="100"></div>
                                 </div>
@@ -150,7 +150,7 @@
             <div class="card_style-body">
                 <div class="block_text">
                         <div class="block1_text_color">자격증수</div>
-                        <div class="block2_text_color">18</div> <!-- 자격증 개수 넣는곳 -->
+                        <div class="block2_text_color"><p id="certi_cut"></div> <!-- 자격증 개수 넣는곳 -->
                 </div>
             </div>
         </div>
@@ -172,7 +172,7 @@
             </div>
         </div>
     </div>
-    <!-- ------------------------------------------------------------------------------------------------ -->
+    <!-- ------------------------------------- 자격증 테이블 보여주기 ------------------------------------ -->
     <div class="chart_style">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
@@ -182,20 +182,59 @@
             <!-- Card Body -->
             <div class="card-body">
                 <div class="chart-pie pt-4">
-                    <table border="1">
-                        <tbody>
-                            <tr>
+                    <table>
+                            <div class="certificate">
                                 <th id="certificate-list"></th>
-                            </tr>
-                        </tbody>
+                            </div>
                     </table>
                 </div>
                 <hr>설명
             </div>
         </div>
     </div>
+
+    <!------------------------------------------------------------------------------------------ 스크립트 -------------------------------------------------------------------->
     <script>
-        // ----------------------------- 자격증에서 정보 가져오기----------------------------------
+        // ----------------------------- 일정 성취률 가져오기----------------------------------
+        $(document).ready(function() {
+            fetchCertificates(); // 페이지 로드 시 자동으로 데이터 가져오기
+
+            function fetchCertificates() {
+                $.ajax({
+                    url: '/certi/schedule', // 경로
+                    type: 'GET',
+                    success: function(scheduleC) {
+                        console.log('scheduleC:', scheduleC);
+                        countsusses(scheduleC);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+            //  ---------------------------------------백분율 구해서 스타일에 %로 보내기---------------------------------------------------------------------
+            function countsusses(scheduleC) {
+                const certificateList = $('#certificate-list');         // certificate-list 라는 id를 가지면
+                certificateList.empty();
+                const good = 0;                                         // 성공 갯수 세기
+                scheduleC.forEach(function(scheduleC) {
+                    if(scheduleC.msche_status==1){
+                        good += 1;
+                    }
+                    const total = scheduleC.length;                     // 총 일정 수
+                    const percentage = good/total;                      // 백분율
+
+                    const percentElement = $('#percent');
+                    percentElement.css('width', `${percentage}%`);      // 스타일에 넣어서 시각화
+                });
+            }
+        });
+        // ---------------------------------------------------끝-----------------------------------------------------------
+
+
+
+
+    // ---------------------------------------자격증 테이블 데이터 가져오기---------------------------------------------------
         $(document).ready(function() {
             fetchCertificates(); // 페이지 로드 시 자동으로 데이터 가져오기
 
@@ -206,32 +245,42 @@
                     success: function(certificates) {
                         console.log('Certificates:', certificates);
                         displayCertificates(certificates);
+                        certi_count(certificates);
                     },
                     error: function(error) {
                         console.error('Error fetching data:', error);
                     }
                 });
             }
-
+            // ---------------------------------------------자격증 테이블------------------------------------------------------
             function displayCertificates(certificates) {
                 const certificateList = $('#certificate-list');         // certificate-list 라는 id를 가지면
                 certificateList.empty();
-
+                let certi_cnt = console.log(certificateList.length)+1; 
                 certificates.forEach(function(certificate) {            // 아래 구문 생성(자격명, 취득일자, 발행기관)
                     const certElement = `
                     
-                        <div class="certificate">
-                        <h4>자격명: ${certificate.certi_name}</h4>
-                        <p>취득일자: ${certificate.certified_at}</p>
-                        <p>발행기관: ${certificate.certi_org}</p>
-                        <hr>
-                    </div>`;
+                        <tr>
+                        <th>자격명: ${certificate.certi_name}</th>
+                        <th>취득일자: ${certificate.certified_at}</th>
+                        <th>발행기관: ${certificate.certi_org}</th>
+                        </tr>
+                    `;
                     certificateList.append(certElement);
                 });
+            }
+
+            // ---------------------------------------자격증 수---------------------------------------------------
+            function certi_count(certificates) {
+                const certificateList = $('#certi_cut');
+                certificateList.empty();
+                let certi_cnt = certificates.length;
+                const certCountElement = `<p>  ${certi_cnt}</p>`;
+                certificateList.append(certCountElement);
             }
         });
         // --------------------------------------------- 끝 ------------------------------------------------------
     </script>
-
+    
 
 

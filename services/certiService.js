@@ -30,7 +30,21 @@ async function certiSelect(user) {
     return data;
 }
 
+// 스케쥴 테이블 임시로 가져오기 근데 라우팅 때문에 주소가 certi인 이상 여기에 만들어야 할거 같습니다
+async function scheduleCheck(user) {
+    const { data, error } = await supabase
+        .from('tb_member_schedule')
+        .select('*')
+        .eq('mem_id', user.mem_id);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+
 module.exports = {
     addCerti,
-    certiSelect
+    certiSelect,
+    scheduleCheck
 };
