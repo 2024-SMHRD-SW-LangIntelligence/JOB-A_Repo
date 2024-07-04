@@ -1,11 +1,56 @@
 <!-- Page Heading -->
 <h1 class="h3 mb-2 text-gray-800">내 정보</h1>
+<link rel="stylesheet" href="../css/myInfo.css">
 
 <style>
     .swal2-front {
         z-index: 1100 !important;
     }
 </style>
+<style>
+    .text_1 {
+        display: none;
+        border: none;
+        padding: 10px 5px;
+        border-radius: 10px;
+        background-color: #212529;
+        width: 100%;
+        color: white;
+        margin-bottom: 10px;
+    }
+    .text_2 {
+        display: none;
+        border: none;
+        padding: 10px 5px;
+        border-radius: 10px;
+        background-color: #212529;
+        width: 100%;
+        color: white;
+        margin-bottom: 10px;
+    }
+</style>
+<script>
+    function handleSelectChange(selectElement) {
+        var otherInput = document.getElementById('otherInput');
+        if (selectElement.value === 'option') {  // '기타' 옵션 선택 시
+            otherInput.style.display = 'block';
+            otherInput.name = "certi_name";  // input 필드에 name 속성 추가
+        } else {
+            otherInput.style.display = 'none';
+            otherInput.name = "";  // 기타 옵션이 아닌 경우 name 속성 제거
+        }
+    }
+    function handleSelectChange2(selectElement) {
+        var otherInput = document.getElementById('otherInput2');
+        if (selectElement.value === 'option') {  // '기타' 옵션 선택 시
+            otherInput.style.display = 'block';
+            otherInput.name = "certi_name";  // input 필드에 name 속성 추가
+        } else {
+            otherInput.style.display = 'none';
+            otherInput.name = "";  // 기타 옵션이 아닌 경우 name 속성 제거
+        }
+    }
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
             const openModalBtn = document.querySelector('.certi_open_modal');
@@ -36,17 +81,34 @@
             <div class="sign-in-htm">
                 <!-- 자격명 입력 -->
                 <div>
-                    <input id="cname" name="certi_name" type="text"
-                        class="inputStyle" placeholder="자격명을 입력하세요." required>
+                    <!-- <input id="cname" name="certi_name" type="text"
+                        class="inputStyle" placeholder="자격명을 입력하세요." required> -->
+                        <select id="cname" name="certi_name" class="inputStyle" onchange="handleSelectChange(this)">
+                            <option value="option">기타</option>
+                            <% for(let i = 1; i <= 30; i++) { %> 
+                                <option placeholder="자격명을 입력하세요." value="option<%= i %>">Option <%= i %></option> user
+                            <% } %>
+                        </select>
+                        <input type="text" id="otherInput" class="text_1" placeholder="자격명을 입력하세요.">
                 </div>
                 <!-- 자격증 취득일자 입력 -->
                 <div>
-                    <input id="corg" name="certi_org" type="text"
-                    class="inputStyle" placeholder="발행 기관을 입력하세요." required>
+                    <input id="cdate" name="certified_at" type="date"
+                        class="inputStyle" placeholder="자격증 취득일자를 입력하세요." required>
+                </div> <% %>
+                <!-- 발행기관 입력 -->
+                <div>
+                        <select id="corg" name="certi_org" class="inputStyle" onchange="handleSelectChange2(this)">
+                            <option value="option">기타</option>
+                            <% for(let i = 1; i <= 30; i++) { %>
+                                <option placeholder="발행기관을 입력하세요." value="option<%= i %>">Option <%= i %></option> user
+                            <% } %>
+                        </select>
+                        <input type="text" id="otherInput2" class="text_2" placeholder="발행기관을 입력하세요."">
                 </div>
                 <!-- 입력 버튼 -->
                 <div id="login_btn">
-                    <button type="submit" value="Sign In">입력</button> <!-- 이거 어떻게든 mem_id 세션에서 받아와서 보내야됨 -->
+                    <button type="submit" value="Sign In">입력</button>
                 </div>
             </div>
         </form>
@@ -56,18 +118,6 @@
 <button class="certi_open_modal">자격증 입력</button>
 
 <div class="div_style"> <!-- 가로로 정렬해줌 -->
-    <!-- ---------------------------------------------- 가입일자 --------------------------------------- -->
-    <div class="block_style">
-        <div class="block_detail">
-            <div class="card_style-body">
-                <div class="block_text">
-                    <div class="block1_text_color">가입날자</div>
-                    <div class="block2_text_color">2024-07-02</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- ---------------------------------------------- 일정 수행률 ----------------------------------- -->
     <div class="block_style">
         <div class="block_detail">
@@ -79,9 +129,9 @@
                         <div class="row no-gutters align-items-center">
                             
                             <div class="col">
-                                <div class="progress progress-sm mr-2"> <!-- style 100%를  msche_status value개수 총합(일정 상태가 성공인것과, 실패인것 취합)/msche_status(성공한수)-->
+                                <div class="progress"> <!-- style 100%를  msche_status value개수 총합(일정 상태가 성공인것과, 실패인것 취합)/msche_status(성공한수)-->
                                     <div class="progress-bar bg-info" role="progressbar"
-                                        style="width: 100%"
+                                        style="width: 50%"
                                         aria-valuenow="50" aria-valuemin="0"
                                         aria-valuemax="100"></div>
                                 </div>
@@ -122,7 +172,66 @@
             </div>
         </div>
     </div>
+    <!-- ------------------------------------------------------------------------------------------------ -->
+    <div class="chart_style">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3" id="data-table tbody">
+                <h6 class="m-0 font-weight-bold text-primary" >Donut Chart</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-pie pt-4">
+                    <table border="1">
+                        <tbody>
+                            <tr>
+                                <th id="certificate-list"></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>설명
+            </div>
+        </div>
+    </div>
+    <script>
+        // ----------------------------- 자격증에서 정보 가져오기----------------------------------
+        $(document).ready(function() {
+            fetchCertificates(); // 페이지 로드 시 자동으로 데이터 가져오기
 
+            function fetchCertificates() {
+                $.ajax({
+                    url: '/certi/select_certi', // 경로
+                    type: 'GET',
+                    success: function(certificates) {
+                        console.log('Certificates:', certificates);
+                        displayCertificates(certificates);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+            function displayCertificates(certificates) {
+                const certificateList = $('#certificate-list');         // certificate-list 라는 id를 가지면
+                certificateList.empty();
+
+                certificates.forEach(function(certificate) {            // 아래 구문 생성(자격명, 취득일자, 발행기관)
+                    const certElement = `
+                    
+                        <div class="certificate">
+                        <h4>자격명: ${certificate.certi_name}</h4>
+                        <p>취득일자: ${certificate.certified_at}</p>
+                        <p>발행기관: ${certificate.certi_org}</p>
+                        <hr>
+                    </div>`;
+                    certificateList.append(certElement);
+                });
+            }
+        });
+        // --------------------------------------------- 끝 ------------------------------------------------------
+    </script>
 
 
 

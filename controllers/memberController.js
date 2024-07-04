@@ -19,6 +19,7 @@ async function login(req, res) {
         if (user.length > 0) {
             req.session.user = user[0];
             res.redirect('/');
+            res.json(user); 
         } else {
             res.status(401).send('Invalid email or password');
         }  
