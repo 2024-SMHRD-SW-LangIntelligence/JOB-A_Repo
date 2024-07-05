@@ -201,7 +201,7 @@
 
                                     <div class="login-form">
                                         <!-- 로그인 화면 -->
-                                        <form action="/member/login" method="post" id="lform">
+                                        <form id="lform">
                                             <div class="sign-in-htm">
                                                 <!-- 아이디 입력 -->
                                                 <div class="group">
@@ -221,11 +221,11 @@
                                         </form>
 
                                         <!-- 회원가입 화면 -->
-                                        <form action="/member/register" method="post" id="rform">
+                                        <form id="rform">
                                             <div class="sign-up-htm">
                                                 <!-- 닉네임 -->
                                                 <div class="group">
-                                                    <input name="mem_nick" id="rnick" type="text" class="input"
+                                                    <input id="rnick" name="mem_nick" type="text" class="input"
                                                         placeholder="사용할 닉네임 입력" required>
                                                 </div>
                                                 <!-- 아이디 -->
@@ -242,14 +242,8 @@
                                                 <div class="group">
                                                     <input id="confirmpass" type="password" class="input"
                                                         data-type="password" placeholder="비밀번호 재입력" required>
+                                                    <div id="message"></div>
                                                 </div>
-                                                <!-- 학력
-                                        <div class="select">
-                                            <input name="gender" type="radio" id="select" value="M"><label
-                                                for="select">1년</label>
-                                            <input name="gender" type="radio" id="select2" value="W"><label
-                                                for="select2">2년</label>
-                                        </div> -->
                                                 <!-- 가입하기 -->
                                                 <div class="group" id="submit_btn">
                                                     <button type="submit" value="Sign Up">가입하기</button>
@@ -325,47 +319,106 @@
     document.querySelector("#close").addEventListener("click", close);
 </script>
 
-<style>
-    .login-button-container {
-        width: 50%;
-        max-width: 50%;
-        margin-left: auto;
-    }
+<script>
+    // <!-- 비밀번호 일치 불일치 및 그냥 클릭시 오류창 -->
+    const password = document.getElementById('rpass');
+    const confirmPassword = document.getElementById('confirmpass');
+    const message = document.getElementById('message');
+    const form = document.getElementById('rform');
 
-    .login-button-container button {
-        width: 100%;
-        height: calc(1.5em + .75rem + 2px);
-        /* 검색창의 높이와 일치시킴 */
-        max-width: 50%;
-        /* 검색창 절반 길이 */
-    }
-
-    @media (max-width: 575.98px) {
-        .login-button-container {
-            width: 100%;
-            max-width: 100%;
+    function checkPasswords() {
+        if (password.value && confirmPassword.value) {
+            if (password.value === confirmPassword.value) {
+                message.textContent = '비밀번호가 일치합니다.';
+                message.className = 'success-message';
+            } else {
+                message.textContent = '비밀번호가 일치하지 않습니다.';
+                message.className = 'error-message';
+            }
+        } else {
+            message.textContent = '';
         }
     }
-    
-    .dropdown-menu-custom {
-        width: 220px; /* 드롭다운 메뉴 너비 설정 */
-        padding: 20px; /* 내부 여백 추가 */
-        text-align: center; /* 내용 중앙 정렬 */
-    }
-    
-    .dropdown-profile-img {
-        width: 80px; /* 드롭다운 내 프로필 이미지 크기 */
-        height: 80px; /* 드롭다운 내 프로필 이미지 크기 */
-        margin-bottom: 10px; /* 이미지 아래 여백 */
-    }
-    
-    .dropdown-nickname {
-        font-size: 18px; /* 닉네임 글자 크기 */
-        margin-bottom: 15px; /* 닉네임 아래 여백 */
-    }
-    
-    .dropdown-info-btn {
-        width: 100%; /* 버튼 너비 */
-        margin-bottom: 10px; /* 버튼 아래 여백 */
-    }
-</style>
+
+    password.addEventListener('input', checkPasswords);
+    confirmPassword.addEventListener('input', checkPasswords);
+// <!-- 회원가입 성공 및 실패 -->
+    $(document).ready(function () {
+        $('#rform').submit(function (event) {
+            if (password.value === confirmPassword.value) {
+                event.preventDefault();
+                const formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/member/register',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            // 회원가입 성공
+                            Swal.fire({
+                                icon: 'success',
+                                text: '회원가입 성공',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/';
+                                }
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: '아이디와 비밀번호를 확인해주세요.',
+                            confirmButtonText: '확인'
+                        })
+                    }
+                });
+            } else {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    text: '비밀번호를 일치시켜주세요.',
+                    confirmButtonText: '확인'
+                });
+            }
+        });
+    });
+</script>
+
+<!-- 로그인 성공 및 아이디 비밀번호 불일치 알림창 -->
+<script>
+    $(document).ready(function () {
+        $('#lform').submit(function (event) {
+            event.preventDefault();
+            const formData = $(this).serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/member/login',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        // 로그인 성공
+                        Swal.fire({
+                            icon: 'success',
+                            text: '로그인 성공',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/';
+                            }
+                        });
+                    }
+                },
+                error: function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: '아이디와 비밀번호를 확인해주세요.',
+                        confirmButtonText: '확인'
+                    });
+                }
+            });
+        });
+    });
+</script>

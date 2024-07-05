@@ -6,7 +6,6 @@ const express = require('express');
 // ejs의 레이아웃기능을 제공하여 유지보수에 용이
 const expressLayouts = require('express-ejs-layouts')
 
-
 // HTTP 요청에서 쿠키를 파싱하는 미들웨어 쿠키 데이터를 쉽게 접근하고 사용
 
 // 세션 관리를 위한 미들웨어
@@ -20,7 +19,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 
-// express 객체 생성
+// express 앱과 채팅을 위한 소켓 Http 서버 생성
 const app = express();
 // superbase 객체생성
 const supabase = require('./config/superbase');
@@ -61,12 +60,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // HTTP 요청의 body에서 JSON 형식으로 전송된 데이터를 파싱(parsing)하여 JavaScript 객체로 만들어주는 역할 
 app.use(bodyParser.json());
 
-// 라우트 모듈 불러오기
+// 멤버 관련 라우트 모듈 불러오기
 const memberRoutes = require('./routes/memberRoutes');
 app.use('/member', memberRoutes);
 // 라우트 모듈 불러오기
 const certiRoutes = require('./routes/certiRoutes');
 app.use('/certi', certiRoutes);
+// 채팅 모듈 불러오기
+app.use(express.json());
+const studyRoutes = require('./routes/studyGruopRoutes');
+app.use('/chat', studyRoutes);
 
 // 루트 경로에 회원값이 있을 시 세션의 유저값을 user 변수에 담아 이동
 app.get('/', (req, res) => {
