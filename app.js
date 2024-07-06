@@ -19,12 +19,10 @@ var cookieParser = require('cookie-parser');
 // 주로 POST 요청의 본문 데이터를 처리
 var bodyParser = require('body-parser');
 
-
 // express 객체 생성
 const app = express();
 // superbase 객체생성
 const supabase = require('./config/superbase');
-
 
 // 세션 설정
 app.use(session({
@@ -57,13 +55,18 @@ app.set('views', path.join(__dirname, 'public', 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // POST 요청 본문을 파싱하기 위한 미들웨어 설정
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 // HTTP 요청의 body에서 JSON 형식으로 전송된 데이터를 파싱(parsing)하여 JavaScript 객체로 만들어주는 역할 
 app.use(bodyParser.json());
 
-// 라우트 모듈 불러오기
+// 멤버라우트 모듈 불러오기
 const memberRoutes = require('./routes/memberRoutes');
 app.use('/member', memberRoutes);
+
+// 스케쥴라우트 모듈 불러오기
+const scheduleRoutes = require('./routes/scheduleRoutes');
+app.use('/schedule', scheduleRoutes);
+
 
 // 루트 경로에 회원값이 있을 시 세션의 유저값을 user 변수에 담아 이동
 app.get('/', (req, res) => {
