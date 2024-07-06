@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
+
     <!-- 직접만든 css들 -->
     <link rel="stylesheet" href="../css/total.css">
-
+    <link rel="stylesheet" href="../css/topbar.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -60,13 +61,12 @@
                     <%- include('topbar') %>
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
-                            <div class="row">
+                            <div class="custom-row">
                                 <!-- Calendar Column -->
-                                <div class="col-lg-8">
+                                <div class="calendar-column">
                                     <!-- Calendar -->
-                                    <div id='calendar' style="height: 1100px; width: 1100px; margin-left: 150px;"></div>
-                                    
-                                    <% if (user){ %> 
+                                    <div id='calendar' style="height: 1100px; width: 1100px; margin-left: 50px;"></div>
+
                                     <!-- Modal add-->
                                     <div class="modal fade" id="eventModal" tabindex="-1"
                                         aria-labelledby="eventModalLabel" aria-hidden="true">
@@ -130,7 +130,7 @@
                                 </div>
                                 <% } %>
                                 <!-- Right Column for EJS Template -->
-                                <div class="col-lg-4">
+                                <div class="content-column">
                                     <%- body %>
                                 </div>
                             </div>

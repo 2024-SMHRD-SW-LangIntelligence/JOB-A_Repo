@@ -5,7 +5,9 @@ async function register(req, res) {
     const { mem_id, mem_pw, mem_nick } = req.body;
     try {
         const user = await memberService.registerUser(mem_id, mem_pw, mem_nick);
-        res.redirect('/');
+        res.send({
+            success: true,
+          });
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -18,7 +20,9 @@ async function login(req, res) {
         const user = await memberService.loginUser(mem_id, mem_pw);
         if (user.length > 0) {
             req.session.user = user[0];
-            res.redirect('/');
+            res.send({
+                success: true,
+              });
         } else {
             res.status(401).send('Invalid email or password');
         }  

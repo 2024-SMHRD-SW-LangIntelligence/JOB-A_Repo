@@ -6,7 +6,6 @@ const express = require('express');
 // ejs의 레이아웃기능을 제공하여 유지보수에 용이
 const expressLayouts = require('express-ejs-layouts')
 
-
 // HTTP 요청에서 쿠키를 파싱하는 미들웨어 쿠키 데이터를 쉽게 접근하고 사용
 
 // 세션 관리를 위한 미들웨어
@@ -62,6 +61,13 @@ app.use(bodyParser.json());
 // 멤버라우트 모듈 불러오기
 const memberRoutes = require('./routes/memberRoutes');
 app.use('/member', memberRoutes);
+// 라우트 모듈 불러오기
+const certiRoutes = require('./routes/certiRoutes');
+app.use('/certi', certiRoutes);
+// 채팅 모듈 불러오기
+app.use(express.json());
+const studyRoutes = require('./routes/studyGruopRoutes');
+app.use('/chat', studyRoutes);
 
 // 스케쥴라우트 모듈 불러오기
 const scheduleRoutes = require('./routes/scheduleRoutes');
@@ -75,6 +81,7 @@ app.get('/', (req, res) => {
   } else {
     res.render('main', { user : null, title: 'Main' });
   }
+  
 });
 
 app.get('/certificate', (req, res) => {
