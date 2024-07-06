@@ -39,10 +39,10 @@
         } else {
             otherInput.style.display = 'none';
             otherInput.name = "";  // 기타 옵션이 아닌 경우 name 속성 제거
-        }
     }
+}
 
-    function handleSelectChange2(selectElement) {
+function handleSelectChange2(selectElement) {
         var otherInput2 = document.getElementById('otherInput2');
         if (selectElement.value === 'option') {  // '기타' 옵션 선택 시
             otherInput2.style.display = 'block';
@@ -53,38 +53,70 @@
             otherInput2.name = "";  // 기타 옵션이 아닌 경우 name 속성 제거
         }
     }
+
+
 </script>
 
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
-        const openModalBtn = document.querySelector('.certi_open_modal');
-        const closeModalBtn = document.querySelector('.certi_close_modal');
-        const modal = document.querySelector('.certi_modal');
-        const bluu = document.querySelector('.bluu');
-        
-        if (openModalBtn) {
-            openModalBtn.addEventListener("click", () => {
-                modal.style.display = "block";
-                bluu.style.display = "block";
-            });
-        }
+    const openModalBtns = document.querySelectorAll('.certi_open_modal');
+    const closeModalBtns = document.querySelectorAll('.certi_close_modal');
 
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener("click", () => {
+    openModalBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const modalId = btn.getAttribute('data-modal-id');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = "block";
+            }
+        });
+    });
+
+    closeModalBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const modalId = btn.getAttribute('data-modal-id');
+            const modal = document.getElementById(modalId);
+            if (modal) {
                 modal.style.display = "none";
-                bluu.style.display = "none";
-            });
+            }
+        });
+    });
+
+    // 모달 영역 밖을 클릭하여 모달 닫기
+    window.addEventListener("click", (event) => {
+        if (event.target.classList.contains('certi_modal')) {
+            event.target.style.display = "none";
         }
     });
-</script>
+});
 
+</script>
+<!-- -------------------------------------------------------- 가지고 있는 자격증 리스트 ---------------------------------------------------------------- -->
+<div>
+    <div id="modal1" class="certi_modal">
+    <div class="modal_body">
+        <button class="certi_close_modal" data-modal-id="modal1">x</button> <!-- 닫기 버튼 -->
+            <label><h4>보유 자격증 입력</h4></label>
+            <div class="sign-in-htm" id="certificate-list">
+                <!-- 자격명 입력 -->
+                <table class="table_text" border="1">                                                                             
+                    <tr>
+                        <th>자격증명</th>                                                                             
+                        <th>취득일자</th>                                                                                                                 
+                        <th>발행기관</th>
+                    </tr>                                                                             
+                </table>                                 
+            </div>
+    </div>
+</div>
+<button class="certi_open_modal" data-modal-id="modal1">내 자격증</button>
 
 
 <!-- ----------------------------------------------------- 자격증 모달----------------------------------------------------- -->
 <div>
-    <div class="certi_modal">
+    <div id="modal2" class="certi_modal">
     <div class="modal_body">
-        <button class="certi_close_modal">x</button> <!-- 닫기 버튼 -->
+        <button class="certi_close_modal" data-modal-id="modal2">x</button> <!-- 닫기 버튼 -->
         <form action="/certi/add" method="post" id="cform">
             <label><h4>보유 자격증 입력</h4></label>
             <div class="sign-in-htm">
@@ -92,6 +124,8 @@
                 <div>
                     <select id="cname" name="certi_name" class="inputStyle" onchange="handleSelectChange(this)">
                     </select>
+                </div>
+                <div>
                     <input name="certi_name" type="text" id="otherInput" class="text_1" placeholder="자격명을 입력하세요." onblur="handleInputBlur(this, 'cname')">
                 </div>
                 <div>
@@ -110,7 +144,7 @@
     </div>
 </div>
 </div>
-<button class="certi_open_modal">자격증 입력</button>
+<button class="certi_open_modal" data-modal-id="modal2">자격증 입력</button>
 
 <div class="div_style"> <!-- 가로로 정렬해줌 -->
     <!-- ---------------------------------------------- 일정 수행률 ----------------------------------- -->
@@ -167,32 +201,7 @@
             </div>
         </div>
     </div>
-    <!-- ------------------------------------- 자격증 테이블 보여주기 ------------------------------모달창으로 클릭하면 보여주는 형식으로바꾸기------ -->
-    <div class="chart_style">
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3" id="data-table tbody">                                                                             <!-- 바꿔 -->
-                <h6 class="m-0 font-weight-bold text-primary" >Donut Chart</h6>                                                                             <!-- 바꿔 -->
-            </div>                                                                             <!-- 바꿔 -->
-            <!-- Card Body -->                                                                             <!-- 바꿔 -->
-            <div class="card-body">
-                <table class="table_text">                                                                              <!-- 바꿔 -->
-                    <tr >
-                        <th>자격증명</th>                                                                             <!-- 바꿔 -->
-                        <th>취득일자</th>                                                                                                                 <!-- 바꿔 -->
-                        <th>발행기관</th>
-                    </tr>                                                                             <!-- 바꿔 -->
-                </table>                                                                             <!-- 바꿔 -->
-                <table class="table_text">
-                                                                                                 <!-- 바꿔 -->
-                    
-                    <tr id="certificate-list"></tr>                                                                             <!-- 바꿔 -->
-                    
-                </table>                                                                             <!-- 바꿔 -->
-                <hr>설명                                                                             <!-- 바꿔 -->
-            </div>
-        </div>
-    </div>
+    
 </div>
     <!------------------------------------------------------------------------------------------ 스크립트 -------------------------------------------------------------------->
     <script>
@@ -264,11 +273,13 @@
                 certificateList.empty();
                 certificates.forEach(function(certificates) {            // 아래 구문 생성(자격명, 취득일자, 발행기관)
                     const certElement = `
+                    <table class="table_text" border="1"> 
                     <tr class="tr_text">
                         <th class="tr_text">${certificates.certi_name}</th>
                         <th class="tr_text">${certificates.certified_at}</th>
                         <th class="tr_text">${certificates.certi_org}</th>
                     </tr>
+                    </table>
                     `;
                     certificateList.append(certElement);
                 });
@@ -295,6 +306,7 @@
                     success: function(option_list) {
                         option_certi(option_list);
                         console.log("성공");
+                        
                     },
                     error: function(error) {
                         console.error('Error fetching data:', error);
@@ -342,6 +354,7 @@
                 const org_list2 = [...new Set(org_list.map(item => item.certi_asso))].map(certi_asso => ({ certi_asso })); // 중복 삭제
                 console.log(org_list2);
                 certificateList.empty(); // 기존 옵션을 비움
+                
         
                 org_list2.forEach(option => {
                     const certElement = `<option name="certi_org" value="${option.certi_asso}">${option.certi_asso}</option>`;

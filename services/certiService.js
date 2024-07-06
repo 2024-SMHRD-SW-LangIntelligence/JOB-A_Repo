@@ -43,6 +43,7 @@ async function scheduleCheck(user) {
     return data;
 }
 
+// 보유 자격증에 없는 자격증 가져오기
 async function option_check(user) {
     const { data, error } = await supabase
         .from('tb_certi_info')
@@ -55,6 +56,7 @@ async function option_check(user) {
     }
     return data;
 }
+
 
 async function certiOrg() {
     const { data, error } = await supabase
