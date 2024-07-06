@@ -78,6 +78,7 @@ app.get('/', (req, res) => {
   } else {
     res.render('main', { user : null, title: 'Main' });
   }
+  
 });
 
 app.get('/certificate', (req, res) => {

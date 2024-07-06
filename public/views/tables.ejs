@@ -1,29 +1,83 @@
+<div class="infoTap">
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">내 정보</h1>
-
+<h1 class="big_text">내 정보</h1>
+<link rel="stylesheet" href="../css/myInfo.css">
 <style>
     .swal2-front {
         z-index: 1100 !important;
     }
 </style>
+<style>
+    .text_1 {
+        display: none;
+        border: none;
+        padding: 10px 5px;
+        border-radius: 10px;
+        background-color: #212529;
+        width: 100%;
+        color: white;
+        margin-bottom: 10px;
+    }
+    .text_2 {
+        display: none;
+        border: none;
+        padding: 10px 5px;
+        border-radius: 10px;
+        background-color: #212529;
+        width: 100%;
+        color: white;
+        margin-bottom: 10px;
+    }
+</style>
+<script>
+    function handleSelectChange(selectElement) {
+        var otherInput = document.getElementById('otherInput');
+        if (selectElement.value === 'option') {  // '기타' 옵션 선택 시
+            otherInput.style.display = 'block';
+            otherInput.name = "certi_name";  // input 필드에 name 속성 추가
+            otherInput.required = true;  // required 속성 추가
+        } else {
+            otherInput.style.display = 'none';
+            otherInput.name = "";  // 기타 옵션이 아닌 경우 name 속성 제거
+        }
+    }
+
+    function handleSelectChange2(selectElement) {
+        var otherInput2 = document.getElementById('otherInput2');
+        if (selectElement.value === 'option') {  // '기타' 옵션 선택 시
+            otherInput2.style.display = 'block';
+            otherInput2.name = "certi_org";  // input 필드에 name 속성 추가
+            otherInput2.required = true;  // required 속성 추가
+        } else {
+            otherInput2.style.display = 'none';
+            otherInput2.name = "";  // 기타 옵션이 아닌 경우 name 속성 제거
+        }
+    }
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
-            const openModalBtn = document.querySelector('.certi_open_modal');
-            const closeModalBtn = document.querySelector('.certi_close_modal');
-            const modal = document.querySelector('.certi_modal');
-            const bluu = document.querySelector('.bluu');
+        const openModalBtn = document.querySelector('.certi_open_modal');
+        const closeModalBtn = document.querySelector('.certi_close_modal');
+        const modal = document.querySelector('.certi_modal');
+        const bluu = document.querySelector('.bluu');
         
+        if (openModalBtn) {
             openModalBtn.addEventListener("click", () => {
                 modal.style.display = "block";
                 bluu.style.display = "block";
             });
-        
+        }
+
+        if (closeModalBtn) {
             closeModalBtn.addEventListener("click", () => {
                 modal.style.display = "none";
                 bluu.style.display = "none";
             });
-        });
+        }
+    });
 </script>
+
 
 
 <!-- ----------------------------------------------------- 자격증 모달----------------------------------------------------- -->
@@ -36,17 +90,20 @@
             <div class="sign-in-htm">
                 <!-- 자격명 입력 -->
                 <div>
-                    <input id="cname" name="certi_name" type="text"
-                        class="inputStyle" placeholder="자격명을 입력하세요." required>
+                    <select id="cname" name="certi_name" class="inputStyle" onchange="handleSelectChange(this)">
+                    </select>
+                    <input name="certi_name" type="text" id="otherInput" class="text_1" placeholder="자격명을 입력하세요." onblur="handleInputBlur(this, 'cname')">
                 </div>
-                <!-- 자격증 취득일자 입력 -->
                 <div>
-                    <input id="corg" name="certi_org" type="text"
-                    class="inputStyle" placeholder="발행 기관을 입력하세요." required>
+                    <input id="cdate" name="certified_at" type="date" class="inputStyle" placeholder="자격증 취득일자를 입력하세요." required>
                 </div>
-                <!-- 입력 버튼 -->
+                <div>
+                    <select id="corg" name="certi_org" class="inputStyle" onchange="handleSelectChange2(this)">
+                    </select>
+                    <input name="certi_org" type="text" id="otherInput2" class="text_2" placeholder="발행기관을 입력하세요." onblur="handleInputBlur(this, 'corg')">
+                </div>
                 <div id="login_btn">
-                    <button type="submit" value="Sign In">입력</button> <!-- 이거 어떻게든 mem_id 세션에서 받아와서 보내야됨 -->
+                    <button type="submit" value="Sign In">입력</button>
                 </div>
             </div>
         </form>
@@ -56,18 +113,6 @@
 <button class="certi_open_modal">자격증 입력</button>
 
 <div class="div_style"> <!-- 가로로 정렬해줌 -->
-    <!-- ---------------------------------------------- 가입일자 --------------------------------------- -->
-    <div class="block_style">
-        <div class="block_detail">
-            <div class="card_style-body">
-                <div class="block_text">
-                    <div class="block1_text_color">가입날자</div>
-                    <div class="block2_text_color">2024-07-02</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- ---------------------------------------------- 일정 수행률 ----------------------------------- -->
     <div class="block_style">
         <div class="block_detail">
@@ -79,9 +124,9 @@
                         <div class="row no-gutters align-items-center">
                             
                             <div class="col">
-                                <div class="progress progress-sm mr-2"> <!-- style 100%를  msche_status value개수 총합(일정 상태가 성공인것과, 실패인것 취합)/msche_status(성공한수)-->
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                        style="width: 100%"
+                                <div class="percent_stick"> <!-- style 100%를  msche_status value개수 총합(일정 상태가 성공인것과, 실패인것 취합)/msche_status(성공한수)-->
+                                    <div id="percent" role="progressbar"
+                                        
                                         aria-valuenow="50" aria-valuemin="0"
                                         aria-valuemax="100"></div>
                                 </div>
@@ -100,7 +145,7 @@
             <div class="card_style-body">
                 <div class="block_text">
                         <div class="block1_text_color">자격증수</div>
-                        <div class="block2_text_color">18</div> <!-- 자격증 개수 넣는곳 -->
+                        <div class="block2_text_color"><p id="certi_cut"></div> <!-- 자격증 개수 넣는곳 -->
                 </div>
             </div>
         </div>
@@ -122,7 +167,191 @@
             </div>
         </div>
     </div>
+    <!-- ------------------------------------- 자격증 테이블 보여주기 ------------------------------모달창으로 클릭하면 보여주는 형식으로바꾸기------ -->
+    <div class="chart_style">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3" id="data-table tbody">                                                                             <!-- 바꿔 -->
+                <h6 class="m-0 font-weight-bold text-primary" >Donut Chart</h6>                                                                             <!-- 바꿔 -->
+            </div>                                                                             <!-- 바꿔 -->
+            <!-- Card Body -->                                                                             <!-- 바꿔 -->
+            <div class="card-body">
+                <table class="table_text">                                                                              <!-- 바꿔 -->
+                    <tr >
+                        <th>자격증명</th>                                                                             <!-- 바꿔 -->
+                        <th>취득일자</th>                                                                                                                 <!-- 바꿔 -->
+                        <th>발행기관</th>
+                    </tr>                                                                             <!-- 바꿔 -->
+                </table>                                                                             <!-- 바꿔 -->
+                <table class="table_text">
+                                                                                                 <!-- 바꿔 -->
+                    
+                    <tr id="certificate-list"></tr>                                                                             <!-- 바꿔 -->
+                    
+                </table>                                                                             <!-- 바꿔 -->
+                <hr>설명                                                                             <!-- 바꿔 -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!------------------------------------------------------------------------------------------ 스크립트 -------------------------------------------------------------------->
+    <script>
+        // ----------------------------- 일정 성취률 가져오기----------------------------------
+        $(document).ready(function() {
+            fetchCertificates();
+
+            function fetchCertificates() {
+                $.ajax({
+                    url: '/certi/schedule', // 경로
+                    type: 'GET',
+                    success: function(scheduleC) {
+                        countsusses(scheduleC);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+            function countsusses(scheduleC) {
+                const certificateList = $('#percent');
+                certificateList.empty();
+
+                let good = 0;
+
+                scheduleC.forEach(function(schedule) {
+                    if (schedule.msche_status == "1") {
+                        good += 1;
+                    }
+                });
+
+                const total = scheduleC.length;
+                const percentage = (total > 0) ? (good / total) * 100 : 0;
+
+                console.log(`Total: ${total}, Good: ${good}, Percentage: ${percentage}%`);
+                const element = document.querySelector('.block2_text_color');
+                element.textContent = percentage+"%";
+                certificateList.css('width', `${percentage}%`);
+            }
+        });
+
+        // ---------------------------------------------------끝-----------------------------------------------------------
 
 
+
+
+    // ---------------------------------------자격증 테이블 데이터 가져오기---------------------------------------------------
+        $(document).ready(function() {
+            fetchCertificates2(); // 페이지 로드 시 자동으로 데이터 가져오기
+
+            function fetchCertificates2() {
+                $.ajax({
+                    url: '/certi/select_certi', // 경로
+                    type: 'GET',
+                    success: function(certificates) {
+                        displayCertificates(certificates);
+                        certi_count(certificates);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+            // ---------------------------------------------자격증 테이블------------------------------------------------------
+            function displayCertificates(certificates) {
+                const certificateList = $('#certificate-list');         // certificate-list 라는 id를 가지면
+                console.log(certificates);
+                certificateList.empty();
+                certificates.forEach(function(certificates) {            // 아래 구문 생성(자격명, 취득일자, 발행기관)
+                    const certElement = `
+                    <tr class="tr_text">
+                        <th class="tr_text">${certificates.certi_name}</th>
+                        <th class="tr_text">${certificates.certified_at}</th>
+                        <th class="tr_text">${certificates.certi_org}</th>
+                    </tr>
+                    `;
+                    certificateList.append(certElement);
+                });
+            }
+
+            // ---------------------------------------자격증 수---------------------------------------------------
+            function certi_count(certificates) {
+                const certificateList = $('#certi_cut');
+                certificateList.empty();
+                let certi_cnt = certificates.length;
+                const certCountElement = `<p>  ${certi_cnt}개</p>`;
+                certificateList.append(certCountElement);
+            }
+        });
+        // --------------------------------------------- 끝 ------------------------------------------------------
+    // --------------------------------------------- 옵션 31가지 가져오기 ------------------------------------------------------
+        $(document).ready(function() {
+            fetchCertificates3(); // 페이지 로드 시 자동으로 데이터 가져오기
+
+            function fetchCertificates3() {
+                $.ajax({
+                    url: '/certi/option_certi', // 경로
+                    type: 'GET',
+                    success: function(option_list) {
+                        option_certi(option_list);
+                        console.log("성공");
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                        console.log("실패");
+                    }
+                });
+            }
+
+            // 옵션 리스트를 업데이트하는 함수 ----------------------------옵션만 어떻게 리스트화시켜라
+            function option_certi(option_list) {
+                console.log("성공");
+                const certificateList = $('#cname'); // option_certi 라는 id를 가지는 요소 선택
+                console.log(option_list);
+                certificateList.empty(); // 기존 옵션을 비움
+
+                option_list.forEach(option => { // 31번 반복
+                const certElement = `<option name="certi_name" value="${option.certi_name}">${option.certi_name}</option>`;  // select 안에 넣을 구문
+                certificateList.append(certElement);                                                                            // 넣기
+                });
+                const certElement2 = `<option value="option">기타</option>`;
+                certificateList.append(certElement2);
+            }
+        });
+// --------------------------------------------- 옵션 org 가져오기 ------------------------------------------------------
+
+        $(document).ready(function() {
+            fetchCertificates4(); // 페이지 로드 시 자동으로 데이터 가져오기
+
+            function fetchCertificates4() {
+                $.ajax({
+                    url: '/certi/org_certi', // 경로
+                    type: 'GET',
+                    success: function(org_list) {
+                        org_certi(org_list);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+            // 옵션 리스트를 업데이트하는 함수 ----------------------------옵션만 어떻게 리스트화시켜라
+            function org_certi(org_list) {
+                const certificateList = $('#corg'); // corg이라는 id를 가지는 요소 선택
+                const org_list2 = [...new Set(org_list.map(item => item.certi_asso))].map(certi_asso => ({ certi_asso })); // 중복 삭제
+                console.log(org_list2);
+                certificateList.empty(); // 기존 옵션을 비움
+        
+                org_list2.forEach(option => {
+                    const certElement = `<option name="certi_org" value="${option.certi_asso}">${option.certi_asso}</option>`;
+                    certificateList.append(certElement);
+                });
+                const certElement2 = `<option value="option">기타</option>`;
+                certificateList.append(certElement2);
+    }
+    });
+    </script>
+    
 
 

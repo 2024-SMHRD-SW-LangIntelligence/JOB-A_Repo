@@ -8,11 +8,11 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Direct", "Referral", "Social"],            /// 컬럼
+    labels: ["1개~4개", "5개~9개", "10개~14개", "15개~19개", "20개~"],            /// 컬럼
     datasets: [{
-      data: [55, 30, 15],                               /// 수칫값
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      data: [48432, 4261, 192, 13, 3],                               /// 수칫값
+      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc','#4e73df', '#1cc88a'],
+      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },

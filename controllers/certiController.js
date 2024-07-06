@@ -1,38 +1,52 @@
-const memberService = require('../services/certiService');
+const certiService = require('../services/certiService');
+
+
 
 async function add(req, res) {
-    const { certi_name,certi_org } = req.body;
+    const { certi_name,certified_at,certi_org } = req.body;
     const user = req.session.user;
     try {
-        await memberService.addCerti(user, certi_name,certi_org);
-        res.redirect('/');
+        await certiService.addCerti(user, certi_name,certified_at,certi_org);
+        res.redirect('/tables');
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
 
-async function Certi_check(req, res) {
-    const { certi_name } = req.body;
+async function select_certi(req, res) {
+    const user = req.session.user;
     try {
-        const userExists = await memberService.checkCerti(certi_name);
-        if (userExists) {
-            res.send("not available");
-        } else {
-            res.send("available");
-        }
+        const certificates = await certiService.certiSelect(user);
+        res.json(certificates);
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
-async function select_certi(req, res) {
-    const { mem_id } = req.body;
+
+async function schedule(req, res) {
+    const user = req.session.user;
     try {
-        const userExists = await memberService.certiSelect(mem_id);
-        if (userExists) {
-            res.send("not available");
-        } else {
-            res.send("available");
-        }
+        const scheduleC = await certiService.scheduleCheck(user);
+        res.json(scheduleC);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+async function option_certi(req,res) {
+    const user = req.session.user;
+    try {
+        const option_list = await certiService.option_check(user);
+        res.json(option_list);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+async function org_certi(req,res) {
+    try {
+        const org_list = await certiService.certiOrg();
+        res.json(org_list);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -41,6 +55,8 @@ async function select_certi(req, res) {
 
 module.exports = {
     add,
-    Certi_check,
-    select_certi
+    select_certi,
+    schedule,
+    option_certi,
+    org_certi
 };
