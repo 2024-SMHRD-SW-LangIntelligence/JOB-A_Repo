@@ -1,5 +1,78 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
+    .chat-room-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: -1;
+        opacity: 0;
+        transition: all 0.5s;
+    }
+
+    .chat-room-modal.show {
+        opacity: 1;
+        z-index: 1000;
+    }
+
+    .chat-room-window {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .chat-room-popup {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+        width: 400px;
+        max-width: 100%;
+        /* 초기에 약간 아래에 배치 */
+        transform: translate(-50%, -40%);
+    }
+
+    .chat-room-modal.show .chat-room-popup {
+        transform: translate(-50%, -50%);
+        transition: all 0.5s;
+    }
+
+    .chat-room-form-wrap {
+        padding: 20px;
+    }
+
+    .chat-room-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    #chat-room-submit-btn button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #closeChatRoomModal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
     .content-wrapper {
         /* 새로운 클래스 추가 */
         display: flex;
@@ -100,7 +173,8 @@
 
     .chat-messages {
         flex: 1;
-        min-height: 650px;
+        min-height: 700px;
+        max-height: 700px;
         /* 최소 높이 설정 */
         overflow-y: auto;
         margin-bottom: 20px;
@@ -279,6 +353,39 @@
             <div id="chatRoomsList"></div>
         </div>
 
+        <!-- 채팅방 생성 모달창 -->
+        <div class="chat-room-modal">
+            <div class="chat-room-window">
+                <div class="chat-room-popup">
+                    <div class="chat-room-form-wrap">
+                        <button id="closeChatRoomModal">x</button>
+                        <div class="chat-room-form-content">
+                            <h2>채팅방 만들기</h2>
+                            <div class="chat-room-form">
+                                <form id="createChatRoomForm">
+                                    <div class="chat-room-input-group">
+                                        <input id="newRoomName" type="text" class="chat-room-input" placeholder="채팅방 이름"
+                                            required>
+                                    </div>
+                                    <div class="chat-room-input-group">
+                                        <input id="newRoomDescription" type="text" class="chat-room-input"
+                                            placeholder="채팅방 설명" required>
+                                    </div>
+                                    <div class="chat-room-input-group">
+                                        <input id="newRoomTags" type="text" class="chat-room-input"
+                                            placeholder="해시태그 (쉼표로 구분)" required>
+                                    </div>
+                                    <div class="chat-room-input-group" id="chat-room-submit-btn">
+                                        <button type="submit">채팅방 만들기</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="chat-room">
             <div class="chat-room-header">
                 <button id="leaveRoom" class="back-button">&#60;</button>
@@ -297,24 +404,28 @@
 
 <script>
     $(document).ready(function () {
+
+        let chatRooms = [];
+
         // 채팅방 목록 가져오기
         function fetchChatRooms() {
             $.ajax({
                 url: '/chat/list',
                 method: 'GET',
                 success: function (response) {
+                    chatRooms = response;
                     renderChatRooms(response);
                 },
                 error: function () {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to fetch chat rooms'
+                        text: '목록 로드 실패'
                     });
                 }
             });
         }
 
+        // 채팅방 검색
         function renderChatRooms(rooms) {
             $('#chatRoomsList').empty();
             if (rooms.length === 0) {
@@ -337,10 +448,28 @@
             }
         }
 
-        $('#createChatRoom').click(function () {
-            const newRoomName = prompt('채팅방 이름');
-            const newRoomDescription = prompt('채팅방 설명');
-            const newRoomTags = prompt('해시태그 (쉼표로 구분)');
+        // 모달창 보여주기
+        function showChatRoomModal() {
+            document.querySelector(".chat-room-modal").className = "chat-room-modal show";
+        }
+
+        // 모달창 숨기기
+        function closeChatRoomModal() {
+            document.querySelector(".chat-room-modal").className = "chat-room-modal";
+        }
+
+        // 채팅방 만들기 버튼 클릭 시 모달창 열기
+        document.querySelector("#createChatRoom").addEventListener("click", showChatRoomModal);
+
+        // 모달창 닫기 버튼
+        document.querySelector("#closeChatRoomModal").addEventListener("click", closeChatRoomModal);
+
+        // 채팅방 생성 폼 제출
+        $('#createChatRoomForm').submit(function (e) {
+            e.preventDefault();
+            const newRoomName = $('#newRoomName').val();
+            const newRoomDescription = $('#newRoomDescription').val();
+            const newRoomTags = $('#newRoomTags').val();
             const newRoomID = '<%= user.mem_id %>';
 
             if (newRoomName && newRoomDescription && newRoomTags && newRoomID) {
@@ -358,17 +487,17 @@
                         if (response.success) {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Chat room created!',
-                                text: 'New chat room has been created.'
+                                title: '스터디그룹이 생성 되었습니다.'
                             });
+                            closeChatRoomModal();
+                            $('#createChatRoomForm')[0].reset();
                             fetchChatRooms(); // 새로 생성된 채팅방 목록을 다시 로드
                         }
                     },
                     error: function () {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Error',
-                            text: '방 생성 실패'
+                            text: '방 생성 실패',
                         });
                     }
                 });
@@ -388,14 +517,16 @@
         });
 
         fetchChatRooms(); // 페이지 로드 시 채팅방 목록을 가져옴
-
+        // --------------------------------------------------------- 1차 수정 완료 --------------------------------------------------
         function showChatRoom(room) {
             currentRoom = room;
             $('.chat-list').hide();
             $('.chat-room').show();
-            $('#roomName').text(room.name);
+            $('#roomName').text(room.group_name);
             $('.chat-messages').empty();
-            loadChatMessages(room.id); F
+            loadChatMessages(room.id);
+            addDummyMessages();
+            scrollToBottom();
         }
 
         function showChatList() {
@@ -406,7 +537,7 @@
 
         $(document).on('click', '.chat-room-item', function () {
             const roomId = $(this).data('id');
-            const room = chatRooms.find(r => r.id === roomId);
+            const room = chatRooms.find(r => r.group_idx === roomId);
             if (room) {
                 showChatRoom(room);
             }
@@ -446,6 +577,7 @@
     `;
 
             $('#chatMessages').append(messageHtml);
+            scrollToBottom();  // 메시지를 추가한 후 스크롤을 아래로 내립니다.
         }
 
         function scrollToBottom() {
