@@ -4,7 +4,7 @@ const supabase = require('../config/superbase');
 async function createChatRoom(groupName, groupDesc, groupHash, mem_id) {
     const { data, error } = await supabase
         .from('tb_studygroup')
-        .insert([{ group_name: groupName, group_desc: groupDesc, group_hash: groupHash, created_at: new Date(), mem_id : mem_id }]);
+        .insert([{ group_name: groupName, group_desc: groupDesc, group_hash: groupHash, created_at: new Date(), mem_id: mem_id }]);
 
     if (error) throw error;
     return data;
@@ -13,15 +13,42 @@ async function createChatRoom(groupName, groupDesc, groupHash, mem_id) {
 // 채팅방 목록 가져오기
 async function getChatRooms() {
     const { data, error } = await supabase
-    .from('tb_studygroup')
-    .select('*')
-    .order('created_at', { ascending: true });
+        .from('tb_studygroup')
+        .select('*')
+        .order('created_at', { ascending: true });
 
     if (error) throw error;
     return data;
 }
 
+// 메세지 보내기 관련
+const chatService = {
+    getChatMessages: async (groupIdx) => {
+        const { data, error } = await supabase
+            .from('tb_chatting')
+            .select('*')
+            .eq('group_idx', groupIdx)
+            .order('chat_at', { ascending: true });
+
+        if (error) throw error;
+        return data;
+    },
+
+    saveChatMessage: async (groupIdx, memId, chat) => {
+        const { data, error } = await supabase
+            .from('tb_chatting')
+            .insert({ group_idx: groupIdx, mem_id: memId, chat: chat, chat_at: new Date().toTimeString().split(' ')[0] })
+            .select();
+
+        if (error) throw error;
+        return data[0];
+    }
+};
+
+
+
 module.exports = {
     createChatRoom,
-    getChatRooms
+    getChatRooms,
+    chatService
 };

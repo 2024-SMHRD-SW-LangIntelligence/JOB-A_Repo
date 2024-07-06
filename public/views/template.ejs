@@ -62,210 +62,219 @@
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
                             <div class="custom-row">
-                                <!-- Calendar Column -->
-                                <div class="calendar-column">
-                                    <!-- Calendar -->
-                                    <div id='calendar' style="height: 1100px; width: 1100px; margin-left: 50px;"></div>
-
-                                    <!-- Modal add-->
-                                    <div class="modal fade" id="eventModal" tabindex="-1"
-                                        aria-labelledby="eventModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="eventModalLabel">일정 입력</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <form id="eventForm">
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label for="eventTitle" class="form-label">일정 제목</label>
-                                                            <input type="text" class="form-control" id="eventTitle" name="msche_title" required>
-                                                            <input type="date" id="selectedStartDate" name="msche_st_dt" >
-                                                            <input type="date" id="selectedEndDate" name="msche_ed_dt" >
-                                                            <input type="hidden" id="selectedColor" name="msche_color">
-                                                            <input type="hidden" class="mem_id" name="mem_id" value="<%= user.mem_id %>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">취소</button>
-                                                        <button type="submit" class="btn btn-primary"
-                                                            id="saveEvent">저장</button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                <% if(user){%>
+                                    <!-- Calendar Column -->
+                                    <div class="calendar-column">
+                                        <!-- Calendar -->
+                                        <div id='calendar' style="height: 1100px; width: 1100px; margin-left: 50px;">
                                         </div>
-                                    </div>
-                                   
-                                    <!-- Modal delete-->
-                                    <div class="modal fade" id="deleteModal" tabindex="-1"
-                                        aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                        <form id="deleteForm">
+
+                                        <!-- Modal add-->
+                                        <div class="modal fade" id="eventModal" tabindex="-1"
+                                            aria-labelledby="eventModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel">일정 삭제</h5>
+                                                        <h5 class="modal-title" id="eventModalLabel">일정 입력</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
-                                                        <input type="hidden" class="mem_id" name="mem_id" value="<%= user.mem_id %>">
-                                                        <input type="hidden" id="deletedTitle" name="msche_title" >
-                                                        <input type="hidden" id="deletedStartDate" name="msche_st_dt" >
-                                                        <input type="hidden" id="deletedEndDate" name="msche_ed_dt" >
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <p>일정을 삭제하시겠습니까?</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">취소</button>
-                                                        <button type="submit" class="btn btn-danger"
-                                                            id="confirmDelete">삭제</button>
-                                                    </div>
+                                                    <form id="eventForm">
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label for="eventTitle" class="form-label">일정 제목</label>
+                                                                <input type="text" class="form-control" id="eventTitle"
+                                                                    name="msche_title" required>
+                                                                <input type="date" id="selectedStartDate"
+                                                                    name="msche_st_dt">
+                                                                <input type="date" id="selectedEndDate"
+                                                                    name="msche_ed_dt">
+                                                                <input type="hidden" id="selectedColor"
+                                                                    name="msche_color">
+                                                                <input type="hidden" class="mem_id" name="mem_id"
+                                                                    value="<%= user.mem_id %>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">취소</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="saveEvent">저장</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal delete-->
+                                        <div class="modal fade" id="deleteModal" tabindex="-1"
+                                            aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                            <form id="deleteForm">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel">일정 삭제</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <input type="hidden" class="mem_id" name="mem_id"
+                                                                value="<%= user.mem_id %>">
+                                                            <input type="hidden" id="deletedTitle" name="msche_title">
+                                                            <input type="hidden" id="deletedStartDate"
+                                                                name="msche_st_dt">
+                                                            <input type="hidden" id="deletedEndDate" name="msche_ed_dt">
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>일정을 삭제하시겠습니까?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">취소</button>
+                                                            <button type="submit" class="btn btn-danger"
+                                                                id="confirmDelete">삭제</button>
+                                                        </div>
+                                                    </div>
                                             </form>
                                         </div>
                                     </div>
-                                </div>
-                                <% } %>
+                            </div>
+                            <% } %>
                                 <!-- Right Column for EJS Template -->
                                 <div class="content-column">
                                     <%- body %>
                                 </div>
-                            </div>
                         </div>
-                        <!-- /.container-fluid -->
                 </div>
-                <!-- End of Main Content -->
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>스마트 인재 개발원 SW캠프 언어지능 과정 JOB-A &copy; 문승명, 임형선, 김지성, 이선우</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
+                <!-- /.container-fluid -->
             </div>
-            <!-- End of Content Wrapper -->
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>스마트 인재 개발원 SW캠프 언어지능 과정 JOB-A &copy; 문승명, 임형선, 김지성, 이선우</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
-    <% if (user){ %> 
-    <script> 
-        // 캘린더 스크립트
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            var color = '#FF5733';
-            var selectedStartDate, selectedEndDate, eventId;
+    <% if (user){ %>
+        <script>
+            // 캘린더 스크립트
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                var color = '#FF5733';
+                var selectedStartDate, selectedEndDate, eventId;
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                locale: 'ko',
-                initialView: 'dayGridMonth',
-                selectable: true,
-                // 드래그로 일정추가
-                select: function (info) {
-                    selectedStartDate = info.startStr;
-                    selectedEndDate = info.endStr;                    
-                    var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-                    document.getElementById('selectedStartDate').value = selectedStartDate;
-                    document.getElementById('selectedEndDate').value = selectedEndDate;
-                    document.getElementById('selectedColor').value = color;
-                    eventModal.show();
-                },
-                // 클릭으로 일정 삭제
-                eventClick: function (info) {
-                    selectedEvent = info.event;
-                    document.getElementById('deletedTitle').value = selectedEvent.title;
-                    document.getElementById('deletedStartDate').value = selectedEvent.startStr;
-                    document.getElementById('deletedEndDate').value = selectedEvent.endStr;
-                    var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-                    deleteModal.show();
-                },
-                dayCellContent: function (info) {
-                    var number = document.createElement("a");
-                    number.classList.add("fc-daygrid-day-number")
-                    number.innerHTML = info.dayNumberText.replace("일", '').replace("日", "");
-                    if (info.view.type === "dayGridMonth") {
-                        return {
-                            html: number.outerHTML
-                        };
-                    }
-                    return {
-                        domNodes: []
-                    };
-                },
-                events: function(fetchInfo, successCallback, failureCallback) {
-                    $.ajax({
-                    url: '/schedule/mschedule',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        successCallback(data);
-                    
-                        },
-                    error: function() {
-                        failureCallback();
-                        console.log('실패');
-                        }
-                    });
-                }
-            });
-
-
-            calendar.render();
-
-            document.getElementById('saveEvent').addEventListener('click', function () {
-                var eventTitle = document.getElementById('eventTitle').value;
-                var addString = $("#eventForm").serialize();
-                $.ajax({
-                    type : 'post',
-                    url : '/schedule/add',
-                    data : addString,
-                    error: function(xhr, status, error){
-                        console.log("실패");
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    locale: 'ko',
+                    initialView: 'dayGridMonth',
+                    selectable: true,
+                    // 드래그로 일정추가
+                    select: function (info) {
+                        selectedStartDate = info.startStr;
+                        selectedEndDate = info.endStr;
+                        var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+                        document.getElementById('selectedStartDate').value = selectedStartDate;
+                        document.getElementById('selectedEndDate').value = selectedEndDate;
+                        document.getElementById('selectedColor').value = color;
+                        eventModal.show();
                     },
-                    success : function(json){
-                        console.log("성공");
+                    // 클릭으로 일정 삭제
+                    eventClick: function (info) {
+                        selectedEvent = info.event;
+                        document.getElementById('deletedTitle').value = selectedEvent.title;
+                        document.getElementById('deletedStartDate').value = selectedEvent.startStr;
+                        document.getElementById('deletedEndDate').value = selectedEvent.endStr;
+                        var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+                        deleteModal.show();
+                    },
+                    dayCellContent: function (info) {
+                        var number = document.createElement("a");
+                        number.classList.add("fc-daygrid-day-number")
+                        number.innerHTML = info.dayNumberText.replace("일", '').replace("日", "");
+                        if (info.view.type === "dayGridMonth") {
+                            return {
+                                html: number.outerHTML
+                            };
+                        }
+                        return {
+                            domNodes: []
+                        };
+                    },
+                    events: function (fetchInfo, successCallback, failureCallback) {
+                        $.ajax({
+                            url: '/schedule/mschedule',
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (data) {
+                                successCallback(data);
+
+                            },
+                            error: function () {
+                                failureCallback();
+                                console.log('실패');
+                            }
+                        });
                     }
                 });
-                if (eventTitle) {
-                    calendar.addEvent({
-                        title: eventTitle,
-                        start: selectedStartDate,
-                        end: selectedEndDate,
-                        color: color
-                    });
-                    var eventModal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
-                    eventModal.hide();
-                    document.getElementById('eventForm').reset();
-                }
-            });
-            document.getElementById('confirmDelete').addEventListener('click', function () {
-                if (selectedEvent) {
-                    selectedEvent.remove();
-                    var deleteString = $("#deleteForm").serialize();
+
+
+                calendar.render();
+
+                document.getElementById('saveEvent').addEventListener('click', function () {
+                    var eventTitle = document.getElementById('eventTitle').value;
+                    var addString = $("#eventForm").serialize();
                     $.ajax({
-                        type : 'post',
-                        url : '/schedule/remove',
-                        data : deleteString,
-                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                        error: function(xhr, status, error){
-                        console.log("실패");
+                        type: 'post',
+                        url: '/schedule/add',
+                        data: addString,
+                        error: function (xhr, status, error) {
+                            console.log("실패");
                         },
-                        success : function(json){
-                        console.log("성공");
+                        success: function (json) {
+                            console.log("성공");
                         }
                     });
-                    var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
-                    deleteModal.hide();
-                }
+                    if (eventTitle) {
+                        calendar.addEvent({
+                            title: eventTitle,
+                            start: selectedStartDate,
+                            end: selectedEndDate,
+                            color: color
+                        });
+                        var eventModal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
+                        eventModal.hide();
+                        document.getElementById('eventForm').reset();
+                    }
+                });
+                document.getElementById('confirmDelete').addEventListener('click', function () {
+                    if (selectedEvent) {
+                        selectedEvent.remove();
+                        var deleteString = $("#deleteForm").serialize();
+                        $.ajax({
+                            type: 'post',
+                            url: '/schedule/remove',
+                            data: deleteString,
+                            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                            error: function (xhr, status, error) {
+                                console.log("실패");
+                            },
+                            success: function (json) {
+                                console.log("성공");
+                            }
+                        });
+                        var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                        deleteModal.hide();
+                    }
+                });
             });
-        });
 
-    </script>
-    <% } %>
-    <!-- 기존 스크립트 태그들 -->
+        </script>
+        <% } %>
+            <!-- 기존 스크립트 태그들 -->
 </body>
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
