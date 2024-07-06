@@ -113,28 +113,27 @@ function handleSelectChange2(selectElement) {
 
 
 <!-- ----------------------------------------------------- 자격증 모달----------------------------------------------------- -->
-<div>
-    <div id="modal2" class="certi_modal">
+<div id="modal2" class="certi_modal">
     <div class="modal_body">
         <button class="certi_close_modal" data-modal-id="modal2">x</button> <!-- 닫기 버튼 -->
-        <form action="/certi/add" method="post" id="cform">
+        <form action="/certi/add" method="post" id="cform" onsubmit="return validateForm()">
             <label><h4>보유 자격증 입력</h4></label>
             <div class="sign-in-htm">
                 <!-- 자격명 입력 -->
                 <div>
-                    <select id="cname" name="certi_name" class="inputStyle" onchange="handleSelectChange(this)">
+                    <select id="cname" name="certi_name_select" class="inputStyle" onchange="handleSelectChange(this)">
                     </select>
                 </div>
                 <div>
-                    <input name="certi_name" type="text" id="otherInput" class="text_1" placeholder="자격명을 입력하세요." onblur="handleInputBlur(this, 'cname')">
+                    <input name="certi_name_input" type="text" id="otherInput" class="text_1" placeholder="자격명을 입력하세요." onblur="handleInputBlur(this, 'cname')" style="display:none;">
                 </div>
                 <div>
                     <input id="cdate" name="certified_at" type="date" class="inputStyle" placeholder="자격증 취득일자를 입력하세요." required>
                 </div>
                 <div>
-                    <select id="corg" name="certi_org" class="inputStyle" onchange="handleSelectChange2(this)">
+                    <select id="corg" name="certi_org_select" class="inputStyle" onchange="handleSelectChange2(this)">
                     </select>
-                    <input name="certi_org" type="text" id="otherInput2" class="text_2" placeholder="발행기관을 입력하세요." onblur="handleInputBlur(this, 'corg')">
+                    <input name="certi_org_input" type="text" id="otherInput2" class="text_2" placeholder="발행기관을 입력하세요." onblur="handleInputBlur(this, 'corg')" style="display:none;">
                 </div>
                 <div id="login_btn">
                     <button type="submit" value="Sign In">입력</button>
@@ -143,7 +142,7 @@ function handleSelectChange2(selectElement) {
         </form>
     </div>
 </div>
-</div>
+
 <button class="certi_open_modal" data-modal-id="modal2">자격증 입력</button>
 
 <div class="div_style"> <!-- 가로로 정렬해줌 -->
