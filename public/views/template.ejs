@@ -250,7 +250,8 @@
                         document.getElementById('eventForm').reset();
                     }
                 });
-                document.getElementById('confirmDelete').addEventListener('click', function () {
+                document.getElementById('confirmDelete').addEventListener('click', function (event) {
+                    event.preventDefault();
                     if (selectedEvent) {
                         selectedEvent.remove();
                         var deleteString = $("#deleteForm").serialize();
