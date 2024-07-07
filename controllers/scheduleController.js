@@ -31,4 +31,27 @@ async function mschedule(req,res){
         console.log('실패..');
     }
 }
-module.exports = {add,remove,mschedule};
+
+async function find(req, res) {
+    try {
+        const mem_id = req.session.user.mem_id;
+        const msche_title = req.query.msche_title || ''; // 검색어는 쿼리 파라미터에서 가져옵니다.
+
+        // scheduleService를 통해 데이터 조회
+        const events = await scheduleService.searchSchedule(mem_id, msche_title);
+        console.log(events);
+        if (!events || events.length === 0) {
+            // 검색 결과가 없는 경우
+            res.json({ message: '검색 결과가 없습니다.', events: [] });
+          } else {
+            // 검색 결과가 있는 경우
+            req.session.searchResults = events;
+            res.json({ message: null, events: events});
+          }
+    } catch (error) {
+        console.error('실패..', error);
+        res.status(500).send('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    }
+}
+
+module.exports = {add,remove,mschedule,find};

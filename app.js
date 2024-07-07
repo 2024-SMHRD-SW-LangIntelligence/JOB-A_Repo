@@ -97,7 +97,8 @@ app.get('/tables', (req, res) => {
 });
 
 app.get('/search', (req, res) => {
-  res.render('search', { title: 'search' });
+  const searchResults = req.session.searchResults || [];
+  res.render('search', { title: '검색 결과', results: searchResults});
 });
 // 3379 포트를 사용
 

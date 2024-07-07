@@ -42,4 +42,29 @@ async function memberSchedule(mem_id) {
         }
     }
 
-module.exports = {addSchedule, deleteSchedule, memberSchedule};
+async function searchSchedule(mem_id,msche_title){
+    if (!mem_id || !msche_title) {
+        throw new Error('Invalid mem_id or msche_title');
+        }
+
+    try {
+        const { data, error } = await supabase
+            .from('tb_member_schedule')
+            .select('msche_title, msche_st_dt, msche_ed_dt')
+            .eq('mem_id', mem_id)
+            .like('msche_title', `%${msche_title}%`); // 부분 일치 검색
+
+        console.log(data);
+
+        if (error) {
+            console.error('Error fetching data:', error.message);
+            throw error;
+        }
+
+        return data;
+    } catch (err) {
+        console.error('Unexpected error:', err.message);
+        throw err;
+        }
+    }
+module.exports = {addSchedule, deleteSchedule, memberSchedule, searchSchedule};

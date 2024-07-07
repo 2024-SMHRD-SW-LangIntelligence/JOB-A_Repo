@@ -167,6 +167,24 @@
                 var calendarEl = document.getElementById('calendar');
                 var color = '#FF5733';
                 var selectedStartDate, selectedEndDate, eventId;
+                const holidaysColor = '#FC9E99';
+                var holidays = [
+                    { title: '신정', start: '2024-01-01'},
+                    { title: '설날', start: '2024-02-10', end: '2024-02-12' },
+                    { title: '삼일절', start: '2024-03-01' },
+                    { title: '어린이날', start: '2024-05-05' },
+                    { title: '부처님 오신 날', start: '2024-05-15' },
+                    { title: '현충일', start: '2024-06-06' },
+                    { title: '광복절', start: '2024-08-15' },
+                    { title: '추석', start: '2024-09-16', end: '2024-09-18' },
+                    { title: '개천절', start: '2024-10-03' },
+                    { title: '한글날', start: '2024-10-09' },
+                    { title: '크리스마스', start: '2024-12-25' },
+                    { title: '대체공휴일 (설날)', start: '2024-02-12' },
+                    { title: '대체공휴일 (어린이날)', start: '2024-05-06' },
+                    { title: '대체공휴일 (추석)', start: '2024-09-18' }
+                ].map(event => ({ ...event, color: holidaysColor }));;
+
 
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     locale: 'ko',
@@ -183,7 +201,7 @@
                         eventModal.show();
                     },
                     // 클릭으로 일정 삭제
-                    eventClick: function (info) {
+                    eventClick: function (info) {                        
                         selectedEvent = info.event;
                         document.getElementById('deletedTitle').value = selectedEvent.title;
                         document.getElementById('deletedStartDate').value = selectedEvent.startStr;
@@ -204,21 +222,27 @@
                             domNodes: []
                         };
                     },
-                    events: function (fetchInfo, successCallback, failureCallback) {
+                    eventSources : [{
+                        events: function (fetchInfo, successCallback, failureCallback) {
                         $.ajax({
                             url: '/schedule/mschedule',
                             type: 'GET',
                             dataType: 'json',
                             success: function (data) {
                                 successCallback(data);
-
                             },
                             error: function () {
                                 failureCallback();
                                 console.log('실패');
                             }
                         });
+                        }
+                    },
+                    {
+                        events: holidays
                     }
+                    ]
+                    
                 });
 
 
@@ -259,7 +283,6 @@
                             type: 'post',
                             url: '/schedule/remove',
                             data: deleteString,
-                            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                             error: function (xhr, status, error) {
                                 console.log("실패");
                             },
