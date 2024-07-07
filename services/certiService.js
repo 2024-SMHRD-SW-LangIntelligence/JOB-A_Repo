@@ -61,13 +61,26 @@ async function option_check(user) {
 async function certiOrg() {
     const { data, error } = await supabase
         .from('tb_certi_total')
-        .select('certi_asso', { distinct: true });
+        .select('certi_asso, certi_name');
 
     if (error) {
         throw new Error(error.message);
     }
-    return data;
+
+    // certi_name 중복 제거
+    const uniqueCertiNames = new Set();
+    const uniqueData = [];
+
+    data.forEach(item => {
+        if (!uniqueCertiNames.has(item.certi_name)) {
+            uniqueCertiNames.add(item.certi_name);
+            uniqueData.push(item);
+        }
+    });
+
+    return uniqueData;
 }
+
 
 
 module.exports = {

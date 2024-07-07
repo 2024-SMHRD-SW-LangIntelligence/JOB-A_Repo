@@ -7,6 +7,34 @@
         z-index: 1100 !important;
     }
 </style>
+<script>
+    function downloadCSV() {
+        var csv = [];
+        var rows = document.querySelectorAll("table.table_text tr");
+        
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+            
+            for (var j = 0; j < cols.length; j++) 
+                row.push(cols[j].innerText);
+            
+            csv.push(row.join(","));        
+        }
+
+        // CSV 파일 생성
+        var csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+
+        // 다운로드 링크 생성
+        var downloadLink = document.createElement("a");
+        downloadLink.download = "table.csv";
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+</script>
+
 <style>
     .text_1 {
         display: none;
@@ -104,9 +132,13 @@ function handleSelectChange2(selectElement) {
                         <th>자격증명</th>                                                                             
                         <th>취득일자</th>                                                                                                                 
                         <th>발행기관</th>
+                        <th>자격증<br>일련번호</th>
                     </tr>                                                                             
                 </table>                                 
             </div>
+            <div id="login_btn">
+            <button onclick="downloadCSV()">CSV 다운로드</button>
+        </div>
     </div>
 </div>
 <button class="certi_open_modal" data-modal-id="modal1">내 자격증</button>
@@ -185,18 +217,16 @@ function handleSelectChange2(selectElement) {
     </div>
     
         <!-- ----------------------------------------- 파이 차트 ---------------------------------- -->
-    <div class="chart_style">
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-                <div class="chart-pie pt-4">
-                    <canvas id="myPieChart"></canvas>
+    
+    <div class="block_style">
+        <div class="block_detail">
+            <div class="card_style-body">
+                <div class="block_text">
+                        <div class="block1_text_color">상위 퍼센트</div>
+                        <div class="block2_text_color" id="h_percent">
+                    
+                        </div>
                 </div>
-                <hr>설명
             </div>
         </div>
     </div>
@@ -259,6 +289,7 @@ function handleSelectChange2(selectElement) {
                     success: function(certificates) {
                         displayCertificates(certificates);
                         certi_count(certificates);
+                        hpercent(certificates);
                     },
                     error: function(error) {
                         console.error('Error fetching data:', error);
@@ -269,7 +300,6 @@ function handleSelectChange2(selectElement) {
             function displayCertificates(certificates) {
                 const certificateList = $('#certificate-list');         // certificate-list 라는 id를 가지면
                 console.log(certificates);
-                certificateList.empty();
                 certificates.forEach(function(certificates) {            // 아래 구문 생성(자격명, 취득일자, 발행기관)
                     const certElement = `
                     <table class="table_text" border="1"> 
@@ -277,6 +307,7 @@ function handleSelectChange2(selectElement) {
                         <th class="tr_text">${certificates.certi_name}</th>
                         <th class="tr_text">${certificates.certified_at}</th>
                         <th class="tr_text">${certificates.certi_org}</th>
+                        <th class="tr_text">${certificates.certi_num}</th>
                     </tr>
                     </table>
                     `;
@@ -291,6 +322,30 @@ function handleSelectChange2(selectElement) {
                 let certi_cnt = certificates.length;
                 const certCountElement = `<p>  ${certi_cnt}개</p>`;
                 certificateList.append(certCountElement);
+            }
+
+            function hpercent(certificates){
+                const certificateList = $('#h_percent');
+                certificateList.empty();
+                let certi_cnt = certificates.length;
+                console.log(certi_cnt);
+                if(certi_cnt<5){
+                    const hpercentElement = `<p>  ${(100-(22.88*(certi_cnt))).toFixed(3)} %</p>`;
+                    certificateList.append(hpercentElement);
+                }else if(certi_cnt<10){
+                    const hpercentElement = `<p>  ${(100-(91.552+1.610*(certi_cnt-4))).toFixed(3)} %</p>`;
+                    certificateList.append(hpercentElement);
+                }else if(certi_cnt<15){
+                    const hpercentElement = `<p>  ${(100-(99.606+0.072*(certi_cnt-9))).toFixed(3)} %</p>`;
+                    certificateList.append(hpercentElement);
+                }else if(certi_cnt<20){
+                    const hpercentElement = `<p>  ${(100-(99.968+0.005*(certi_cnt-14))).toFixed(3)} %</p>`;
+                    certificateList.append(hpercentElement);
+                }else{
+                    const hpercentElement = `<p>  ${0.00001} %</p>`;
+                    certificateList.append(hpercentElement);
+                }
+                
             }
         });
         // --------------------------------------------- 끝 ------------------------------------------------------
@@ -318,13 +373,13 @@ function handleSelectChange2(selectElement) {
             function option_certi(option_list) {
                 console.log("성공");
                 const certificateList = $('#cname'); // option_certi 라는 id를 가지는 요소 선택
-                console.log(option_list);
+                console.log(option_list[1].certi_name);
                 certificateList.empty(); // 기존 옵션을 비움
 
-                option_list.forEach(option => { // 31번 반복
-                const certElement = `<option name="certi_name" value="${option.certi_name}">${option.certi_name}</option>`;  // select 안에 넣을 구문
+                for(let i=0; i<option_list.length;i++) { // 31번 반복
+                const certElement = `<option name="certi_name" value="${option_list[i].certi_name}">${option_list[i].certi_name}</option>`;  // select 안에 넣을 구문
                 certificateList.append(certElement);                                                                            // 넣기
-                });
+                }
                 const certElement2 = `<option value="option">기타</option>`;
                 certificateList.append(certElement2);
             }
@@ -350,12 +405,12 @@ function handleSelectChange2(selectElement) {
             // 옵션 리스트를 업데이트하는 함수 ----------------------------옵션만 어떻게 리스트화시켜라
             function org_certi(org_list) {
                 const certificateList = $('#corg'); // corg이라는 id를 가지는 요소 선택
-                const org_list2 = [...new Set(org_list.map(item => item.certi_asso))].map(certi_asso => ({ certi_asso })); // 중복 삭제
-                console.log(org_list2);
+                // const org_list2 = [...new Set(org_list.map(item => item.certi_asso))].map(certi_asso => ({ certi_asso })); // 중복 삭제
+                console.log(org_list);
                 certificateList.empty(); // 기존 옵션을 비움
                 
         
-                org_list2.forEach(option => {
+                org_list.forEach(option => {
                     const certElement = `<option name="certi_org" value="${option.certi_asso}">${option.certi_asso}</option>`;
                     certificateList.append(certElement);
                 });
