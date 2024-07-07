@@ -15,7 +15,7 @@ async function remove(req, res) {
     const { mem_id,msche_title, msche_st_dt, msche_ed_dt } = req.body;
     try {
         const deletedData = await scheduleService.deleteSchedule(mem_id, msche_title, msche_st_dt, msche_ed_dt);
-        res.redirect('localhost:3379');
+        res.redirect('/');
     } catch (error) {
         res.status(500).send(error.message);
     }
