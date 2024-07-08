@@ -266,7 +266,6 @@ function handleSelectChange2(selectElement) {
                 const total = scheduleC.length;
                 const percentage = (total > 0) ? (good / total) * 100 : 0;
 
-                console.log(`Total: ${total}, Good: ${good}, Percentage: ${percentage}%`);
                 const element = document.querySelector('.block2_text_color');
                 element.textContent = percentage+"%";
                 certificateList.css('width', `${percentage}%`);
@@ -299,7 +298,6 @@ function handleSelectChange2(selectElement) {
             // ---------------------------------------------자격증 테이블------------------------------------------------------
             function displayCertificates(certificates) {
                 const certificateList = $('#certificate-list');         // certificate-list 라는 id를 가지면
-                console.log(certificates);
                 certificates.forEach(function(certificates) {            // 아래 구문 생성(자격명, 취득일자, 발행기관)
                     const certElement = `
                     <table class="table_text" border="1"> 
