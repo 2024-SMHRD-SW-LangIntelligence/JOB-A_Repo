@@ -39,7 +39,6 @@ async function find(req, res) {
 
         // scheduleService를 통해 데이터 조회
         const events = await scheduleService.searchSchedule(mem_id, msche_title);
-        console.log(events);
         if (!events || events.length === 0) {
             // 검색 결과가 없는 경우
             res.json({ message: '검색 결과가 없습니다.', events: [] });
@@ -54,4 +53,29 @@ async function find(req, res) {
     }
 }
 
-module.exports = {add,remove,mschedule,find};
+async function complete(req, res) {
+    const { mem_id,msche_title, msche_st_dt, msche_ed_dt } = req.body;
+    try {
+        const completeData = await scheduleService.completeSchedule(mem_id, msche_title, msche_st_dt, msche_ed_dt);
+        res.redirect('/');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+async function getToday(req, res) {
+    try {
+        const mem_id = req.session.user.mem_id;
+        const events = await scheduleService.getTodaySchedules(mem_id);
+        if (!events || events.length === 0) {
+            // 오늘 일정이 없는 경우
+            res.json({ message: '검색 결과가 없습니다.', events: [] });
+          } else {
+            // 오늘 일정이 있는 경우
+            res.json({ message: null, events: events});
+          }
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+    }
+}
+module.exports = {add,remove,mschedule,find,complete,getToday};

@@ -86,7 +86,8 @@
                                                                 <label for="eventTitle" class="form-label">일정 제목</label>
                                                                 <input type="text" class="form-control" id="eventTitle"
                                                                     name="msche_title" required>
-                                                                <input type="date" id="selectedStartDate"
+                                                                <br>
+                                                                날짜  <input type="date" id="selectedStartDate"
                                                                     name="msche_st_dt">
                                                                 <input type="date" id="selectedEndDate"
                                                                     name="msche_ed_dt">
@@ -114,7 +115,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteModalLabel">일정 삭제</h5>
+                                                            <h5 class="modal-title" id="deleteModalLabel">일정 체크</h5>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                             <input type="hidden" class="mem_id" name="mem_id"
@@ -125,13 +126,15 @@
                                                             <input type="hidden" id="deletedEndDate" name="msche_ed_dt">
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>일정을 삭제하시겠습니까?</p>
+                                                            <p>일정을 완료하셨나요? </p>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">취소</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="completeEvent">완료</button>
                                                             <button type="submit" class="btn btn-danger"
                                                                 id="confirmDelete">삭제</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">취소</button>
                                                         </div>
                                                     </div>
                                             </form>
@@ -283,6 +286,25 @@
                         $.ajax({
                             type: 'post',
                             url: '/schedule/remove',
+                            data: deleteString,
+                            error: function (xhr, status, error) {
+                                console.log("실패");
+                            },
+                            success: function (json) {
+                                console.log("성공");
+                            }
+                        });
+                        var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                        deleteModal.hide();
+                    }
+                });
+                document.getElementById('completeEvent').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    if (selectedEvent) {
+                        var deleteString = $("#deleteForm").serialize();
+                        $.ajax({
+                            type: 'post',
+                            url: '/schedule/complete',
                             data: deleteString,
                             error: function (xhr, status, error) {
                                 console.log("실패");

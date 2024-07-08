@@ -35,6 +35,7 @@ const io = socketIo(http, {
 
 // Socket.IO 모듈 분리
 const socketModule = require('./socket/socketHandler')(io);
+const axios = require('axios');
 
 // 세션 설정
 app.use(session({
@@ -89,8 +90,9 @@ app.use('/schedule', scheduleRoutes);
 
 // 루트 경로에 회원값이 있을 시 세션의 유저값을 user 변수에 담아 이동
 app.get('/', (req, res) => {
+  const data = { message: '환영합니다!' };
   if (req.session.user) {
-    res.render('main', { user : req.session.user, title: 'Main' });
+    res.render('today', { user : req.session.user, title: 'Main' , data : data});
   } else {
     res.render('main', { user : null, title: 'Main' });
   }
