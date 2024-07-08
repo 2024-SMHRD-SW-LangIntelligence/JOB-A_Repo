@@ -66,10 +66,10 @@ async function complete(req, res) {
 async function getToday(req, res) {
     try {
         const mem_id = req.session.user.mem_id;
-        const events = await scheduleService.getTodaySchedules(mem_id);
+        const events = await scheduleService.getTodaySchedule(mem_id);
         if (!events || events.length === 0) {
             // 오늘 일정이 없는 경우
-            res.json({ message: '검색 결과가 없습니다.', events: [] });
+            res.json({ message: '오늘 일정이 없습니다.', events: [] });
           } else {
             // 오늘 일정이 있는 경우
             res.json({ message: null, events: events});

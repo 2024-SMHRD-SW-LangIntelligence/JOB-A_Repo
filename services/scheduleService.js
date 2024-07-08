@@ -70,7 +70,7 @@ async function completeSchedule(mem_id,msche_title,msche_st_dt, msche_ed_dt) {
         .from('tb_member_schedule')
         .update({ msche_status: 1 })
         .match({ 'mem_id': mem_id,'msche_title':msche_title, 'msche_st_dt': msche_st_dt, 'msche_ed_dt': msche_ed_dt });
-
+    console.log(data);
     if (error) throw error;
     return data;
     }

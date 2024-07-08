@@ -84,9 +84,8 @@ app.use('/schedule', scheduleRoutes);
 
 // 루트 경로에 회원값이 있을 시 세션의 유저값을 user 변수에 담아 이동
 app.get('/', (req, res) => {
-  const data = { message: '환영합니다!' };
   if (req.session.user) {
-    res.render('today', { user : req.session.user, title: 'Main' , data : data});
+    res.render('today', { user : req.session.user, title: 'Main'});
   } else {
     res.render('main', { user : null, title: 'Main' });
   }
