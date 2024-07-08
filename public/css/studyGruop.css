@@ -102,8 +102,6 @@
 }
 
 .chat-list {
-
-    border-right: 1px solid #ddd;
     padding: 20px;
     -ms-overflow-style: none;
     /* IE와 Edge에서 스크롤바 숨기기 */
