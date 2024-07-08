@@ -78,4 +78,42 @@ async function getToday(req, res) {
         res.status(500).send('Internal Server Error');
     }
 }
-module.exports = {add,remove,mschedule,find,complete,getToday};
+
+
+async function checkClosestEvent(req, res) {
+    try {
+        const mem_id = req.session.user.mem_id;
+        const closestEvents = await scheduleService.getClosestEvents(mem_id);
+
+        const today = new Date(scheduleService.getToday());
+        const filteredEvents = closestEvents.map(event => {
+            const eventDate = new Date(event.msche_st_dt);
+            const dateDifference = Math.floor((eventDate - today) / (1000 * 60 * 60 * 24));
+            return {
+                ...event,
+                dateDifference
+            };
+        }).filter(event => event.dateDifference >= 0 && event.dateDifference <= 7);
+
+        if (filteredEvents.length > 0) {
+            return res.status(200).json({
+                events: filteredEvents.map(event => ({
+                    title: event.msche_title,
+                    startDate: event.msche_st_dt,
+                    endDate: event.msche_ed_dt,
+                    daysLeft: event.dateDifference
+                }))
+            });
+        } else {
+            return res.status(204).send(); // No Content
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: `에러 발생: ${error.message}`
+        });
+    }
+}
+
+
+module.exports = {add,remove,mschedule,find,complete,getToday,checkClosestEvent};

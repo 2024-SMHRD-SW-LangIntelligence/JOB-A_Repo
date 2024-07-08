@@ -52,7 +52,7 @@
                     aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-bell fa-fw"></i>
                     <!-- Counter - Alerts -->
-                    <span class="badge badge-danger badge-counter">3+</span>
+                    <span id="alertCounter" class="badge badge-danger badge-counter">0</span>
                 </a>
                 <!-- Dropdown - Alerts -->
                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -60,39 +60,9 @@
                     <h6 class="dropdown-header">
                         일정 알림
                     </h6>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-primary">
-                                <i class="fas fa-file-alt text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 12, 2019</div>
-                            <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-success">
-                                <i class="fas fa-donate text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 7, 2019</div>
-                            $290.29 has been deposited into your account!
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-warning">
-                                <i class="fas fa-exclamation-triangle text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 2, 2019</div>
-                            Spending Alert: We've noticed unusually high spending for your account.
-                        </div>
-                    </a>
+                    <div id="alertItems">
+                        <!-- 여기에 알림 아이템들이 동적으로 추가될 예정 -->
+                    </div>
                     <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                 </div>
             </li>
@@ -386,4 +356,79 @@
         });
     });
     </script>
+
+<script>
+    // 알림 데이터를 가져오는 함수
+    function fetchAlerts() {
+        $.ajax({
+            url: '/schedule/closeevent',
+            method: 'GET',
+            success: function(data, status, xhr) {
+                if (xhr.status === 200) {
+                    updateAlerts(data.events);
+                } else if (xhr.status === 204) {
+                    updateAlerts([]); // No content
+                }
+            },
+            error: function() {
+                console.error('알림 데이터를 가져오는 중 오류 발생');
+            }
+        });
+    }
+
+    // 알림 데이터를 기반으로 DOM을 업데이트하는 함수
+    function updateAlerts(events) {
+        const alertItems = $('#alertItems');
+        const alertCounter = $('#alertCounter');
+
+        // 알림 아이템들 초기화
+        alertItems.empty();
+
+        // 알림이 있는 경우에만 업데이트
+        if (events.length > 0) {
+            events.forEach(event => {
+                const alertItem = `
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-primary">
+                                <i class="fas fa-calendar-alt text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">${new Date(event.startDate).toLocaleDateString()}</div>
+                            <span class="font-weight-bold">${event.title} 일정이 ${event.daysLeft}일 남았습니다.</span>
+                        </div>
+                    </a>
+                `;
+                alertItems.append(alertItem);
+            });
+            alertCounter.text(events.length);  // 알림 개수 업데이트
+            alertCounter.show();
+        } else {
+            const noAlertsMessage = `
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="mr-3">
+                        <div class="icon-circle bg-secondary">
+                            <i class="fas fa-bell-slash text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="font-weight-bold">알림이 없습니다</span>
+                    </div>
+                </a>
+            `;
+            alertItems.append(noAlertsMessage);
+            alertCounter.hide();
+        }
+    }
+
+    // 일정 시간마다 알림 데이터를 가져오는 함수 호출
+    setInterval(fetchAlerts, 60000);  // 1분마다 호출 (원하는 시간 간격으로 변경 가능)
+
+    // 페이지 로드 시 한 번 호출
+    $(document).ready(fetchAlerts);
+</script>
+
+
+
     
