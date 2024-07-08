@@ -1,23 +1,23 @@
 const supabase = require('../config/superbase');
 
 // 일정 추가 스케쥴
-async function addSchedule(mem_id ,msche_title, msche_st_dt, msche_ed_dt,msche_color) {
-        const { data, error } = await supabase
-            .from('tb_member_schedule')
-            .insert([{'mem_id':mem_id ,'msche_title' : msche_title, 'msche_st_dt' : msche_st_dt, 'msche_ed_dt' : msche_ed_dt, 'msche_color' : msche_color}])
-            
-        if (error) throw error;       
-        return data;
-    } 
-async function deleteSchedule(mem_id,msche_title,msche_st_dt, msche_ed_dt) {
+async function addSchedule(mem_id, msche_title, msche_st_dt, msche_ed_dt, msche_color) {
     const { data, error } = await supabase
         .from('tb_member_schedule')
-        .delete()
-        .match({ 'mem_id': mem_id,'msche_title':msche_title, 'msche_st_dt': msche_st_dt, 'msche_ed_dt': msche_ed_dt });
+        .insert([{ 'mem_id': mem_id, 'msche_title': msche_title, 'msche_st_dt': msche_st_dt, 'msche_ed_dt': msche_ed_dt, 'msche_color': msche_color }])
 
     if (error) throw error;
     return data;
-    }
+}
+async function deleteSchedule(mem_id, msche_title, msche_st_dt, msche_ed_dt) {
+    const { data, error } = await supabase
+        .from('tb_member_schedule')
+        .delete()
+        .match({ 'mem_id': mem_id, 'msche_title': msche_title, 'msche_st_dt': msche_st_dt, 'msche_ed_dt': msche_ed_dt });
+
+    if (error) throw error;
+    return data;
+}
 
 async function memberSchedule(mem_id) {
     try {
@@ -37,15 +37,15 @@ async function memberSchedule(mem_id) {
         }));
         return event;
 
-        } catch (error) {
-            throw new Error(`Failed to fetch member schedule: ${error.message}`);
-        }
+    } catch (error) {
+        throw new Error(`Failed to fetch member schedule: ${error.message}`);
     }
+}
 
-async function searchSchedule(mem_id,msche_title){
+async function searchSchedule(mem_id, msche_title) {
     if (!mem_id || !msche_title) {
         throw new Error('Invalid mem_id or msche_title');
-        }
+    }
 
     try {
         const { data, error } = await supabase
@@ -63,17 +63,17 @@ async function searchSchedule(mem_id,msche_title){
     } catch (err) {
         console.error('Unexpected error:', err.message);
         throw err;
-        }
     }
-async function completeSchedule(mem_id,msche_title,msche_st_dt, msche_ed_dt) {
+}
+async function completeSchedule(mem_id, msche_title, msche_st_dt, msche_ed_dt) {
     const { data, error } = await supabase
         .from('tb_member_schedule')
         .update({ msche_status: 1 })
-        .match({ 'mem_id': mem_id,'msche_title':msche_title, 'msche_st_dt': msche_st_dt, 'msche_ed_dt': msche_ed_dt });
+        .match({ 'mem_id': mem_id, 'msche_title': msche_title, 'msche_st_dt': msche_st_dt, 'msche_ed_dt': msche_ed_dt });
     console.log(data);
     if (error) throw error;
     return data;
-    }
+}
 
 async function getTodaySchedule(mem_id) {
     const today = new Date().toISOString().split('T')[0]; // 오늘 날짜를 'YYYY-MM-DD' 형식으로 변환
@@ -92,4 +92,38 @@ async function getTodaySchedule(mem_id) {
 
     return data;
 }
-module.exports = {addSchedule, deleteSchedule, memberSchedule, searchSchedule,completeSchedule, getTodaySchedule};
+function getToday() {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    return today.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+}
+
+function getNextWeek() {
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    nextWeek.setUTCHours(0, 0, 0, 0);
+    return nextWeek.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+}
+
+async function getClosestEvents(mem_id) {
+    try {
+        const today = getToday();
+        const nextWeek = getNextWeek();
+        const { data, error } = await supabase
+            .from('tb_member_schedule')
+            .select('msche_title, msche_st_dt')
+            .gte('msche_st_dt', today)
+            .lte('msche_st_dt', nextWeek)
+            .eq('mem_id', mem_id)
+            .order('msche_st_dt', { ascending: true });
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        return data.length > 0 ? data : [];
+    } catch (error) {
+        throw new Error(`Error in getClosestEvents: ${error.message}`);
+    }
+}
+module.exports = { addSchedule, deleteSchedule, memberSchedule, searchSchedule, completeSchedule, getTodaySchedule, getClosestEvents,getToday,getNextWeek};

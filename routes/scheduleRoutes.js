@@ -9,4 +9,5 @@ router.get('/mschedule',scheduleController.mschedule);
 router.get('/find',scheduleController.find)
 router.post('/complete',scheduleController.complete)
 router.get('/getToday', scheduleController.getToday);
+router.get('/closeevent',scheduleController.checkClosestEvent)
 module.exports = router;
