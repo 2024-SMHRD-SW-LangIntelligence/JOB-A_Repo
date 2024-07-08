@@ -3,10 +3,10 @@ const certiService = require('../services/certiService');
 
 
 async function add(req, res) {
-    const { certi_name,certified_at,certi_org } = req.body;
+    const { certi_name,certified_at,certi_num,certi_org } = req.body;
     const user = req.session.user;
     try {
-        await certiService.addCerti(user, certi_name,certified_at,certi_org);
+        await certiService.addCerti(user, certi_name,certified_at,certi_num,certi_org);
         res.redirect('/tables');
     } catch (error) {
         res.status(500).send(error.message);
