@@ -36,7 +36,6 @@ a {
 
 .content-column {
   flex: 3;
-  padding-right: 70px;
 }
 
 /* 알림창 뜰때마다 body에 padding 속성이 추가되어 화면이 깨지는걸방지 */

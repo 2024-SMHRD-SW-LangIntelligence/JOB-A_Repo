@@ -1,7 +1,7 @@
 const supabase = require('../config/superbase');
 
 // 자격증 추가certi_idx, mem_id,
-async function addCerti(user,certi_name,certified_at,certi_org) {
+async function addCerti(user,certi_name,certified_at,certi_num,certi_org) {
     const { data, error } = await supabase
         .from('tb_certificate')
         .insert([
@@ -9,6 +9,7 @@ async function addCerti(user,certi_name,certified_at,certi_org) {
                 mem_id: user.mem_id,
                 certi_name: certi_name,
                 certified_at: certified_at,
+                certi_num: certi_num,
                 certi_org: certi_org
             }
         ]);
@@ -46,8 +47,8 @@ async function scheduleCheck(user) {
 // 보유 자격증에 없는 자격증 가져오기
 async function option_check(user) {
     const { data, error } = await supabase
-        .from('tb_certi_info')
-        .select('*')
+        .from('tb_certi_total')
+        .select('certi_asso, certi_name')
         .neq('certi_name',user.certi_name);
         
 

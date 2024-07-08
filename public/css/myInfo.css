@@ -3,7 +3,7 @@
   width: 100%;
 }
 .tr_text{
-  width:33%;
+  width:25%;
 }
 .table_text th, .table_text td {
   border: 1px solid #ddd;
@@ -13,26 +13,28 @@
 }
 /* ------------------------------------ 내정보 -----------------------------------------*/
 .big_text{
+  display: flex;
   font-size: 1.75rem !important;
   color: #5a5c69 !important;
-  margin: -20px 10px;
+  margin-left: 30px;
+  margin-top: 30px;
+  margin-right: 50px;
   float: right;
+  font-weight: bold;
 }
 /* ------------------------------ 정보창 달력 안겹치게 ---------------------------------- */
 .infoTap {      
-    flex: 1;
-    min-height: 55vh;
-    max-height: 85vh;
-    overflow-y: auto;
-    margin-left: 20px;
-    overflow-y: auto;
-    padding: 50px;
-    scrollbar-width: none;
-    
-    display: flex;
-    flex-direction: column;
-    max-width: 420px;
-  }
+  flex: 1; /* 컨테이너 안에서 flex-grow를 1로 설정하여 남은 공간을 차지하게 함 */
+  min-height: 55vh; /* 최소 높이를 뷰포트 높이의 55%로 설정 */
+  max-height: 85vh; /* 최대 높이를 뷰포트 높이의 85%로 설정 */
+  margin-left: 0px; /* 왼쪽 여백을 20px 설정 */
+  padding: 0px; /* 내부 여백을 모든 방향에서 50px 설정 */
+  
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  flex-direction: column; /* 자식 요소들을 세로 방향으로 정렬 */
+  max-width: 490px; /* 최대 너비를 420px로 설정 */
+}
+
 /* --------------------------일정 성공률------------------------------ */
 #percent{
     --bs-bg-opacity: 1;
@@ -64,7 +66,7 @@
     border-radius: var(--bs-progress-border-radius);
 } 
 /* margin-right: .5rem !important; */
-/* -------------------내 정보창--------------------- */
+/* ------------------- 자격증 입력,테이블 모달 --------------------- */
 .inputStyle{ /*  자격증 입력란 스타일 */
     border: none;
     padding: 10px 5px;
@@ -74,17 +76,24 @@
     color: white;
     display: block;
     margin-bottom: 10px;
+
   }
-  
+  .downloadB{
+    position:absolute;
+    margin-bottom: 350px;
+    margin-right: 840px;
+  }
   .modal_body{ /* 자격증 모달 바디 */
     position:absolute;
-    top:50%;
-    left: 44%;
+    margin-bottom: 160%;
+    
+    top:40%;
+    left: 40%;
     color: #000000;
     overflow-y: auto; /* 세로 스크롤바를 추가 */
   
-    width:400px; 
-    height:400px; 
+    width:500px; 
+    height:500px; 
     
   
     padding:40px;
@@ -101,7 +110,6 @@
     position:absolute;
     display:none;
     
-  
     justify-content: center;
     top:0;
     left: -50px;
@@ -112,13 +120,12 @@
   }
   .certi_open_modal { /* 자격증 모달 열기 */
     display: flex; 
-    justify-content: flex-start !important; /* 요소를 시작점으로 정렬 */
-    align-items: center;
-    height: 40px; /* 높이 설정 (필요에 따라 조정) */
-    margin-bottom: 50px; /* 아래쪽 여백 추가 */
-    margin-top: -20px; /* 위쪽 여백 */
-    margin-left: auto; /* 요소를 오른쪽으로 이동 */
-    margin-right: 5px; /* 오른쪽 여백 설정 (필요에 따라 조정) */
+    justify-content: center;
+    height: 35px; /* 높이 설정 (필요에 따라 조정) */
+    margin-bottom: 60px; /* 아래쪽 여백 추가 */
+    margin-top: 35px; /* 위쪽 여백 */
+    margin-left: 30px; /* 요소를 오른쪽으로 이동 */
+    width: 120px;
   }
   
   .certi_close_modal{ /* 자격증 모달 닫기 */
