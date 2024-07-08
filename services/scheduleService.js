@@ -54,8 +54,6 @@ async function searchSchedule(mem_id,msche_title){
             .eq('mem_id', mem_id)
             .like('msche_title', `%${msche_title}%`); // 부분 일치 검색
 
-        console.log(data);
-
         if (error) {
             console.error('Error fetching data:', error.message);
             throw error;
@@ -67,4 +65,31 @@ async function searchSchedule(mem_id,msche_title){
         throw err;
         }
     }
-module.exports = {addSchedule, deleteSchedule, memberSchedule, searchSchedule};
+async function completeSchedule(mem_id,msche_title,msche_st_dt, msche_ed_dt) {
+    const { data, error } = await supabase
+        .from('tb_member_schedule')
+        .update({ msche_status: 1 })
+        .match({ 'mem_id': mem_id,'msche_title':msche_title, 'msche_st_dt': msche_st_dt, 'msche_ed_dt': msche_ed_dt });
+
+    if (error) throw error;
+    return data;
+    }
+
+async function getTodaySchedule(mem_id) {
+    const today = new Date().toISOString().split('T')[0]; // 오늘 날짜를 'YYYY-MM-DD' 형식으로 변환
+
+    const { data, error } = await supabase
+        .from('tb_member_schedule')
+        .select('msche_title, msche_st_dt, msche_ed_dt')
+        .lte('msche_st_dt', today) // 시작 날짜가 오늘 이전
+        .gte('msche_ed_dt', today) // 종료 날짜가 오늘 이후
+        .eq('mem_id', mem_id);
+
+    if (error) {
+        console.error('Error fetching today\'s schedules:', error);
+        throw error;
+    }
+
+    return data;
+}
+module.exports = {addSchedule, deleteSchedule, memberSchedule, searchSchedule,completeSchedule, getTodaySchedule};

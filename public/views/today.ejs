@@ -1,0 +1,14 @@
+<h1><%= title %></h1>
+    <ul>
+        <% if (schedules.length > 0) { %>
+            <% schedules.forEach(schedule => { %>
+                <li>
+                    <strong>제목:</strong> <%= schedule.msche_title %><br>
+                    <strong>시작 날짜:</strong> <%= schedule.msche_st_dt %><br>
+                    <strong>종료 날짜:</strong> <%= schedule.msche_ed_dt %>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <li>오늘 일정이 없습니다.</li>
+        <% } %>
+    </ul>
