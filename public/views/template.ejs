@@ -269,6 +269,25 @@
 
                 calendar.render();
 
+                var saveButton = document.getElementById('saveEvent');
+
+                // 입력 필드의 값을 모니터링하여 변경이 있을 때마다 확인합니다.
+                document.getElementById('eventTitle').addEventListener('input', function() {
+                    // 입력 필드의 값이 비어 있는지 확인합니다.
+                    if (this.value.trim() === '') {
+                        // 값이 비어 있으면 저장 버튼을 비활성화합니다.
+                        saveButton.disabled = true;
+                    } else {
+                        // 값이 채워져 있으면 저장 버튼을 활성화합니다.
+                        saveButton.disabled = false;
+                    }
+                });
+
+                    // 초기에도 입력값이 없으면 저장 버튼을 비활성화합니다.
+                    if (document.getElementById('eventTitle').value.trim() === '') {
+                        saveButton.disabled = true;
+                    }
+
                 document.getElementById('saveEvent').addEventListener('click', function () {
                     var eventTitle = document.getElementById('eventTitle').value;
                     var addString = $("#eventForm").serialize();

@@ -104,8 +104,8 @@
                 <label><h4 >보유 자격증</h4></label>
                 <div class="sign-in-htm" id="certificate-list">
                     <!-- 자격명 입력 -->
-                    <table class="table_text" border="1">                                                                             
-                        <tr >
+                    <table class="table_text" border="2">                                                                             
+                        <tr>
                             <th class="tr_text">자격증명</th>                                                                             
                             <th class="tr_text">취득일자</th>                                                                                                                 
                             <th class="tr_text">발행기관</th>
@@ -164,7 +164,7 @@
                     <div class="block_text">
                             <div class="block1_text_color">일정 수행률</div>
                             <div class="col-auto">
-                                <div class="block2_text_color">100%</div>
+                                <div class="block2_text_color">0%</div>
                             <div class="row no-gutters align-items-center">
                                 
                                 <div class="col">
@@ -212,9 +212,12 @@
         <!------------------------------------------------------------------------------------------ 스크립트 -------------------------------------------------------------------->
         <script>
             // ----------------------------- 일정 성취률 가져오기----------------------------------
+            
+            
             $(document).ready(function() {
+                setInterval(function() {
                 fetchCertificates();
-    
+                }, 1000);
                 function fetchCertificates() {
                     $.ajax({
                         url: '/certi/schedule', // 경로
