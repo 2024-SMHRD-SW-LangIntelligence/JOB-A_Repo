@@ -32,6 +32,23 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <style>
         /* 날짜 글씨 색상을 검은색으로 설정 */
+        .fc-daygrid-day {
+            position: relative;
+        }
+        .fc-daygrid-day-events {
+            max-height: 45px; /* Adjust this height as needed */
+        }
+        .fc-event-title,
+        .fc-daygrid-event-dot,
+        .fc-daygrid-day-number,
+        .fc-list-event-title,
+        .fc-col-header-cell,
+        .fc-col-header-cell-cushion,
+        .fc-day-header,
+        .fc-toolbar-title {
+            text-decoration: none !important;
+        }
+
         .fc-daygrid-day-number {
             color: black;
         }
@@ -196,8 +213,8 @@
                     selectable: true,
                     // 드래그로 일정추가
                     select: function (info) {
-                        selectedStartDate = info.startStr;
-                        selectedEndDate = info.endStr;
+                        selectedStartDate = info.startStr
+                        selectedEndDate = info.endStr
                         var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
                         document.getElementById('selectedStartDate').value = selectedStartDate;
                         document.getElementById('selectedEndDate').value = selectedEndDate;
