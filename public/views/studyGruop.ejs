@@ -71,14 +71,6 @@
             console.log('Socket connected');
         });
 
-        socket.on('disconnect', () => {
-            console.log('Socket disconnected');
-        });
-
-        socket.on('error', (error) => {
-            console.error('Socket error:', error);
-        });
-
         let currentRoom = null;
         const currentUser = '<%= user.mem_id %>';
         let chatRooms = [];
@@ -303,11 +295,6 @@
         function sendMessage() {
             const message = $('#messageInput').val().trim();
             if (message && currentRoom) {
-                console.log('Sending message:', {
-                    groupIdx: currentRoom.group_idx,
-                    memId: currentUser,
-                    chat: message
-                });
                 socket.emit('chat message', {
                     groupIdx: currentRoom.group_idx,
                     memId: currentUser,

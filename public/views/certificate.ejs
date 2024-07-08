@@ -1,91 +1,269 @@
- <!-- Page Heading -->
-                    <h1 class="h3 mb-1 text-gray-800">Color Utilities</h1>
-                    <p class="mb-4">Bootstrap's default utility classes can be found on the official <a
-                            href="https://getbootstrap.com/docs">Bootstrap Documentation</a> page. The custom utilities
-                        below were created to extend this theme past the default utility classes built into Bootstrap's
-                        framework.</p>
+<style>
+    .ccontent {
+        width: 80%;
+        max-width: 800px;
+        min-width: 500px;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
-                    <!-- Content Row -->
-                    <div class="row">
+    h1,
+    h2,
+    h3 {
+        color: #333;
+        text-align: center;
+    }
 
-                        <!-- First Column -->
-                        <div class="col-lg-4">
+    .mbti-group {
+        display: flex;
+        justify-content: space-around;
+        height: 50%;
+    }
 
-                            <!-- Custom Text Color Utilities -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Custom Text Color Utilities</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p class="text-gray-100 p-3 bg-dark m-0">.text-gray-100</p>
-                                    <p class="text-gray-200 p-3 bg-dark m-0">.text-gray-200</p>
-                                    <p class="text-gray-300 p-3 bg-dark m-0">.text-gray-300</p>
-                                    <p class="text-gray-400 p-3 bg-dark m-0">.text-gray-400</p>
-                                    <p class="text-gray-500 p-3 m-0">.text-gray-500</p>
-                                    <p class="text-gray-600 p-3 m-0">.text-gray-600</p>
-                                    <p class="text-gray-700 p-3 m-0">.text-gray-700</p>
-                                    <p class="text-gray-800 p-3 m-0">.text-gray-800</p>
-                                    <p class="text-gray-900 p-3 m-0">.text-gray-900</p>
-                                </div>
-                            </div>
+    .mbti-pair {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
-                            <!-- Custom Font Size Utilities -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Custom Font Size Utilities</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p class="text-xs">.text-xs</p>
-                                    <p class="text-lg mb-0">.text-lg</p>
-                                </div>
-                            </div>
+    .mbti-button {
+        width: 120px;
+        height: 120px;
+        font-size: 36px;
+        border: 3px solid #007bff;
+        background-color: #fff;
+        color: #007bff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 10px;
+        margin-right: 10px;
+        margin-bottom: 15px;
+    }
 
-                        </div>
+    .mbti-button:hover,
+    .personality-button:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
 
-                        <!-- Second Column -->
-                        <div class="col-lg-4">
+    .mbti-button.selected,
+    .personality-button.selected {
+        background-color: #007bff;
+        color: #fff;
+    }
 
-                            <!-- Background Gradient Utilities -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Custom Background Gradient Utilities
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="px-3 py-5 bg-gradient-primary text-white">.bg-gradient-primary</div>
-                                    <div class="px-3 py-5 bg-gradient-secondary text-white">.bg-gradient-secondary</div>
-                                    <div class="px-3 py-5 bg-gradient-success text-white">.bg-gradient-success</div>
-                                    <div class="px-3 py-5 bg-gradient-info text-white">.bg-gradient-info</div>
-                                    <div class="px-3 py-5 bg-gradient-warning text-white">.bg-gradient-warning</div>
-                                    <div class="px-3 py-5 bg-gradient-danger text-white">.bg-gradient-danger</div>
-                                    <div class="px-3 py-5 bg-gradient-light text-white">.bg-gradient-light</div>
-                                    <div class="px-3 py-5 bg-gradient-dark text-white">.bg-gradient-dark</div>
-                                </div>
-                            </div>
+    .personality-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
 
-                        </div>
+    .personality-button {
+        width: 30%;
+        padding: 15px 0;
+        font-size: 18px;
+        border: 2px solid #007bff;
+        background-color: #fff;
+        color: #007bff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+        border-radius: 5px;
+    }
 
-                        <!-- Third Column -->
-                        <div class="col-lg-4">
+    #submitJob {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        font-size: 24px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+    }
 
-                            <!-- Grayscale Utilities -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Custom Grayscale Background Utilities
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="p-3 bg-gray-100">.bg-gray-100</div>
-                                    <div class="p-3 bg-gray-200">.bg-gray-200</div>
-                                    <div class="p-3 bg-gray-300">.bg-gray-300</div>
-                                    <div class="p-3 bg-gray-400">.bg-gray-400</div>
-                                    <div class="p-3 bg-gray-500 text-white">.bg-gray-500</div>
-                                    <div class="p-3 bg-gray-600 text-white">.bg-gray-600</div>
-                                    <div class="p-3 bg-gray-700 text-white">.bg-gray-700</div>
-                                    <div class="p-3 bg-gray-800 text-white">.bg-gray-800</div>
-                                    <div class="p-3 bg-gray-900 text-white">.bg-gray-900</div>
-                                </div>
-                            </div>
-                        </div>
+    #submitJob:hover {
+        background-color: #218838;
+    }
+</style>
 
-                    </div>
+<div class="ccontent">
+    <h1>직무추천 AI</h1>
+
+    <div id="jobRecommendationSection">
+        <h2>MBTI와 성격유형을 입력 해주세요</h2><br>
+        <form id="jobRecommendationForm">
+            <h3>MBTI</h3>
+            <div class="mbti-group">
+                <div class="mbti-pair">
+                    <button type="button" class="mbti-button" data-group="ie" data-value="I">I</button>
+                    <button type="button" class="mbti-button" data-group="ie" data-value="E">E</button>
+                </div>
+                <div class="mbti-pair">
+                    <button type="button" class="mbti-button" data-group="sn" data-value="N">N</button>
+                    <button type="button" class="mbti-button" data-group="sn" data-value="S">S</button>
+                </div>
+                <div class="mbti-pair">
+                    <button type="button" class="mbti-button" data-group="tf" data-value="T">T</button>
+                    <button type="button" class="mbti-button" data-group="tf" data-value="F">F</button>
+                </div>
+                <div class="mbti-pair">
+                    <button type="button" class="mbti-button" data-group="pj" data-value="P">P</button>
+                    <button type="button" class="mbti-button" data-group="pj" data-value="J">J</button>
+                </div>
+            </div>
+
+            <h3>성격유형</h3>
+            <div class="personality-group">
+                <button type="button" class="personality-button" data-value="관습형">관습형</button>
+                <button type="button" class="personality-button" data-value="탐구형">탐구형</button>
+                <button type="button" class="personality-button" data-value="예술형">예술형</button>
+                <button type="button" class="personality-button" data-value="사회형">사회형</button>
+                <button type="button" class="personality-button" data-value="진취형">진취형</button>
+                <button type="button" class="personality-button" data-value="현실형">현실형</button>
+            </div>
+
+            <button type="submit" id="submitJob">Get Job Recommendations</button>
+        </form>
+    </div>
+
+    <div id="jobResults"></div>
+</div>
+
+<div id="certRecommendationSection" style="display:none;">
+    <h2>Certificate Recommendation</h2>
+    <form id="certRecommendationForm">
+        <label for="job">Selected Job:</label>
+        <select id="job" name="job" required></select>
+        <label for="education">Education Level:</label>
+        <input type="number" id="education" name="education" required>
+        <label for="experience">Years of Experience:</label>
+        <input type="number" id="experience" name="experience" required>
+        <button type="submit">Get Certificate Recommendations</button>
+    </form>
+    <div id="certResults"></div>
+</div>
+
+<script>
+    // MBTI 버튼 선택 로직
+    document.querySelectorAll('.mbti-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const group = this.dataset.group;
+            document.querySelectorAll(`.mbti-button[data-group="${group}"]`).forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            this.classList.add('selected');
+        });
+    });
+
+    // 성격유형 버튼 선택 로직
+    document.querySelectorAll('.personality-button').forEach(button => {
+        button.addEventListener('click', function () {
+            document.querySelectorAll('.personality-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            this.classList.add('selected');
+        });
+    });
+
+    document.getElementById('jobRecommendationForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const mbti =
+            document.querySelector('.mbti-button[data-group="ie"].selected').dataset.value +
+            document.querySelector('.mbti-button[data-group="sn"].selected').dataset.value +
+            document.querySelector('.mbti-button[data-group="tf"].selected').dataset.value +
+            document.querySelector('.mbti-button[data-group="pj"].selected').dataset.value;
+        const personality = document.querySelector('.personality-button.selected').dataset.value;
+        console.log(mbti, personality);
+        const response = await fetch('/recommend-jobs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ mbti, personality }),
+        });
+
+        const data = await response.json();
+        displayJobResults(data.recommendations);
+    });
+
+    function displayJobResults(recommendations) {
+        const jobResults = document.getElementById('jobResults');
+        jobResults.innerHTML = '<h3>Recommended Jobs:</h3>';
+        const ul = document.createElement('ul');
+        recommendations.forEach(job => {
+            const li = document.createElement('li');
+            li.textContent = job;
+            ul.appendChild(li);
+        });
+        jobResults.appendChild(ul);
+
+        // 직무 선택 옵션 업데이트
+        const jobSelect = document.getElementById('job');
+        jobSelect.innerHTML = '';
+        recommendations.forEach(job => {
+            const option = document.createElement('option');
+            option.value = job;
+            option.textContent = job;
+            jobSelect.appendChild(option);
+        });
+
+        // 자격증 추천 섹션 표시
+        document.getElementById('certRecommendationSection').style.display = 'block';
+    }
+
+    document.getElementById('certRecommendationForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const job = document.getElementById('job').value;
+        const education = document.getElementById('education').value;
+        const experience = document.getElementById('experience').value;
+
+        const response = await fetch('/recommend-certificates', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ job, education, experience }),
+        });
+
+        const data = await response.json();
+        displayCertResults(data.recommendations);
+    });
+
+    function displayCertResults(recommendations) {
+        const certResults = document.getElementById('certResults');
+        certResults.innerHTML = '<h3>Recommended Certificates:</h3>';
+
+        ['by_exam_schedule', 'by_num_applicants', 'by_pass_rate'].forEach(category => {
+            const h4 = document.createElement('h4');
+            h4.textContent = category.replace(/_/g, ' ').charAt(0).toUpperCase() + category.replace(/_/g, ' ').slice(1);
+            certResults.appendChild(h4);
+
+            const table = document.createElement('table');
+            table.innerHTML = `
+                    <tr>
+                        <th>Certificate</th>
+                        <th>Number of Applicants</th>
+                        <th>Pass Rate</th>
+                        <th>Exam Schedule</th>
+                    </tr>
+                `;
+
+            recommendations[category].forEach(cert => {
+                const row = table.insertRow();
+                row.insertCell().textContent = cert.certificate;
+                row.insertCell().textContent = cert.num_applicants;
+                row.insertCell().textContent = cert.pass_rate;
+                row.insertCell().textContent = cert.exam_schedule;
+            });
+
+            certResults.appendChild(table);
+        });
+    }
+</script>
