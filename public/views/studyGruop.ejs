@@ -66,8 +66,22 @@
 <script>
     $(document).ready(function () {
         const socket = io();
+
+        socket.on('connect', () => {
+            console.log('Socket connected');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Socket disconnected');
+        });
+
+        socket.on('error', (error) => {
+            console.error('Socket error:', error);
+        });
+
         let currentRoom = null;
         const currentUser = '<%= user.mem_id %>';
+        let chatRooms = [];
 
         // 채팅방 목록 가져오기
         function fetchChatRooms() {
@@ -195,15 +209,18 @@
         // 채팅방 보여주기
         function showChatRoom(room) {
             if (currentRoom) {
+                console.log('Leaving room:', currentRoom.group_idx);
                 socket.emit('leave room', currentRoom.group_idx);
             }
             currentRoom = room;
-            socket.emit('join room', room.group_idx);
             $('.chat-list').hide();
             $('.chat-room').show();
             $('#roomName').text(room.group_name);
             $('.chat-messages').empty();
-            loadChatMessages(room.group_idx);
+            loadChatMessages(room.group_idx).then(() => {
+                console.log('Joining room:', room.group_idx);
+                socket.emit('join room', room.group_idx);
+            });
 
             if (room.mem_id === currentUser) {
                 $('#searchMessages').replaceWith('<button id="clearMessages" class="clear-button">채팅내역 지우기</button>');
@@ -231,24 +248,27 @@
 
         // 채팅 메시지 로드
         function loadChatMessages(groupIdx) {
-            $.ajax({
-                url: `/chat/messages/${groupIdx}`,
-                method: 'GET',
-                success: function (messages) {
-                    messages.forEach(message => {
-                        appendMessage(message.mem_id, message.chat, new Date(`1970-01-01T${message.chat_at}`));
-                    });
-                    scrollToBottom();
-                },
-                error: function () {
-                    Swal.fire({
-                        icon: 'error',
-                        text: '메시지 로드 실패'
-                    });
-                }
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: `/chat/messages/${groupIdx}`,
+                    method: 'GET',
+                    success: function (messages) {
+                        messages.forEach(message => {
+                            appendMessage(message.mem_id, message.chat, new Date(`1970-01-01T${message.chat_at}`));
+                        });
+                        scrollToBottom();
+                        resolve();
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: '메시지 로드 실패'
+                        });
+                        reject(error);
+                    }
+                });
             });
         }
-
         // 이벤트 리스너
         $(document).on('click', '.chat-room-item', function () {
             const roomId = $(this).data('id');
@@ -266,10 +286,15 @@
             }
         });
 
-        // 메시지 전송
+        // 채팅 메시지 전송
         function sendMessage() {
             const message = $('#messageInput').val().trim();
             if (message && currentRoom) {
+                console.log('Sending message:', {
+                    groupIdx: currentRoom.group_idx,
+                    memId: currentUser,
+                    chat: message
+                });
                 socket.emit('chat message', {
                     groupIdx: currentRoom.group_idx,
                     memId: currentUser,
@@ -286,14 +311,13 @@
             const formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             const messageHtml = `
-            <div class="message ${messageClass}">
-                <div class="message-content">${content}</div>
-                <div class="message-time">${formattedTime}</div>
-            </div>
-        `;
+        <div class="message ${messageClass}">
+            <div class="message-content">${content}</div>
+            <div class="message-time">${formattedTime}</div>
+        </div>
+    `;
 
             $('#chatMessages').append(messageHtml);
-            scrollToBottom();
         }
 
         // 스크롤을 항상 아래로
@@ -330,6 +354,7 @@
 
         // Socket 이벤트 리스너
         socket.on('chat message', function (message) {
+            console.log('Received new message:', message);
             const chatDate = message.chat_at ? new Date(`1970-01-01T${message.chat_at}`) : new Date();
             appendMessage(message.mem_id, message.chat, chatDate);
             scrollToBottom();

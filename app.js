@@ -24,8 +24,14 @@ const app = express();
 const supabase = require('./config/superbase');
 
 // 소켓관련
+const socketIo = require('socket.io')
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const io = socketIo(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET","POST"]
+  }
+});
 
 // Socket.IO 모듈 분리
 const socketModule = require('./socket/socketHandler')(io);

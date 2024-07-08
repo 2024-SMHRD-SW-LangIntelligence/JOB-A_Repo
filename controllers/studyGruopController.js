@@ -36,12 +36,14 @@ const chatController = {
   },
 
   saveChatMessage: async (req, res) => {
+    console.log('Saving chat message:', req.body);
     try {
       const { groupIdx, memId, chat } = req.body;
-      console.log('Received data:', { groupIdx, memId, chat });
       const savedMessage = await studyService.chatService.saveChatMessage(groupIdx, memId, chat);
+      console.log('Message saved successfully:', savedMessage);
       res.json(savedMessage);
     } catch (error) {
+      console.error('Failed to save chat message:', error);
       res.status(500).json({ error: 'Failed to save chat message' });
     }
   }

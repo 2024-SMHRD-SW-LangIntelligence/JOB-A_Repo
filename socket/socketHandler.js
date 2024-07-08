@@ -6,15 +6,16 @@ module.exports = function (io) {
 
         socket.on('join room', (roomId) => {
             socket.join(roomId);
-            console.log(`User joined room ${roomId}`);
+            console.log(`User ${socket.id} joined room ${roomId}`);
         });
 
         socket.on('leave room', (roomId) => {
             socket.leave(roomId);
-            console.log(`User left room ${roomId}`);
+            console.log(`User ${socket.id} left room ${roomId}`);
         });
 
         socket.on('chat message', async (data) => {
+            console.log('Received chat message:', data);
             try {
                 const savedMessage = await studyController.chatController.saveChatMessage({
                     body: {
@@ -24,6 +25,7 @@ module.exports = function (io) {
                     }
                 }, {
                     json: (message) => {
+                        console.log('Sending message to room:', data.groupIdx, message);
                         io.to(data.groupIdx).emit('chat message', message);
                     },
                     status: () => ({ json: () => { } })
