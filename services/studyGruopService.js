@@ -45,10 +45,31 @@ const chatService = {
     }
 };
 
+async function deleteChatRoom(groupIdx) {
+    const { data, error } = await supabase
+        .from('tb_studygroup')
+        .delete()
+        .eq('group_idx', groupIdx);
+
+    if (error) throw error;
+    return data;
+}
+
+async function clearChatMessages(groupIdx) {
+    const { data, error } = await supabase
+        .from('tb_chatting')
+        .delete()
+        .eq('group_idx', groupIdx);
+
+    if (error) throw error;
+    return data;
+}
 
 
 module.exports = {
     createChatRoom,
     getChatRooms,
-    chatService
+    chatService,
+    deleteChatRoom,
+    clearChatMessages
 };

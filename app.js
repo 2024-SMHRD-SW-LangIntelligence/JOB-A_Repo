@@ -23,6 +23,13 @@ const app = express();
 // superbase 객체생성
 const supabase = require('./config/superbase');
 
+// 소켓관련
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
+// Socket.IO 모듈 분리
+const socketModule = require('./socket/socketHandler')(io);
+
 // 세션 설정
 app.use(session({
   secret: 'JOB-A',
@@ -102,6 +109,6 @@ app.get('/search', (req, res) => {
 });
 // 3379 포트를 사용
 
-app.listen(3379, () => {
+http.listen(3379, () => {
   console.log(`서버 가동`);
 });

@@ -1,347 +1,5 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
-    .chat-room-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.3);
-        z-index: -1;
-        opacity: 0;
-        transition: all 0.5s;
-    }
-
-    .chat-room-modal.show {
-        opacity: 1;
-        z-index: 1000;
-    }
-
-    .chat-room-window {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-
-    .chat-room-popup {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #ffffff;
-        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
-        width: 400px;
-        max-width: 100%;
-        /* 초기에 약간 아래에 배치 */
-        transform: translate(-50%, -40%);
-    }
-
-    .chat-room-modal.show .chat-room-popup {
-        transform: translate(-50%, -50%);
-        transition: all 0.5s;
-    }
-
-    .chat-room-form-wrap {
-        padding: 20px;
-    }
-
-    .chat-room-input {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-
-    #chat-room-submit-btn button {
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    #closeChatRoomModal {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: none;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    .content-wrapper {
-        /* 새로운 클래스 추가 */
-        display: flex;
-        flex: 1;
-        width: 100%;
-        height: 100vh;
-    }
-
-    #chat-container {
-        max-width: 100%;
-        display: flex;
-        min-height: 100%;
-        /* 100vh에서 min-height로 변경 */
-        flex-direction: column;
-        /* 추가 */
-    }
-
-    .chat-list,
-    .chat-room {
-        flex: 1;
-        height: 100%;
-        /* 부모 요소의 전체 높이를 차지하도록 설정 */
-        overflow-y: auto;
-        /* 내용이 넘칠 경우 스크롤 가능하도록 설정 */
-    }
-
-    .chat-list {
-
-        border-right: 1px solid #ddd;
-        padding: 20px;
-        -ms-overflow-style: none;
-        /* IE와 Edge에서 스크롤바 숨기기 */
-        scrollbar-width: none;
-        min-height: 850px;
-        max-height: 850px;
-        /* Firefox에서 스크롤바 숨기기 */
-    }
-
-    .chat-list::-webkit-scrollbar {
-        width: 0;
-        /* 스크롤바를 숨김 */
-        height: 0;
-        /* 스크롤바를 숨김 */
-    }
-
-
-    .chat-room-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        background-color: #f8f8f8;
-    }
-
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .header-buttons {
-        display: flex;
-        align-items: center;
-    }
-
-    .page-title {
-        font-size: 22px;
-        font-weight: bold;
-    }
-
-    #createChatRoom {
-        margin-right: 10px;
-        background-color: #137bdd;
-        color: #000;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 5px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-    #searchInput {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-
-    .chat-room {
-        display: none;
-        flex-direction: column;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background-color: #f9f9f9;
-    }
-
-    .chat-messages {
-        flex: 1;
-        min-height: 700px;
-        max-height: 700px;
-        /* 최소 높이 설정 */
-        overflow-y: auto;
-        margin-bottom: 20px;
-        padding: 10px;
-        background-color: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-    }
-
-    .chat-input {
-        display: flex;
-        padding: 10px;
-        background-color: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-    }
-
-    .chat-input input {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        outline: none;
-    }
-
-    .chat-input button {
-        padding: 10px 20px;
-        background-color: #137bdd;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .chat-room-item {
-        display: flex;
-        align-items: center;
-        padding: 15px 0;
-        border-bottom: 1px solid #f0f0f0;
-        cursor: pointer;
-    }
-
-    .chat-room-info {
-        flex-grow: 1;
-        margin-right: 15px;
-    }
-
-    .chat-room-name {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .chat-room-description {
-        font-size: 14px;
-        color: #888;
-        margin-bottom: 5px;
-    }
-
-    .chat-room-tags {
-        font-size: 12px;
-        color: #3b7dd7;
-    }
-
-    .chat-room-image img {
-        width: 50px;
-        height: 50px;
-        border-radius: 10px;
-        object-fit: cover;
-    }
-
-    cssCopy.header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .header-buttons {
-        display: flex;
-        align-items: center;
-    }
-
-    #createChatRoom {
-        margin-right: 10px;
-    }
-
-    .message {
-        max-width: 70%;
-        margin-bottom: 10px;
-        padding: 10px;
-        border-radius: 20px;
-        clear: both;
-    }
-
-    .message-content {
-        word-wrap: break-word;
-    }
-
-    .my-message {
-        float: right;
-        background-color: #0084FF;
-        color: white;
-        border-top-right-radius: 5px;
-    }
-
-    .other-message {
-        float: left;
-        background-color: #E5E5EA;
-        color: black;
-        border-top-left-radius: 5px;
-    }
-
-    .message-time {
-        font-size: 0.75em;
-        color: #ffffff;
-        margin-top: 5px;
-    }
-
-    .my-message .message-time {
-        text-align: right;
-    }
-
-    .other-message .message-time {
-        text-align: left;
-    }
-
-    /* 스크롤바 스타일링 (선택적) */
-    .chat-list::-webkit-scrollbar,
-    .chat-room::-webkit-scrollbar,
-    .chat-messages::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .chat-list::-webkit-scrollbar-thumb,
-    .chat-room::-webkit-scrollbar-thumb,
-    .chat-messages::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 3px;
-    }
-
-    .chat-room-header button {
-        background: none;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    .chat-room-header h2 {
-        flex-grow: 1;
-        text-align: center;
-        margin: 0;
-    }
-
-    .back-button,
-    .search-button {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .search-button {
-        font-size: 16px;
-    }
-</style>
+<!-- 채팅방 리스트 -->
 <div id="chat-container">
     <div class="content-wrapper">
         <div class="chat-list">
@@ -404,10 +62,12 @@
     </div>
 </div>
 
+<script src="/socket.io/socket.io.js"></script>
 <script>
     $(document).ready(function () {
-
-        let chatRooms = [];
+        const socket = io();
+        let currentRoom = null;
+        const currentUser = '<%= user.mem_id %>';
 
         // 채팅방 목록 가져오기
         function fetchChatRooms() {
@@ -427,29 +87,39 @@
             });
         }
 
-        // 채팅방 검색
+        // 채팅방 렌더링
         function renderChatRooms(rooms) {
             $('#chatRoomsList').empty();
             if (rooms.length === 0) {
                 $('#chatRoomsList').append('<p>검색 결과가 없습니다.</p>');
             } else {
                 rooms.forEach((room) => {
+                    const deleteButton = room.mem_id === currentUser
+                        ? `<button class="delete-room" data-id="${room.group_idx}">삭제</button>`
+                        : '';
                     $('#chatRoomsList').append(
                         `<div class="chat-room-item" data-id="${room.group_idx}">
-                                <div class="chat-room-info">
-                                    <div class="chat-room-name">${room.group_name}</div>
-                                    <div class="chat-room-description">${room.group_desc}</div>
-                                    <div class="chat-room-tags">${room.group_hash}</div>
-                                </div>
-                                <div class="chat-room-image">
-                                    <img src="#" alt="${room.mem_id}">
-                                </div>
-                            </div>`
+                        <div class="chat-room-info">
+                            <div class="chat-room-name">${room.group_name}</div>
+                            <div class="chat-room-description">${room.group_desc}</div>
+                            <div class="chat-room-tags">${room.group_hash}</div>
+                        </div>
+                        <div class="chat-room-actions">
+                            ${deleteButton}
+                        </div>
+                    </div>`
                     );
                 });
             }
         }
-
+        // 채팅방 삭제
+        $(document).on('click', '.delete-room', function (e) {
+            e.stopPropagation();
+            const roomId = $(this).data('id');
+            if (confirm('정말로 이 채팅방을 삭제하시겠습니까?')) {
+                socket.emit('delete room', roomId);
+            }
+        });
         // 모달창 보여주기
         function showChatRoomModal() {
             document.querySelector(".chat-room-modal").className = "chat-room-modal show";
@@ -508,6 +178,7 @@
             }
         });
 
+        // 채팅방 검색
         $('#searchInput').on('input', function () {
             const searchTerm = $(this).val().toLowerCase();
             const filteredRooms = chatRooms.filter(room =>
@@ -520,28 +191,50 @@
 
         fetchChatRooms(); // 페이지 로드 시 채팅방 목록을 가져옴
         // --------------------------------------------------------- 1차 수정 완료 --------------------------------------------------
+
+        // 채팅방 보여주기
         function showChatRoom(room) {
+            if (currentRoom) {
+                socket.emit('leave room', currentRoom.group_idx);
+            }
             currentRoom = room;
+            socket.emit('join room', room.group_idx);
             $('.chat-list').hide();
             $('.chat-room').show();
             $('#roomName').text(room.group_name);
             $('.chat-messages').empty();
             loadChatMessages(room.group_idx);
-            scrollToBottom();
+
+            if (room.mem_id === currentUser) {
+                $('#searchMessages').replaceWith('<button id="clearMessages" class="clear-button">채팅내역 지우기</button>');
+            } else {
+                $('.clear-button').replaceWith('<button id="searchMessages" class="search-button">&#128269;</button>');
+            }
         }
 
+        // 채팅 내역 지우기
+        $(document).on('click', '#clearMessages', function () {
+            if (confirm('정말로 모든 채팅 내역을 지우시겠습니까?')) {
+                socket.emit('clear messages', currentRoom.group_idx);
+            }
+        });
+
+        // 채팅 목록으로 돌아가기
         function showChatList() {
+            if (currentRoom) {
+                socket.emit('leave room', currentRoom.group_idx);
+            }
             currentRoom = null;
             $('.chat-room').hide();
             $('.chat-list').show();
         }
 
+        // 채팅 메시지 로드
         function loadChatMessages(groupIdx) {
             $.ajax({
                 url: `/chat/messages/${groupIdx}`,
                 method: 'GET',
                 success: function (messages) {
-                    console.log(messages)
                     messages.forEach(message => {
                         appendMessage(message.mem_id, message.chat, new Date(`1970-01-01T${message.chat_at}`));
                     });
@@ -556,6 +249,7 @@
             });
         }
 
+        // 이벤트 리스너
         $(document).on('click', '.chat-room-item', function () {
             const roomId = $(this).data('id');
             const room = chatRooms.find(r => r.group_idx === roomId);
@@ -564,11 +258,7 @@
             }
         });
 
-        let currentUser = '<%= user.mem_id %>'; // 현재 사용자 이름 (실제 구현에서는 로그인 정보 등에서 가져와야 함)
-
-        $('#sendMessage').click(function () {
-            sendMessage();
-        });
+        $('#sendMessage').click(sendMessage);
 
         $('#messageInput').keypress(function (e) {
             if (e.which == 13) { // Enter key
@@ -576,64 +266,47 @@
             }
         });
 
+        // 메시지 전송
         function sendMessage() {
             const message = $('#messageInput').val().trim();
-            console.log("Sending message:", message); // 디버깅용
             if (message && currentRoom) {
-                $.ajax({
-                    url: '/chat/message',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        groupIdx: currentRoom.group_idx,
-                        memId: currentUser,
-                        chat: message
-                    }),
-                    success: function (savedMessage) {
-                        console.log(savedMessage);
-                        const chatDate = savedMessage.chat_at ? new Date(`1970-01-01T${savedMessage.chat_at}`) : new Date();
-                        appendMessage(savedMessage.mem_id, savedMessage.chat, chatDate);
-                        $('#messageInput').val('');
-                        scrollToBottom();
-                    },
-                    error: function () {
-                        console.error("Error:", status, error);
-                        console.log("Response:", xhr.responseText);
-                        Swal.fire({
-                            icon: 'error',
-                            text: '메시지 전송 실패'
-                        });
-                    }
-                })
+                socket.emit('chat message', {
+                    groupIdx: currentRoom.group_idx,
+                    memId: currentUser,
+                    chat: message
+                });
+                $('#messageInput').val('');
             }
         }
 
+        // 메시지 추가
         function appendMessage(sender, content, time) {
             const isMyMessage = sender === currentUser;
             const messageClass = isMyMessage ? 'my-message' : 'other-message';
             const formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             const messageHtml = `
-        <div class="message ${messageClass}">
-            <div class="message-content">${content}</div>
-            <div class="message-time">${formattedTime}</div>
-        </div>
-    `;
+            <div class="message ${messageClass}">
+                <div class="message-content">${content}</div>
+                <div class="message-time">${formattedTime}</div>
+            </div>
+        `;
 
             $('#chatMessages').append(messageHtml);
             scrollToBottom();
         }
 
+        // 스크롤을 항상 아래로
         function scrollToBottom() {
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
 
-        $('#leaveRoom').click(function () {
-            showChatList();
-        });
+        $('#leaveRoom').click(showChatList);
 
+
+        //  메세지 검색인데 여차하면 삭제할거
         $('#searchMessages').click(function () {
             // 메시지 검색 기능 구현
             const searchTerm = prompt("검색할 내용을 입력하세요:");
@@ -642,6 +315,7 @@
             }
         });
 
+        // 메세지 일치되면 노란색으로 바뀜
         function searchMessages(term) {
             const messages = $('.message');
             messages.each(function () {
@@ -654,8 +328,26 @@
             });
         }
 
-        // 초기 상태 설정
-        $('.chat-room').hide();
+        // Socket 이벤트 리스너
+        socket.on('chat message', function (message) {
+            const chatDate = message.chat_at ? new Date(`1970-01-01T${message.chat_at}`) : new Date();
+            appendMessage(message.mem_id, message.chat, chatDate);
+            scrollToBottom();
+        });
+
+        socket.on('room deleted', function (roomId) {
+            $(`[data-id="${roomId}"]`).remove();
+            if (currentRoom && currentRoom.group_idx === roomId) {
+                showChatList();
+            }
+        });
+
+        socket.on('messages cleared', function () {
+            $('#chatMessages').empty();
+        });
+
+        // 초기화
+        fetchChatRooms();
     });
 
 

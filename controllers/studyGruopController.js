@@ -47,9 +47,32 @@ const chatController = {
   }
 };
 
+async function deleteChatRoom(req, res) {
+  const { groupIdx } = req.params;
+  try {
+    await studyService.deleteChatRoom(groupIdx);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
+
+async function clearChatMessages(req, res) {
+  const { groupIdx } = req.params;
+  try {
+    await studyService.clearChatMessages(groupIdx);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
+
+
 
 module.exports = {
   createRoom,
   getChatRooms,
-  chatController
+  chatController,
+  deleteChatRoom,
+  clearChatMessages
 };
