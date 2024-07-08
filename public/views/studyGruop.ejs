@@ -208,19 +208,12 @@
 
         // 채팅방 보여주기
         function showChatRoom(room) {
-            if (currentRoom) {
-                console.log('Leaving room:', currentRoom.group_idx);
-                socket.emit('leave room', currentRoom.group_idx);
-            }
             currentRoom = room;
             $('.chat-list').hide();
             $('.chat-room').show();
             $('#roomName').text(room.group_name);
             $('.chat-messages').empty();
-            loadChatMessages(room.group_idx).then(() => {
-                console.log('Joining room:', room.group_idx);
-                socket.emit('join room', room.group_idx);
-            });
+            startMessagePolling(room.group_idx);
 
             if (room.mem_id === currentUser) {
                 $('#searchMessages').replaceWith('<button id="clearMessages" class="clear-button">채팅내역 지우기</button>');
@@ -228,6 +221,7 @@
                 $('.clear-button').replaceWith('<button id="searchMessages" class="search-button">&#128269;</button>');
             }
         }
+
 
         // 채팅 내역 지우기
         $(document).on('click', '#clearMessages', function () {
@@ -242,6 +236,7 @@
                 socket.emit('leave room', currentRoom.group_idx);
             }
             currentRoom = null;
+            stopMessagePolling();
             $('.chat-room').hide();
             $('.chat-list').show();
         }
@@ -253,6 +248,7 @@
                     url: `/chat/messages/${groupIdx}`,
                     method: 'GET',
                     success: function (messages) {
+                        $('#chatMessages').empty();
                         messages.forEach(message => {
                             appendMessage(message.mem_id, message.chat, new Date(`1970-01-01T${message.chat_at}`));
                         });
@@ -269,6 +265,23 @@
                 });
             });
         }
+
+        let messagePollingInterval;
+
+        function startMessagePolling(roomId) {
+            stopMessagePolling(); // 이전 폴링 중지
+            messagePollingInterval = setInterval(() => {
+                loadChatMessages(roomId);
+            }, 500); // 0.5초마다 메시지 로드
+        }
+
+        function stopMessagePolling() {
+            if (messagePollingInterval) {
+                clearInterval(messagePollingInterval);
+                messagePollingInterval = null;
+            }
+        }
+
         // 이벤트 리스너
         $(document).on('click', '.chat-room-item', function () {
             const roomId = $(this).data('id');
@@ -354,7 +367,6 @@
 
         // Socket 이벤트 리스너
         socket.on('chat message', function (message) {
-            console.log('Received new message:', message);
             const chatDate = message.chat_at ? new Date(`1970-01-01T${message.chat_at}`) : new Date();
             appendMessage(message.mem_id, message.chat, chatDate);
             scrollToBottom();
@@ -370,9 +382,6 @@
         socket.on('messages cleared', function () {
             $('#chatMessages').empty();
         });
-
-        // 초기화
-        fetchChatRooms();
     });
 
 

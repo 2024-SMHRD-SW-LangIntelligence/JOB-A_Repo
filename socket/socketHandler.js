@@ -25,7 +25,6 @@ module.exports = function (io) {
                     }
                 }, {
                     json: (message) => {
-                        console.log('Sending message to room:', data.groupIdx, message);
                         io.to(data.groupIdx).emit('chat message', message);
                     },
                     status: () => ({ json: () => { } })

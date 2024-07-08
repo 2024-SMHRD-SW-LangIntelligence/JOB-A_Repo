@@ -26,16 +26,10 @@ const supabase = require('./config/superbase');
 // 소켓관련
 const socketIo = require('socket.io')
 const http = require('http').createServer(app);
-const io = socketIo(http, {
-  cors: {
-    origin: "*",
-    methods: ["GET","POST"]
-  }
-});
+const io = socketIo(http);
 
 // Socket.IO 모듈 분리
 const socketModule = require('./socket/socketHandler')(io);
-const axios = require('axios');
 
 // 세션 설정
 app.use(session({
