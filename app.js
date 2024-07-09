@@ -85,11 +85,11 @@ app.use('/schedule', scheduleRoutes);
 // 루트 경로에 회원값이 있을 시 세션의 유저값을 user 변수에 담아 이동
 app.get('/', (req, res) => {
   if (req.session.user) {
-    res.render('today', { user : req.session.user, title: 'Main'});
+    res.render('today', { user: req.session.user, title: 'Main' });
   } else {
-    res.render('main', { user : null, title: 'Main' });
+    res.render('main', { user: null, title: 'Main' });
   }
-  
+
 });
 
 app.get('/certificate', (req, res) => {
@@ -106,7 +106,7 @@ app.get('/tables', (req, res) => {
 
 app.get('/search', (req, res) => {
   const searchResults = req.session.searchResults || [];
-  res.render('search', { title: '검색 결과', results: searchResults});
+  res.render('search', { title: '검색 결과', results: searchResults });
 });
 // 3379 포트를 사용
 

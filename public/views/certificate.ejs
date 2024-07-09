@@ -6,14 +6,15 @@
         height: 90%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        align-items: center;
+        /* 중앙 정렬 추가 */
     }
 
-    h1,
+    #mainHeading,
     h2,
     h3 {
-        color: #333;
         text-align: center;
+        margin-bottom: 30px;
     }
 
     .mbti-group {
@@ -28,10 +29,13 @@
         justify-content: space-between;
     }
 
-    .mbti-button {
+    .mbti-button,
+    .job-button {
         width: 120px;
-        height: 120px;
-        font-size: 36px;
+        height: 80px;
+        /* 버튼 높이 조정 */
+        font-size: 24px;
+        /* 폰트 사이즈 조정 */
         border: 3px solid #007bff;
         background-color: #fff;
         color: #007bff;
@@ -43,13 +47,15 @@
     }
 
     .mbti-button:hover,
-    .personality-button:hover {
+    .personality-button:hover,
+    .job-button:hover {
         background-color: #007bff;
         color: #fff;
     }
 
     .mbti-button.selected,
-    .personality-button.selected {
+    .personality-button.selected,
+    .job-button.selected {
         background-color: #007bff;
         color: #fff;
     }
@@ -62,7 +68,8 @@
     }
 
     .personality-button {
-        width: 30%;
+        width: 45%;
+        /* 버튼 너비 조정 */
         padding: 15px 0;
         font-size: 18px;
         border: 2px solid #007bff;
@@ -72,6 +79,7 @@
         transition: all 0.3s ease;
         margin-bottom: 15px;
         border-radius: 5px;
+        position: relative;
     }
 
     #submitJob {
@@ -91,10 +99,52 @@
     #submitJob:hover {
         background-color: #218838;
     }
-</style>
 
+    .tooltip {
+        position: absolute;
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 9999;
+        width: 200px;
+        text-align: center;
+        transform: translateX(-50%);
+        white-space: normal;
+        font-size: 14px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .personality-button:hover .tooltip,
+    .job-button:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* 추가된 부분 */
+    #jobResults {
+        display: none;
+        width: 100%;
+        max-width: 800px;
+        text-align: center;
+    }
+
+    .job-button {
+        width: 100%;
+        height: 80px;
+        /* 버튼 높이 조정 */
+        font-size: 24px;
+        /* 폰트 사이즈 조정 */
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+</style>
 <div class="ccontent">
-    <h1>직무추천 AI</h1>
+    <h1 id="mainHeading">직무추천 AI</h1>
 
     <div id="jobRecommendationSection">
         <h2>MBTI와 성격유형을 입력 해주세요</h2><br>
@@ -121,33 +171,67 @@
 
             <h3>성격유형</h3>
             <div class="personality-group">
-                <button type="button" class="personality-button" data-value="관습형">관습형</button>
-                <button type="button" class="personality-button" data-value="탐구형">탐구형</button>
-                <button type="button" class="personality-button" data-value="예술형">예술형</button>
-                <button type="button" class="personality-button" data-value="사회형">사회형</button>
-                <button type="button" class="personality-button" data-value="진취형">진취형</button>
-                <button type="button" class="personality-button" data-value="현실형">현실형</button>
+                <button type="button" class="personality-button" data-value="관습형">
+                    관습형
+                    <div class="tooltip">체계적이고 조직적인 활동을 선호하며, 명확한 규칙과 절차를 따르는 것을 선호(책임감, 집중력, 스트레스 저항력)</div>
+                </button>
+                <button type="button" class="personality-button" data-value="탐구형">
+                    탐구형
+                    <div class="tooltip">논리적이고 분석적인 사고를 선호하며, 과학적 탐구와 지식을 추구(논리적 사고방식, 통찰력, 추리력, 분석력, 강인한 정신력)</div>
+                </button>
+                <button type="button" class="personality-button" data-value="예술형">
+                    예술형
+                    <div class="tooltip">창의적이고 예술적인 표현을 선호하며, 상상력과 독창성을 중시(창의력, 꼼꼼함, 세심함, 긍정적 마인드)</div>
+                </button>
+                <button type="button" class="personality-button" data-value="사회형">
+                    사회형
+                    <div class="tooltip">사람들과의 상호작용을 선호하며, 협력과 도움을 주는 활동을 선호(협업능력, 의사소통 능력, 대인관계 능력)</div>
+                </button>
+                <button type="button" class="personality-button" data-value="진취형">
+                    진취형
+                    <div class="tooltip">지도력과 설득력을 중시하며, 목표 지향적이고 야심 찬 성향을 가지고 있습니다.(책임감, 집중력, 스트레스 저항력)</div>
+                </button>
+                <button type="button" class="personality-button" data-value="현실형">
+                    현실형
+                    <div class="tooltip">현실적이고 실질적인 문제를 해결하는 것을 좋아하며, 신체적 활동과 도구 사용을 선호(인내심, 체력, 끈기)</div>
+                </button>
             </div>
 
-            <button type="submit" id="submitJob">Get Job Recommendations</button>
+            <button type="submit" id="submitJob">다 음</button>
         </form>
     </div>
 
-    <div id="jobResults"></div>
-</div>
+    <div id="jobResults" style="display: none;">
+        <div id="recommendedJobButtons"></div>
+        <form id="jobSelectionForm">
+            <select id="educationSelect" name="education" required>
+                <option value="">학력 선택</option>
+                <option value="1">고등학교 졸업</option>
+                <option value="2">전문학사(2년)</option>
+                <option value="3">전문학사(3년)</option>
+                <option value="4">전문학사</option>
+                <option value="5">학사</option>
+                <option value="6">석사</option>
+                <option value="7">박사</option>
+            </select>
+            <input type="number" id="experienceInput" name="experience" min="0" placeholder="경력 (년)" required>
+            <button type="submit" id="nextButton">다음</button>
+        </form>
+    </div>
 
-<div id="certRecommendationSection" style="display:none;">
-    <h2>Certificate Recommendation</h2>
-    <form id="certRecommendationForm">
-        <label for="job">Selected Job:</label>
-        <select id="job" name="job" required></select>
-        <label for="education">Education Level:</label>
-        <input type="number" id="education" name="education" required>
-        <label for="experience">Years of Experience:</label>
-        <input type="number" id="experience" name="experience" required>
-        <button type="submit">Get Certificate Recommendations</button>
-    </form>
-    <div id="certResults"></div>
+    <div id="certRecommendationSection" style="display:none;">
+        <h2>직무별 자격증</h2>
+        <form id="certRecommendationForm">
+            <label for="job">Selected Job:</label>
+            <select id="job" name="job" required></select>
+            <label for="education">Education Level:</label>
+            <input type="number" id="education" name="education" required>
+            <label for="experience">Years of Experience:</label>
+            <input type="number" id="experience" name="experience" required>
+            <button type="submit">Get Certificate Recommendations</button>
+        </form>
+        <div id="certResults"></div>
+    </div>
 </div>
 
 <script>
@@ -172,98 +256,149 @@
         });
     });
 
+    // 폼 제출 이벤트 리스너
     document.getElementById('jobRecommendationForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // MBTI 값 수집
         const mbti =
             document.querySelector('.mbti-button[data-group="ie"].selected').dataset.value +
             document.querySelector('.mbti-button[data-group="sn"].selected').dataset.value +
             document.querySelector('.mbti-button[data-group="tf"].selected').dataset.value +
             document.querySelector('.mbti-button[data-group="pj"].selected').dataset.value;
+
+        // 성격유형 값 수집
         const personality = document.querySelector('.personality-button.selected').dataset.value;
-        console.log(mbti, personality);
-        const response = await fetch('/recommend-jobs', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ mbti, personality }),
-        });
 
-        const data = await response.json();
-        displayJobResults(data.recommendations);
-    });
-
-    function displayJobResults(recommendations) {
-        const jobResults = document.getElementById('jobResults');
-        jobResults.innerHTML = '<h3>Recommended Jobs:</h3>';
-        const ul = document.createElement('ul');
-        recommendations.forEach(job => {
-            const li = document.createElement('li');
-            li.textContent = job;
-            ul.appendChild(li);
-        });
-        jobResults.appendChild(ul);
-
-        // 직무 선택 옵션 업데이트
-        const jobSelect = document.getElementById('job');
-        jobSelect.innerHTML = '';
-        recommendations.forEach(job => {
-            const option = document.createElement('option');
-            option.value = job;
-            option.textContent = job;
-            jobSelect.appendChild(option);
-        });
-
-        // 자격증 추천 섹션 표시
-        document.getElementById('certRecommendationSection').style.display = 'block';
-    }
-
-    document.getElementById('certRecommendationForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const job = document.getElementById('job').value;
-        const education = document.getElementById('education').value;
-        const experience = document.getElementById('experience').value;
-
-        const response = await fetch('/recommend-certificates', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ job, education, experience }),
-        });
-
-        const data = await response.json();
-        displayCertResults(data.recommendations);
-    });
-
-    function displayCertResults(recommendations) {
-        const certResults = document.getElementById('certResults');
-        certResults.innerHTML = '<h3>Recommended Certificates:</h3>';
-
-        ['by_exam_schedule', 'by_num_applicants', 'by_pass_rate'].forEach(category => {
-            const h4 = document.createElement('h4');
-            h4.textContent = category.replace(/_/g, ' ').charAt(0).toUpperCase() + category.replace(/_/g, ' ').slice(1);
-            certResults.appendChild(h4);
-
-            const table = document.createElement('table');
-            table.innerHTML = `
-                    <tr>
-                        <th>Certificate</th>
-                        <th>Number of Applicants</th>
-                        <th>Pass Rate</th>
-                        <th>Exam Schedule</th>
-                    </tr>
-                `;
-
-            recommendations[category].forEach(cert => {
-                const row = table.insertRow();
-                row.insertCell().textContent = cert.certificate;
-                row.insertCell().textContent = cert.num_applicants;
-                row.insertCell().textContent = cert.pass_rate;
-                row.insertCell().textContent = cert.exam_schedule;
+        try {
+            // 서버로 데이터 전송
+            const response = await fetch('http://localhost:5000/recommend-jobs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ mbti, personality }),
             });
 
-            certResults.appendChild(table);
+            if (!response.ok) {
+                throw new Error('서버 응답 오류');
+            }
+
+            const recommendedJobs = await response.json();
+            displayJobResults(recommendedJobs);
+        } catch (error) {
+            console.error('Error:', error);
+            alert('직무 추천 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        }
+    });
+
+    // 결과 표시 함수
+    function displayJobResults(recommendedJobs) {
+        const jobRecommendationSection = document.getElementById('jobRecommendationSection');
+        const jobResults = document.getElementById('jobResults');
+        const recommendedJobButtons = document.getElementById('recommendedJobButtons');
+        const mainHeading = document.getElementById('mainHeading');
+
+        // 기존 폼 숨기기
+        jobRecommendationSection.style.display = 'none';
+
+        // 결과 섹션 표시
+        jobResults.style.display = 'block';
+
+        // h1 태그 변경
+        mainHeading.textContent = '추천 직무';
+
+        // 기존 결과 초기화
+        recommendedJobButtons.innerHTML = '';
+
+        const jobDescriptions = {
+            '게임': '창의력과 상상력이 필요하며 디자인적 감각도 필요',
+            '데이터': '대규모 데이터 분석, 저장, 처리, 전송',
+            '모바일': '모바일 환경에 최적화된 사용자 경험 제공, 사용자의 편의성과 접근성을 고려한 디자인',
+            '백엔드': '웹 애플리케이션 기능 구축, 유지관리, 데이터베이스 관리',
+            '보안': '해킹을 방지하기 위한 보안 정책 수립 및 실행',
+            '웹퍼블리셔': '웹 접근성을 준수하여 사이트 구현',
+            '프론트 엔드': '사용자 친화적이고 직관적인 디자인 제공'
+        };
+
+        // 추천 직무 버튼 생성
+        recommendedJobs.forEach(job => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = job;
+            button.classList.add('job-button');
+            button.setAttribute('data-value', job);
+
+            const tooltip = document.createElement('div');
+            tooltip.classList.add('tooltip');
+            tooltip.textContent = jobDescriptions[job];
+            button.appendChild(tooltip);
+
+            recommendedJobButtons.appendChild(button);
+        });
+
+        document.getElementById('jobSelectionForm').addEventListener('submit', sendJobData);
+    }
+
+    async function sendJobData(e) {
+        e.preventDefault();
+        const selectedJob = document.querySelector('.job-button.selected');
+        const educationSelect = document.getElementById('educationSelect');
+        const experienceInput = document.getElementById('experienceInput');
+        if (!selectedJob) {
+            alert('직무를 선택해주세요.');
+            return;
+        }
+
+        const jobData = {
+            job: selectedJob.getAttribute('data-value'),
+            education: educationSelect.value,
+            experience: experienceInput.value
+        };
+        console.log(jobData);
+        try {
+            const response = await fetch('http://localhost:5000/recommend-certificates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jobData),
+            });
+
+            if (!response.ok) {
+                throw new Error('서버 응답 오류');
+            }
+
+            const certificates = await response.json();
+            displayCertificates(certificates);
+        } catch (error) {
+            console.error('Error:', error);
+            alert('자격증 추천 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        }
+    }
+
+    function displayCertificates(certificates) {
+        const jobResults = document.getElementById('jobResults');
+        const certResults = document.getElementById('certResults');
+
+        jobResults.style.display = 'none';
+        certResults.style.display = 'block';
+
+        certResults.innerHTML = '<h2>추천 자격증</h2>';
+        certificates.forEach(cert => {
+            const certElement = document.createElement('p');
+            certElement.textContent = cert;
+            certResults.appendChild(certElement);
         });
     }
+
+    // 직무 버튼 클릭 이벤트 리스너
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('job-button')) {
+            document.querySelectorAll('.job-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            e.target.classList.add('selected');
+        }
+    });
 </script>
