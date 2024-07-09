@@ -65,6 +65,33 @@
         .fc-day-sun .fc-daygrid-day-number {
             color: red;
         }
+        .colorbox {
+            display: flex;
+            flex-wrap: wrap;
+            width: 165px;
+            margin-top: 10px;
+            border: 2px solid #cccccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .color-radio {
+            display: none;
+        }
+        .color-label {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .color-label:hover {
+            border-color: #333;
+        }
+        .color-radio:checked + .color-label {
+            border-color: #000;
+        }
     </style>
 
 </head>
@@ -83,48 +110,67 @@
                             <div class="custom-row">
                                 <% if(user){%>
                                     <!-- Calendar Column -->
-                                    <div class="calendar-column">
+                                    <div class="calendar-column" >
                                         <!-- Calendar -->
                                         <div id='calendar' style="height: 1100px; width: 1100px; margin-left: 50px;">
                                         </div>
 
-                                        <!-- Modal add-->
-                                        <div class="modal fade" id="eventModal" tabindex="-1"
-                                            aria-labelledby="eventModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="eventModalLabel">일정 입력</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <form id="eventForm">
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label for="eventTitle" class="form-label">일정 제목</label>
-                                                                <input type="text" class="form-control" id="eventTitle"
-                                                                    name="msche_title" required>
+                                                                <input type="text" class="form-control" id="eventTitle" name="msche_title" required>
                                                                 <br>
-                                                                날짜  <input type="date" id="selectedStartDate"
-                                                                    name="msche_st_dt">
-                                                                <input type="date" id="selectedEndDate"
-                                                                    name="msche_ed_dt">
-                                                                <input type="hidden" id="selectedColor"
-                                                                    name="msche_color">
-                                                                <input type="hidden" class="mem_id" name="mem_id"
-                                                                    value="<%= user.mem_id %>">
+                                                                날짜<br>
+                                                                <input type="date" id="selectedStartDate" name="msche_st_dt" style="margin-top: 10px; margin-bottom: 10px;"> ~ 
+                                                                <input type="date" id="selectedEndDate" name="msche_ed_dt" style="margin-top: 10px; margin-bottom: 10px;">
+                                                                <br>
+                                                                일정 색상 선택 <br>
+                                                                <div class="colorbox">
+                                                                    <input type="radio" id="color1" name="msche_color" class="color-radio" value="#df5454">
+                                                                    <label for="color1" class="color-label" style="background-color: #df5454;"></label>
+                                                                    
+                                                                    <input type="radio" id="color2" name="msche_color" class="color-radio" value="#eca957">
+                                                                    <label for="color2" class="color-label" style="background-color: #eca957;"></label>
+                                                                    
+                                                                    <input type="radio" id="color3" name="msche_color" class="color-radio" value="#dfe458">
+                                                                    <label for="color3" class="color-label" style="background-color: #dfe458;"></label>
+                                                                    
+                                                                    <input type="radio" id="color4" name="msche_color" class="color-radio" value="#67ee4c">
+                                                                    <label for="color4" class="color-label" style="background-color: #67ee4c;"></label>
+                                                                    
+                                                                    <input type="radio" id="color5" name="msche_color" class="color-radio" value="#56dae6">
+                                                                    <label for="color5" class="color-label" style="background-color: #56dae6;"></label>
+                                                                    
+                                                                    <input type="radio" id="color6" name="msche_color" class="color-radio" value="#518ff3">
+                                                                    <label for="color6" class="color-label" style="background-color: #518ff3;"></label>
+                                                                    
+                                                                    <input type="radio" id="color7" name="msche_color" class="color-radio" value="#7661ee">
+                                                                    <label for="color7" class="color-label" style="background-color: #7661ee;"></label>
+                                                                    
+                                                                    <input type="radio" id="color8" name="msche_color" class="color-radio" value="#ec62ec">
+                                                                    <label for="color8" class="color-label" style="background-color: #ec62ec;"></label>
+                                                                </div>
+                                                                <input type="hidden" class="mem_id" name="mem_id" value="<%= user.mem_id %>">
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">취소</button>
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="saveEvent">저장</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                            <button type="submit" class="btn btn-primary" id="saveEvent">저장</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
+                                    
+                            
 
                                         <!-- Modal delete-->
                                         <div class="modal fade" id="deleteModal" tabindex="-1"
@@ -187,7 +233,6 @@
             // 캘린더 스크립트
             document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('calendar');
-                var color = '#FF5733';
                 var selectedStartDate, selectedEndDate, eventId;
                 const holidaysColor = '#FC9E99';
                 var holidays = [
@@ -219,7 +264,6 @@
                         var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
                         document.getElementById('selectedStartDate').value = selectedStartDate;
                         document.getElementById('selectedEndDate').value = selectedEndDate;
-                        document.getElementById('selectedColor').value = color;
                         eventModal.show();
                     },
                     // 클릭으로 일정 삭제
@@ -291,6 +335,7 @@
 
                 document.getElementById('saveEvent').addEventListener('click', function () {
                     var eventTitle = document.getElementById('eventTitle').value;
+                    var selectedColor = document.querySelector('.color-radio:checked').value;
                     var addString = $("#eventForm").serialize();
                     $.ajax({
                         type: 'post',
@@ -308,7 +353,7 @@
                             title: eventTitle,
                             start: selectedStartDate,
                             end: selectedEndDate,
-                            color: color
+                            color: selectedColor
                         });
                         var eventModal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
                         eventModal.hide();
