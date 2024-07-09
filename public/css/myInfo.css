@@ -1,3 +1,5 @@
+
+
 .table_text{
   font-size: 13.5px !important;
   width: 100%;
@@ -85,10 +87,10 @@
   }
   .modal_body{ /* 자격증 모달 바디 */
     position:absolute;
-    margin-bottom: 160%;
-    
     top:40%;
     left: 40%;
+    margin-bottom: 160%;
+
     color: #000000;
     overflow-y: auto; /* 세로 스크롤바를 추가 */
   

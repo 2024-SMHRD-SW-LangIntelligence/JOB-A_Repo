@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link rel="shortcut icon" href="../img/메인-removebg-preview__1_-removebg-preview.png" sizes="32x32" type="image/png">
+    <link rel="shortcut icon" href="../img/메인아이콘-removebg-preview.png" sizes="50x50" type="image/png">
 
     <!-- 직접만든 css들 -->
     <link rel="stylesheet" href="../css/total.css">
@@ -66,11 +66,75 @@
             color: red;
         }
     </style>
-
+    <style>
+        .slidddddd {
+            position: relative;
+            width: 1600px;
+            height: 800px;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+        .slidddddd div {
+            position: absolute;
+            width: 640px;
+            height: 305px;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            animation: move 18s linear infinite; /* 각 GIF의 애니메이션을 10초로 설정 */
+        }
+        .slidddddd img {
+            position: absolute;
+            width: 640px;
+            height: 305px;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            animation: move 18s linear infinite; /* 각 GIF의 애니메이션을 10초로 설정 */
+        }
+        .slidddddd img:nth-child(1) {
+            animation-delay: 3s;
+        }
+        .slidddddd img:nth-child(2) {
+            animation-delay: 6s; /* 간격을 줄여서 GIF가 빨리 나타나도록 설정 */
+        }
+        .slidddddd img:nth-child(3) {
+            animation-delay: 9s; /* 간격을 줄여서 GIF가 빨리 나타나도록 설정 */
+        }
+        .slidddddd img:nth-child(4) {
+            animation-delay: 12s; /* 간격을 줄여서 GIF가 빨리 나타나도록 설정 */
+        }
+        .slidddddd .text {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            transition: opacity 0.3s ease; /* 페이드 인/아웃 효과를 위한 transition */
+        }
+        @keyframes move {
+            0% {
+                left: 100%; /* 시작점 - 화면 오른쪽 끝에서 시작 */
+            }
+            50% {
+                left: 30%; /* 중간 지점 - 화면 왼쪽으로 이동 */
+            }
+            100% {
+                left: -40%; /* 종료점 - 화면 오른쪽 끝에서 다시 시작 */
+            }
+        }
+    </style>
 </head>
 
 <body id="page-top">
     <!-- Page Wrapper -->
+
+
     <div id="wrapper">
         <%- include('sidebar') %>
             <!-- Content Wrapper -->
@@ -159,6 +223,17 @@
                                         </div>
                                     </div>
                             </div>
+                            <% }else{ %>
+                                <div class="slidddddd">
+                                    <div class="text">캘린더를 클릭해서 일정을 추가하세요!</div>
+                                    <img src="../img/일정추가.gif" alt="GIF 1">
+                                    <div class="text">일정 검색 기능으로 원하는 일정을 확인하세요!</div>
+                                    <img src="../img/일정-검색.gif" alt="GIF 2">
+                                    <div class="text">일정을 완료하면 일정 수행률이 오릅니다! 100%를 향해!</div>
+                                    <img src="../img/일정-수행률.gif" alt="GIF 3">
+                                    <div class="text">이런 씨빠 ㄹ 이러고 안뜨면 ㅈ같습니다!</div>
+                                    <img src="../img/자격증-입력_보여주기.gif" alt="GIF 4">
+                                </div>
                             <% } %>
                                 <!-- Right Column for EJS Template -->
                                 <div class="content-column">
