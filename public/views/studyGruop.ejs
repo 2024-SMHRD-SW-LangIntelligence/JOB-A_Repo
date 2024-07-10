@@ -188,9 +188,9 @@
         $('#searchInput').on('input', function () {
             const searchTerm = $(this).val().toLowerCase();
             const filteredRooms = chatRooms.filter(room =>
-                room.name.toLowerCase().includes(searchTerm) ||
-                room.description.toLowerCase().includes(searchTerm) ||
-                room.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+                room.group_name.toLowerCase().includes(searchTerm) ||
+                room.group_desc.toLowerCase().includes(searchTerm) ||
+                room.group_hash.toLowerCase().includes(searchTerm)
             );
             renderChatRooms(filteredRooms);
         });
