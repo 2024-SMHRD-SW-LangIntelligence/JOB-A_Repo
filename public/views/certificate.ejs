@@ -14,7 +14,7 @@
     h2,
     h3 {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
 
     .mbti-group {
@@ -142,6 +142,70 @@
         margin-bottom: 10px;
         margin-top: 10px;
     }
+
+    #certResults {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    #certTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 11px;
+        /* 폰트 크기 줄임 */
+    }
+
+    #certTable th,
+    #certTable td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        /* 가운데 정렬 */
+        vertical-align: middle;
+        /* 세로 중앙 정렬 */
+    }
+
+    #certTable th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    #certTable tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    #certTable tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .addScheduleBtn {
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 11px;
+        /* 버튼 폰트 크기 */
+        transition: background-color 0.3s, color 0.3s;
+        /* 배경색과 텍스트 색상 변화 애니메이션 */
+    }
+
+    .addScheduleBtn:hover {
+        background-color: #45a049;
+        color: #fff;
+        /* 텍스트 색상 변화 */
+    }
+
+    #certTable a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    #certTable a:hover {
+        text-decoration: underline;
+    }
 </style>
 <div class="ccontent">
     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -225,7 +289,18 @@
 
 
     <div id="certResults" style="display:none;">
-        <ul id="certList"></ul>
+        <table id="certTable">
+            <thead>
+                <tr>
+                    <th>자격증명</th>
+                    <th>접수기간</th>
+                    <th>시험일자</th>
+                    <th>합격자발표</th>
+                    <th>일정추가</th>
+                </tr>
+            </thead>
+            <tbody id="certTableBody"></tbody>
+        </table>
     </div>
 
 </div>
@@ -374,18 +449,89 @@
     }
 
     function displayCertificates(certificates) {
-        const jobResults = document.getElementById('jobResults');
         const certResults = document.getElementById('certResults');
+        const certTableBody = document.getElementById('certTableBody');
+        const mainHeading = document.getElementById('mainHeading');
 
-        jobResults.style.display = 'none';
+        document.getElementById('jobResults').style.display = 'none';
         certResults.style.display = 'block';
 
-        certResults.innerHTML = '<h2>추천 자격증</h2>';
+        mainHeading.textContent = '추천 자격증';
+
+        // 테이블 내용 초기화
+        certTableBody.innerHTML = '';
+
         certificates.forEach(cert => {
-            const certElement = document.createElement('p');
-            certElement.textContent = cert;
-            certResults.appendChild(certElement);
+            const row = certTableBody.insertRow();
+
+            // 자격증명
+            const nameCell = row.insertCell();
+            const 시행기관 = getApplyLink(cert.시행기관);
+            const 차수 = cert.차수 === null ? " ": cert.차수;
+            nameCell.innerHTML = `<a href="${시행기관}" target="_blank"><strong>${cert.회차}<br> ${cert.자격명} ${차수}</strong></a>`;
+            // 접수기간
+            const registrationCell = row.insertCell();
+            registrationCell.innerHTML = `${cert.접수시작일자}<br>~<br>${cert.접수종료일자}`;
+
+            // 시험일자
+            const examCell = row.insertCell();
+            examCell.innerHTML = cert.시험시작일자 === cert.시험종료일자 ?
+                cert.시험시작일자 : `${cert.시험시작일자}<br>~<br>${cert.시험종료일자}`;
+
+            // 합격자발표
+            const resultCell = row.insertCell();
+            resultCell.textContent = cert.합격자발표;
+
+            // 일정추가 버튼
+            const scheduleCell = row.insertCell();
+            const addButton = document.createElement('button');
+            addButton.textContent = '일정추가';
+            addButton.className = 'addScheduleBtn';
+            addButton.onclick = () => addSchedule(cert);
+            scheduleCell.appendChild(addButton);
         });
+    }
+
+    function getApplyLink(agency) {
+        const links = {
+            '한국정보통신진흥협회': 'https://www.ihd.or.kr/main.do',
+            '한국데이터산업진흥원': 'https://www.dataq.or.kr/www/main.do',
+            '한국생산성본부': 'https://www.kpc.or.kr/',
+            '한국산업인력공단': 'https://www.q-net.or.kr/man001.do?imYn=Y&gSite=Q',
+            '한국방송통신전파진흥원': 'https://www.cq.or.kr/index.jsp'
+        };
+        return links[agency] || '#';
+    }
+
+    async function addSchedule(cert) {
+        // 여기에 Supabase DB에 일정을 추가하는 로직을 구현합니다.
+        // 예시 코드:
+        const scheduleData = {
+            자격명: cert.자격명,
+            회차: cert.회차,
+            접수시작일: cert.접수시작일자,
+            접수종료일: cert.접수종료일자,
+            시험시작일: cert.시험시작일자,
+            시험종료일: cert.시험종료일자,
+            합격자발표: cert.합격자발표,
+            일정컬러: '#3498db', // 임의로 저장
+            mem_id: '<%= user.mem_id %>' // 실제 사용자 ID로 대체해야 합니다
+        };
+        console.log(scheduleData);
+
+        try {
+            // Supabase 클라이언트를 사용하여 데이터를 삽입합니다.
+            // 아래 코드는 예시이며, 실제 Supabase 설정에 맞게 수정해야 합니다.
+            const { data, error } = await supabase
+                .from('schedules')
+                .insert([scheduleData]);
+
+            if (error) throw error;
+            alert('일정이 성공적으로 추가되었습니다!');
+        } catch (error) {
+            console.error('일정 추가 중 오류 발생:', error);
+            alert('일정 추가 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        }
     }
 
     // 직무 버튼 클릭 이벤트 리스너
