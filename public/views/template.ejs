@@ -66,53 +66,10 @@
             color: red;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <style>
-        .slidddddd {
-            position: relative;
-            width: 1600px;
-            height: 800px;
-            overflow: hidden;
-            border: 2px solid #333;
-        }
-
-        .slidddddd img {
-            position: absolute;
-            width: 690px;
-            height: 345px;
-            top: 55%;
-            left: 100%;
-            transform: translateY(-50%);
-            animation: move 18s linear infinite;
-        }
-
-        .slidddddd img:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .slidddddd img:nth-child(2) {
-            animation-delay: 4.5s;
-        }
-
-        .slidddddd img:nth-child(3) {
-            animation-delay: 9s;
-        }
-
-        .slidddddd img:nth-child(4) {
-            animation-delay: 13.5s;
-        }
-        .first_cloolr {
-            color: burlywood;
-        }
-        .sec_coloo{
-            color: yellow;
-        }
-        .color3{
-            color: deepskyblue;
-        }
-        .color4{
-            color: deeppink;
-        }
-        .slidddddd .caption {
+        .caption {
             display: inline !important;
             position: absolute;
             font-family: Arial, sans-serif;
@@ -121,9 +78,7 @@
             padding-left: 17px;
             width: 220px;
             height: 90px;
-            top: 26%;
-            left: 100%;
-            margin-left: 250px;
+            margin-left: 450px;
             transform: translateY(-50%);
             animation: move 18s linear infinite;
             align-items: center;
@@ -133,40 +88,23 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             background-color: #333;
         }
-
-        .slidddddd .caption:nth-child(5) {
-            animation-delay: 0s;
+        .swiper {
+            width: 1920px;
+            height: 916px;
+            background-color: aliceblue;
         }
 
-        .slidddddd .caption:nth-child(6) {
-            animation-delay: 4.5s;
+        .swiper-slide img {
+            width: 80%;
+            height: 75%;
+            margin-left: 165px;
+            margin-top: 10px;
         }
-
-        .slidddddd .caption:nth-child(7) {
-            animation-delay: 9s;
+        .swiper-wrapper {
+            margin-top: 30px;
         }
-
-        .slidddddd .caption:nth-child(8) {
-            animation-delay: 13.5s;
-        }
-
-        @keyframes move {
-            0% {
-                left: 100%;
-            }
-            100% {
-                left: -100%;
-            }
-        }
-
-
-
-
-        
     </style>
 </head>
-
-
 
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -261,41 +199,32 @@
                                     </div>
                             </div>
                             <% }else{ %>
-                                <div class="slidddddd">
-                                    <img src="../img/일정추가.gif" alt="Image 1">
-                                    <img src="../img/일정-검색.gif" alt="Image 2">
-                                    <img src="../img/일정-수행률.gif" alt="Image 3">
-                                    <img src="../img/자격증-입력_보여주기.gif" alt="Image 4">
-                                    <div class="caption">
-                                        $(<span class="color4">일정추가</span>).<span class="sec_coloo">캘린더_클릭</span>() => {
-                                        <br>
-                                        <span class="color3">1.</span>일정제목 입력<br>
-                                        <span class="color3">2.</span>일정 저장<br>
-                                        }
+                                <div class="swiper">
+                                    <h1 style="font-weight: bold; text-align: center; margin-top: 20px;">How to</h1>
+                                    <div class="swiper-wrapper">
+                                        <!-- Slides -->
+                                        <div class="swiper-slide">
+                                            <img src="../img/일정추가.gif" alt="Image 1">
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <img src="../img/일정-검색.gif" alt="Image 2">
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <img src="../img/일정-수행률.gif" alt="Image 3">
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <img src="../img/자격증-입력_보여주기.gif" alt="Image 4">
+                                        </div>
                                     </div>
-                                    <div class="caption">
-                                        $(<span class="color4">일정_검색</span>).<span class="sec_coloo">검색창_클릭</span>() => {
-                                        <br>
-                                        <span class="color3">1.</span> 자신이 찾고싶은 일정 검색 <br> <span class="color3">2.</span> 일정 소환
-                                        <br>
-                                    }
-                                    </div>
-                                    <div class="caption">
-                                        $(<span class="color4">일정_수행률</span>).<span class="sec_coloo">내_정보_클릭</span>() => {
-                                        <br>
-                                        <span class="color3">1.</span> 일정 완료누르기 <br> <span class="color3">2.</span> 일정 성공률 백분율 보여줌
-                                        <br>
-                                    }
-                                    </div>
-                                    <div class="caption">
-                                        $(<span class="color4">자격증</span>).<span class="sec_coloo">자격증입력_보기</span>() => {
-                                        <br>
-                                        <span class="color3">1.</span> 취득한 자격증 입력 <br> <span class="color3">2.</span> 내 자격증 테이블에 자동추가
-                                        <br>
-                                    }
-                                    </div>
-                                    
+                                    <!-- If we need pagination -->
+                                    <div class="swiper-pagination"></div>
+                            
+                                    <!-- If we need navigation buttons -->
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div>
+                            
                                 </div>
+                            
                                 
                             <% } %>
                                 <!-- Right Column for EJS Template -->
@@ -496,6 +425,31 @@
 
         </script>
         <% } %>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const swiper = new Swiper('.swiper', {
+                    // Optional parameters
+                    direction: 'horizontal',
+                    loop: true,
+
+                    // If we need pagination
+                    pagination: {
+                        el: '.swiper-pagination',
+                    },
+
+                    // Navigation arrows
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+
+                    // And if we need scrollbar
+                    scrollbar: {
+                        el: '.swiper-scrollbar',
+                    },
+                });
+            });
+        </script>
             <!-- 기존 스크립트 태그들 -->
 </body>
 <!-- Bootstrap core JavaScript-->
