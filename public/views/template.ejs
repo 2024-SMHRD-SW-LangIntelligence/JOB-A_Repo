@@ -2,6 +2,12 @@
 <html lang="en">
 
 <head>
+    <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> -->
+
     <link rel="shortcut icon" href="../img/메인아이콘-removebg-preview.png" sizes="50x50" type="image/png">
 
     <!-- 직접만든 css들 -->
@@ -32,6 +38,7 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <style>
+        @import url('https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css');
         /* 날짜 글씨 색상을 검은색으로 설정 */
         .fc-daygrid-day {
             position: relative;
@@ -93,9 +100,20 @@
             border-color: #000;
         }
     </style>
+    <style>
+        .swiper_text{
+            margin-bottom: 200px;
+        }
+
+    </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <style>
+        @font-face {
+            font-family: 'CustomFont'; /* 사용할 폰트 패밀리 이름 설정 */
+            src: url('../img/CookieRun\ Bold.ttf') format('truetype'); /* 폰트 파일 경로 지정 */
+            /* 추가적으로 웹폰트 형식에 따라 필요한 경우 다른 포맷도 지정 가능 */
+        }
         .caption {
             display: inline !important;
             position: absolute;
@@ -124,11 +142,24 @@
         .swiper-slide img {
             width: 80%;
             height: 75%;
-            margin-left: 165px;
-            margin-top: 10px;
+            margin-top: 20px;
         }
         .swiper-wrapper {
-            margin-top: 30px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .slide-description{
+            font-weight: bold;
+            color: #0f3f8b;
+            
+        }
+        .swiper_h1{
+            font-family: 'CustomFont', serif;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            color: #0c3a85;
+            font-size: 50px;
         }
     </style>
 </head>
@@ -248,20 +279,24 @@
                                     </div>
                             </div>
                             <% }else{ %>
-                                <div class="swiper">
-                                    <h1 style="font-weight: bold; text-align: center; margin-top: 20px;">How to</h1>
+                                <div class="swiper"> <!-- Arvo, Open Sans -->
+                                    <h1 class="swiper_h1">HOW TO</h1>
                                     <div class="swiper-wrapper">
                                         <!-- Slides -->
                                         <div class="swiper-slide">
+                                            <div class="slide-description">캘린더를 클릭하여 일정 추가</div>
                                             <img src="../img/일정추가.gif" alt="Image 1">
                                         </div>
                                         <div class="swiper-slide">
+                                            <div class="slide-description">검색창에 검색하여 일정 검색</div>
                                             <img src="../img/일정-검색.gif" alt="Image 2">
                                         </div>
                                         <div class="swiper-slide">
+                                            <div class="slide-description">일정완료율에 따른 일정 수행률</div>
                                             <img src="../img/일정-수행률.gif" alt="Image 3">
                                         </div>
                                         <div class="swiper-slide">
+                                            <div class="slide-description">자격증 입력 및 취득한 자격증</div>
                                             <img src="../img/자격증-입력_보여주기.gif" alt="Image 4">
                                         </div>
                                     </div>
