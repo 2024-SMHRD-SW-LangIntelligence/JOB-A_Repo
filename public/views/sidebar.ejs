@@ -15,7 +15,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="studyg"  href="/">
+            <a class="nav-link"  href="/">
                 <i class="fas fa-fw fa-calendar sideBlockIcon"></i>
                 <span class="sideBlockText">일정 관리</span></a>
         </li>
@@ -26,7 +26,7 @@
 
         <!-- Nav Item - 자격증 -->
         <li class="nav-item">
-            <a class="studyg " <% if (user) { %> href="/certificate" <% } else { %> id="login_plz" <% } %> data-target="#collapseTwo"
+            <a class="nav-link " <% if (user) { %> href="/certificate" <% } else { %> id="login_plz" <% } %> data-target="#collapseTwo"
                 aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog sideBlockIcon"></i>
                 <span class="sideBlockText">자격증 AI</span></a>
@@ -38,7 +38,7 @@
 
         <!-- Nav Item - 스터디그룹 -->
         <li class="nav-item">
-            <a class="studyg" <% if (user) { %> href="/studyGruop" <% } else { %> id="login_plz" <% } %>>
+            <a class="nav-link" <% if (user) { %> href="/studyGruop" <% } else { %> id="login_plz" <% } %>>
                 <i id="dddd" class="fas fa-fw fa-cog sideBlockIcon"></i>
                 <span id="dddd"  class="sideBlockText">스터디그룹</span></a>
         </li>
@@ -58,7 +58,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
   // 클래스 이름이 "studyg"인 모든 <a> 태그를 선택
-  const studygLinks = document.querySelectorAll('a.studyg');
+  const studygLinks = document.querySelectorAll('a.nav-link');
   const navbarNav = document.querySelector('.d-flex');
 
   // 로컬 스토리지에서 색상 및 굵기 정보를 가져와 적용
