@@ -488,7 +488,7 @@
                         },
                         success: function (json) {
                             console.log("성공");
-                            winodw.location.reload('/today');
+                            window.location.reload('/today');
                         }
                     });
                     if (eventTitle) {
@@ -517,7 +517,7 @@
                             },
                             success: function (json) {
                                 console.log("성공");
-                                winodw.location.reload('/today');
+                                window.location.reload('/today');
                             }
                         });
                         var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
