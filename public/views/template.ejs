@@ -39,13 +39,17 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <style>
         @import url('https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css');
+
         /* 날짜 글씨 색상을 검은색으로 설정 */
         .fc-daygrid-day {
             position: relative;
         }
+
         .fc-daygrid-day-events {
-            max-height: 45px; /* Adjust this height as needed */
+            max-height: 45px;
+            /* Adjust this height as needed */
         }
+
         .fc-event-title,
         .fc-daygrid-event-dot,
         .fc-daygrid-day-number,
@@ -72,6 +76,7 @@
         .fc-day-sun .fc-daygrid-day-number {
             color: red;
         }
+
         .colorbox {
             display: flex;
             flex-wrap: wrap;
@@ -81,9 +86,11 @@
             border-radius: 10px;
             background-color: #f9f9f9;
         }
+
         .color-radio {
             display: none;
         }
+
         .color-label {
             display: inline-block;
             width: 20px;
@@ -93,27 +100,31 @@
             cursor: pointer;
             border: 2px solid transparent;
         }
+
         .color-label:hover {
             border-color: #333;
         }
-        .color-radio:checked + .color-label {
+
+        .color-radio:checked+.color-label {
             border-color: #000;
         }
     </style>
     <style>
-        .swiper_text{
+        .swiper_text {
             margin-bottom: 200px;
         }
-
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <style>
         @font-face {
-            font-family: 'CustomFont'; /* 사용할 폰트 패밀리 이름 설정 */
-            src: url('../img/CookieRun\ Bold.ttf') format('truetype'); /* 폰트 파일 경로 지정 */
+            font-family: 'CustomFont';
+            /* 사용할 폰트 패밀리 이름 설정 */
+            src: url('../img/CookieRun\ Bold.ttf') format('truetype');
+            /* 폰트 파일 경로 지정 */
             /* 추가적으로 웹폰트 형식에 따라 필요한 경우 다른 포맷도 지정 가능 */
         }
+
         .caption {
             display: inline !important;
             position: absolute;
@@ -133,6 +144,7 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             background-color: #333;
         }
+
         .swiper {
             width: 1920px;
             height: 916px;
@@ -144,16 +156,19 @@
             height: 75%;
             margin-top: 20px;
         }
+
         .swiper-wrapper {
             margin-top: 15px;
             text-align: center;
         }
-        .slide-description{
+
+        .slide-description {
             font-weight: bold;
             color: #0f3f8b;
-            
+
         }
-        .swiper_h1{
+
+        .swiper_h1 {
             font-family: 'CustomFont', serif;
             font-weight: bold;
             text-align: center;
@@ -199,37 +214,59 @@
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label for="eventTitle" class="form-label">일정 제목</label>
-                                                                <input type="text" class="form-control" id="eventTitle" name="msche_title" required style="margin-bottom: 10px;">
+                                                                <input type="text" class="form-control" id="eventTitle"
+                                                                    name="msche_title" required
+                                                                    style="margin-bottom: 10px;">
                                                                 날짜<br>
-                                                                <input type="date" id="selectedStartDate" name="msche_st_dt" readonly style="margin-top: 10px; margin-bottom: 10px;"> ~ 
-                                                                <input type="date" id="selectedEndDate" name="msche_ed_dt" readonly style="margin-top: 10px; margin-bottom: 10px;">
-                                                                    <br>
-                                                                    일정 색상 선택 <br>
-                                                                    <div class="colorbox">
-                                                                        <input type="radio" id="color1" name="msche_color" class="color-radio" value="#df5454">
-                                                                        <label for="color1" class="color-label" style="background-color: #df5454;"></label>
-                                                                        
-                                                                        <input type="radio" id="color2" name="msche_color" class="color-radio" value="#eca957">
-                                                                        <label for="color2" class="color-label" style="background-color: #eca957;"></label>
-                                                                        
-                                                                        <input type="radio" id="color3" name="msche_color" class="color-radio" value="#dfe458">
-                                                                        <label for="color3" class="color-label" style="background-color: #dfe458;"></label>
-                                                                        
-                                                                        <input type="radio" id="color4" name="msche_color" class="color-radio" value="#67ee4c">
-                                                                        <label for="color4" class="color-label" style="background-color: #67ee4c;"></label>
-                                                                        
-                                                                        <input type="radio" id="color5" name="msche_color" class="color-radio" value="#56dae6">
-                                                                        <label for="color5" class="color-label" style="background-color: #56dae6;"></label>
-                                                                        
-                                                                        <input type="radio" id="color6" name="msche_color" class="color-radio" value="#518ff3">
-                                                                        <label for="color6" class="color-label" style="background-color: #518ff3;"></label>
-                                                                        
-                                                                        <input type="radio" id="color7" name="msche_color" class="color-radio" value="#7661ee">
-                                                                        <label for="color7" class="color-label" style="background-color: #7661ee;"></label>
-                                                                        
-                                                                        <input type="radio" id="color8" name="msche_color" class="color-radio" value="#ec62ec">
-                                                                        <label for="color8" class="color-label" style="background-color: #ec62ec;"></label>
-                                                                    </div>
+                                                                <input type="date" id="selectedStartDate"
+                                                                    name="msche_st_dt" readonly
+                                                                    style="margin-top: 10px; margin-bottom: 10px;"> ~
+                                                                <input type="date" id="selectedEndDate"
+                                                                    name="msche_ed_dt" readonly
+                                                                    style="margin-top: 10px; margin-bottom: 10px;">
+                                                                <br>
+                                                                일정 색상 선택 <br>
+                                                                <div class="colorbox">
+                                                                    <input type="radio" id="color1" name="msche_color"
+                                                                        class="color-radio" value="#df5454">
+                                                                    <label for="color1" class="color-label"
+                                                                        style="background-color: #df5454;"></label>
+
+                                                                    <input type="radio" id="color2" name="msche_color"
+                                                                        class="color-radio" value="#eca957">
+                                                                    <label for="color2" class="color-label"
+                                                                        style="background-color: #eca957;"></label>
+
+                                                                    <input type="radio" id="color3" name="msche_color"
+                                                                        class="color-radio" value="#dfe458">
+                                                                    <label for="color3" class="color-label"
+                                                                        style="background-color: #dfe458;"></label>
+
+                                                                    <input type="radio" id="color4" name="msche_color"
+                                                                        class="color-radio" value="#67ee4c">
+                                                                    <label for="color4" class="color-label"
+                                                                        style="background-color: #67ee4c;"></label>
+
+                                                                    <input type="radio" id="color5" name="msche_color"
+                                                                        class="color-radio" value="#56dae6">
+                                                                    <label for="color5" class="color-label"
+                                                                        style="background-color: #56dae6;"></label>
+
+                                                                    <input type="radio" id="color6" name="msche_color"
+                                                                        class="color-radio" value="#518ff3">
+                                                                    <label for="color6" class="color-label"
+                                                                        style="background-color: #518ff3;"></label>
+
+                                                                    <input type="radio" id="color7" name="msche_color"
+                                                                        class="color-radio" value="#7661ee">
+                                                                    <label for="color7" class="color-label"
+                                                                        style="background-color: #7661ee;"></label>
+
+                                                                    <input type="radio" id="color8" name="msche_color"
+                                                                        class="color-radio" value="#ec62ec">
+                                                                    <label for="color8" class="color-label"
+                                                                        style="background-color: #ec62ec;"></label>
+                                                                </div>
                                                                 <input type="hidden" class="mem_id" name="mem_id"
                                                                     value="<%= user.mem_id %>">
                                                             </div>
@@ -302,19 +339,19 @@
                                     </div>
                                     <!-- If we need pagination -->
                                     <div class="swiper-pagination"></div>
-                            
+
                                     <!-- If we need navigation buttons -->
                                     <div class="swiper-button-prev"></div>
                                     <div class="swiper-button-next"></div>
-                            
+
                                 </div>
-                            
-                                
-                            <% } %>
-                                <!-- Right Column for EJS Template -->
-                                <div class="content-column">
-                                    <%- body %>
-                                </div>
+
+
+                                <% } %>
+                                    <!-- Right Column for EJS Template -->
+                                    <div class="content-column">
+                                        <%- body %>
+                                    </div>
                         </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -341,7 +378,7 @@
                 var selectedStartDate, selectedEndDate, eventId;
                 const holidaysColor = '#FC9E99';
                 var holidays = [
-                    { title: '신정', start: '2024-01-01'},
+                    { title: '신정', start: '2024-01-01' },
                     { title: '설날', start: '2024-02-10', end: '2024-02-12' },
                     { title: '삼일절', start: '2024-03-01' },
                     { title: '어린이날', start: '2024-05-05' },
@@ -372,7 +409,7 @@
                         eventModal.show();
                     },
                     // 클릭으로 일정 삭제
-                    eventClick: function (info) {                        
+                    eventClick: function (info) {
                         selectedEvent = info.event;
                         document.getElementById('deletedTitle').value = selectedEvent.title;
                         document.getElementById('deletedStartDate').value = selectedEvent.startStr;
@@ -393,27 +430,27 @@
                             domNodes: []
                         };
                     },
-                    eventSources : [{
+                    eventSources: [{
                         events: function (fetchInfo, successCallback, failureCallback) {
-                        $.ajax({
-                            url: '/schedule/mschedule',
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function (data) {
-                                successCallback(data);
-                            },
-                            error: function () {
-                                failureCallback();
-                                console.log('실패');
-                            }
-                        });
+                            $.ajax({
+                                url: '/schedule/mschedule',
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function (data) {
+                                    successCallback(data);
+                                },
+                                error: function () {
+                                    failureCallback();
+                                    console.log('실패');
+                                }
+                            });
                         }
                     },
                     {
                         events: holidays
                     }
                     ]
-                    
+
                 });
 
 
@@ -422,7 +459,7 @@
                 var saveButton = document.getElementById('saveEvent');
 
                 // 입력 필드의 값을 모니터링하여 변경이 있을 때마다 확인합니다.
-                document.getElementById('eventTitle').addEventListener('input', function() {
+                document.getElementById('eventTitle').addEventListener('input', function () {
                     // 입력 필드의 값이 비어 있는지 확인합니다.
                     if (this.value.trim() === '') {
                         // 값이 비어 있으면 저장 버튼을 비활성화합니다.
@@ -433,10 +470,10 @@
                     }
                 });
 
-                    // 초기에도 입력값이 없으면 저장 버튼을 비활성화합니다.
-                    if (document.getElementById('eventTitle').value.trim() === '') {
-                        saveButton.disabled = true;
-                    }
+                // 초기에도 입력값이 없으면 저장 버튼을 비활성화합니다.
+                if (document.getElementById('eventTitle').value.trim() === '') {
+                    saveButton.disabled = true;
+                }
 
                 document.getElementById('saveEvent').addEventListener('click', function () {
                     var eventTitle = document.getElementById('eventTitle').value;
@@ -504,35 +541,96 @@
                         deleteModal.hide();
                     }
                 });
+                window.addSchedule = function (cert) {
+                    const scheduleData = {
+                        자격명: cert.자격명,
+                        회차: cert.회차,
+                        차수: cert.차수,
+                        접수시작일자: cert.접수시작일자,
+                        접수종료일자: cert.접수종료일자,
+                        시험시작일자: cert.시험시작일자,
+                        시험종료일자: cert.시험종료일자,
+                        합격자발표: cert.합격자발표,
+                        일정컬러: '#7661ee',
+                        mem_id: '<%= user.mem_id %>'
+                    };
+
+                    const cha = cert.차수 === null ? " ": cert.차수;
+                    const schedules = [
+                        {
+                            title: `${cert.회차} ${cert.자격명} ${cha} 접수`,
+                            start: cert.접수시작일자,
+                            end: cert.접수종료일자,
+                            color: '#7661ee'
+                        },
+                        {
+                            title: `${cert.회차} ${cert.자격명} ${cha} 시험`,
+                            start: cert.시험시작일자,
+                            end: cert.시험종료일자,
+                            color: '#7661ee'
+                        },
+                        {
+                            title: `${cert.자격명} 합격자발표`,
+                            start: cert.합격자발표,
+                            end: cert.합격자발표,
+                            color: '#7661ee'
+                        }
+                    ];
+
+                    schedules.forEach(schedule => {
+                        calendar.addEvent(schedule);
+
+                        $.ajax({
+                            type: 'post',
+                            url: '/schedule/add',
+                            data: {
+                                mem_id: scheduleData.mem_id,
+                                msche_title: schedule.title,
+                                msche_st_dt: schedule.start,
+                                msche_ed_dt: schedule.end,
+                                msche_color: schedule.color
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("일정 추가 실패");
+                            },
+                            success: function (json) {
+                                window.location.reload('/');
+                                console.log("일정 추가 성공");
+                            }
+                        });
+                    });
+
+                    alert('자격증 일정이 성공적으로 추가되었습니다!');
+                };
             });
 
         </script>
         <% } %>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const swiper = new Swiper('.swiper', {
-                    // Optional parameters
-                    direction: 'horizontal',
-                    loop: true,
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const swiper = new Swiper('.swiper', {
+                        // Optional parameters
+                        direction: 'horizontal',
+                        loop: true,
 
-                    // If we need pagination
-                    pagination: {
-                        el: '.swiper-pagination',
-                    },
+                        // If we need pagination
+                        pagination: {
+                            el: '.swiper-pagination',
+                        },
 
-                    // Navigation arrows
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
+                        // Navigation arrows
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
 
-                    // And if we need scrollbar
-                    scrollbar: {
-                        el: '.swiper-scrollbar',
-                    },
+                        // And if we need scrollbar
+                        scrollbar: {
+                            el: '.swiper-scrollbar',
+                        },
+                    });
                 });
-            });
-        </script>
+            </script>
             <!-- 기존 스크립트 태그들 -->
 </body>
 <!-- Bootstrap core JavaScript-->

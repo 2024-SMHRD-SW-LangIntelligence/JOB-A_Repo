@@ -504,37 +504,6 @@
         return links[agency] || '#';
     }
 
-    async function addSchedule(cert) {
-        // 여기에 Supabase DB에 일정을 추가하는 로직을 구현합니다.
-        // 예시 코드:
-        const scheduleData = {
-            자격명: cert.자격명,
-            회차: cert.회차,
-            접수시작일: cert.접수시작일자,
-            접수종료일: cert.접수종료일자,
-            시험시작일: cert.시험시작일자,
-            시험종료일: cert.시험종료일자,
-            합격자발표: cert.합격자발표,
-            일정컬러: '#3498db', // 임의로 저장
-            mem_id: '<%= user.mem_id %>' // 실제 사용자 ID로 대체해야 합니다
-        };
-        console.log(scheduleData);
-
-        try {
-            // Supabase 클라이언트를 사용하여 데이터를 삽입합니다.
-            // 아래 코드는 예시이며, 실제 Supabase 설정에 맞게 수정해야 합니다.
-            const { data, error } = await supabase
-                .from('schedules')
-                .insert([scheduleData]);
-
-            if (error) throw error;
-            alert('일정이 성공적으로 추가되었습니다!');
-        } catch (error) {
-            console.error('일정 추가 중 오류 발생:', error);
-            alert('일정 추가 중 오류가 발생했습니다. 다시 시도해 주세요.');
-        }
-    }
-
     // 직무 버튼 클릭 이벤트 리스너
     document.addEventListener('click', function (e) {
         if (e.target.classList.contains('job-button')) {
