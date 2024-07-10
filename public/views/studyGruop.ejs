@@ -233,18 +233,27 @@
             $('.chat-list').show();
         }
 
+        let isScrolledToBottom = true;
+
         // 채팅 메시지 로드
+        let lastMessageDate = null;
+
         function loadChatMessages(groupIdx) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `/chat/messages/${groupIdx}`,
                     method: 'GET',
                     success: function (messages) {
+                        isScrolledToBottom = isAtBottom();
                         $('#chatMessages').empty();
+                        lastMessageDate = null;
                         messages.forEach(message => {
-                            appendMessage(message.mem_id, message.chat, new Date(`1970-01-01T${message.chat_at}`));
+                            const today = new Date().toISOString().split('T')[0];
+                            appendMessage(message.mem_id, message.chat, new Date(`${today}T${message.chat_at}`));
                         });
-                        scrollToBottom();
+                        if (isScrolledToBottom) {
+                            scrollToBottom();
+                        }
                         resolve();
                     },
                     error: function (error) {
@@ -256,6 +265,39 @@
                     }
                 });
             });
+        }
+
+        function shouldAddDateSeparator(messageDate) {
+            if (!lastMessageDate) return true;
+            return !isSameDay(lastMessageDate, messageDate);
+        }
+
+        function addDateSeparator(date) {
+            const separatorHtml = `
+        <div class="date-separator">
+            <span>${formatDate(date)}</span>
+        </div>
+    `;
+            $('#chatMessages').append(separatorHtml);
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function formatTime(date) {
+            return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function isSameDay(date1, date2) {
+            return date1.getFullYear() === date2.getFullYear() &&
+                date1.getMonth() === date2.getMonth() &&
+                date1.getDate() === date2.getDate();
+        }
+
+        function isAtBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            return chatMessages.scrollHeight - chatMessages.clientHeight <= chatMessages.scrollTop + 1;
         }
 
         let messagePollingInterval;
@@ -308,7 +350,11 @@
         function appendMessage(sender, content, time) {
             const isMyMessage = sender === currentUser;
             const messageClass = isMyMessage ? 'my-message' : 'other-message';
-            const formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const formattedTime = formatTime(time);
+
+            if (shouldAddDateSeparator(time)) {
+                addDateSeparator(time);
+            }
 
             const messageHtml = `
         <div class="message ${messageClass}">
@@ -318,6 +364,11 @@
     `;
 
             $('#chatMessages').append(messageHtml);
+            if (isScrolledToBottom) {
+                scrollToBottom();
+            }
+
+            lastMessageDate = time;
         }
 
         // 스크롤을 항상 아래로
@@ -326,6 +377,10 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
+        // 스크롤 이벤트 리스너 추가
+        $('#chatMessages').on('scroll', function () {
+            isScrolledToBottom = isAtBottom();
+        });
 
         $('#leaveRoom').click(showChatList);
 
