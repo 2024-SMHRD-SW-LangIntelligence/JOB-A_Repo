@@ -248,8 +248,8 @@
                         $('#chatMessages').empty();
                         lastMessageDate = null;
                         messages.forEach(message => {
-                            const today = new Date().toISOString().split('T')[0];
-                            appendMessage(message.mem_id, message.chat, new Date(`${today}T${message.chat_at}`));
+                            const chatDate = new Date(message.chat_at);
+                            appendMessage(message.mem_id, message.chat, chatDate);
                         });
                         if (isScrolledToBottom) {
                             scrollToBottom();
@@ -267,18 +267,44 @@
             });
         }
 
+        function getDateSeparatorIfNeeded(messageDate) {
+            if (!lastMessageDate || !isSameDay(lastMessageDate, messageDate)) {
+                lastMessageDate = messageDate;
+                return addDateSeparator(messageDate);
+            }
+            return '';
+        }
+
+        function createMessageHtml(sender, content, time) {
+            const isMyMessage = sender === currentUser;
+            const messageClass = isMyMessage ? 'my-message' : 'other-message';
+            const formattedTime = formatTime(time);
+
+            return `
+        <div class="message ${messageClass}">
+            <div class="message-content">${content}</div>
+            <div class="message-time">${formattedTime}</div>
+        </div>
+    `;
+        }
+
         function shouldAddDateSeparator(messageDate) {
             if (!lastMessageDate) return true;
-            return !isSameDay(lastMessageDate, messageDate);
+            return !isSameDay(lastMessageDate, new Date(messageDate));
         }
 
         function addDateSeparator(date) {
-            const separatorHtml = `
+            return `
         <div class="date-separator">
             <span>${formatDate(date)}</span>
         </div>
     `;
-            $('#chatMessages').append(separatorHtml);
+        }
+
+        function isSameDay(date1, date2) {
+            return date1.getFullYear() === date2.getFullYear() &&
+                date1.getMonth() === date2.getMonth() &&
+                date1.getDate() === date2.getDate();
         }
 
         function formatDate(date) {
@@ -289,11 +315,6 @@
             return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
         }
 
-        function isSameDay(date1, date2) {
-            return date1.getFullYear() === date2.getFullYear() &&
-                date1.getMonth() === date2.getMonth() &&
-                date1.getDate() === date2.getDate();
-        }
 
         function isAtBottom() {
             const chatMessages = document.getElementById('chatMessages');
@@ -348,27 +369,27 @@
 
         // 메시지 추가
         function appendMessage(sender, content, time) {
+            let html = '';
+            if (shouldAddDateSeparator(time)) {
+                html += addDateSeparator(time);
+                lastMessageDate = new Date(time);
+            }
+
             const isMyMessage = sender === currentUser;
             const messageClass = isMyMessage ? 'my-message' : 'other-message';
             const formattedTime = formatTime(time);
 
-            if (shouldAddDateSeparator(time)) {
-                addDateSeparator(time);
-            }
-
-            const messageHtml = `
+            html += `
         <div class="message ${messageClass}">
             <div class="message-content">${content}</div>
             <div class="message-time">${formattedTime}</div>
         </div>
     `;
 
-            $('#chatMessages').append(messageHtml);
+            $('#chatMessages').append(html);
             if (isScrolledToBottom) {
                 scrollToBottom();
             }
-
-            lastMessageDate = time;
         }
 
         // 스크롤을 항상 아래로
@@ -409,10 +430,11 @@
 
         // Socket 이벤트 리스너
         socket.on('chat message', function (message) {
-            const chatDate = message.chat_at ? new Date(`1970-01-01T${message.chat_at}`) : new Date();
+            const chatDate = new Date(message.chat_at);
             appendMessage(message.mem_id, message.chat, chatDate);
             scrollToBottom();
         });
+
 
         socket.on('room deleted', function (roomId) {
             $(`[data-id="${roomId}"]`).remove();

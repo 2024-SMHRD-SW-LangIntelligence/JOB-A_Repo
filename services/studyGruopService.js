@@ -37,7 +37,7 @@ const chatService = {
     saveChatMessage: async (groupIdx, memId, chat) => {
         const { data, error } = await supabase
             .from('tb_chatting')
-            .insert({ group_idx: groupIdx, mem_id: memId, chat: chat, chat_at: new Date().toTimeString().split(' ')[0] })
+            .insert({ group_idx: groupIdx, mem_id: memId, chat: chat, chat_at: new Date().toISOString() })
             .select();
 
         if (error) throw error;
