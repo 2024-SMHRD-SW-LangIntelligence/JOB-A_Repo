@@ -1,30 +1,35 @@
 const scheduleService = require('../services/scheduleService');
 
-// 스케쥴 DB 저장
+// 새로운 스케줄을 DB에 추가하는 함수
 async function add(req, res) {
-    const { mem_id, msche_title, msche_st_dt, msche_ed_dt,msche_color } = req.body;
+    const { mem_id, msche_title, msche_st_dt, msche_ed_dt, msche_color } = req.body;
     try {
-        const schedule = await scheduleService.addSchedule(mem_id,msche_title, msche_st_dt, msche_ed_dt,msche_color);
+        // 스케줄 정보를 데이터베이스에 추가
+        const schedule = await scheduleService.addSchedule(mem_id, msche_title, msche_st_dt, msche_ed_dt, msche_color);
         res.redirect('/');
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
-// 선택 스케쥴  DB에서 삭제
+
+// 선택한 스케줄을 DB에서 삭제하는 함수
 async function remove(req, res) {
-    const { mem_id,msche_title, msche_st_dt, msche_ed_dt } = req.body;
+    const { mem_id, msche_title, msche_st_dt, msche_ed_dt } = req.body;
     try {
+        // 해당 스케줄을 데이터베이스에서 삭제
         const deletedData = await scheduleService.deleteSchedule(mem_id, msche_title, msche_st_dt, msche_ed_dt);
         res.redirect('/');
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
-// 로그인한 회원의 스케쥴 보여주기
-async function mschedule(req,res){
-    try{
+
+// 로그인한 회원의 모든 스케줄을 조회하는 함수
+async function mschedule(req, res) {
+    try {
         const mem_id = req.session.user.mem_id;
-        const events =  await scheduleService.memberSchedule(mem_id);
+        // 회원의 모든 스케줄을 데이터베이스에서 조회
+        const events = await scheduleService.memberSchedule(mem_id);
         res.json(events);
     } catch (error) {
         res.status(500).send(error.message);
@@ -32,30 +37,30 @@ async function mschedule(req,res){
     }
 }
 
+// 특정 제목의 스케줄을 검색하는 함수
 async function find(req, res) {
     try {
         const mem_id = req.session.user.mem_id;
-        const msche_title = req.query.msche_title || ''; // 검색어는 쿼리 파라미터에서 가져옵니다.
-
-        // scheduleService를 통해 데이터 조회
+        const msche_title = req.query.msche_title || '';
+        // 해당 제목의 스케줄을 데이터베이스에서 검색
         const events = await scheduleService.searchSchedule(mem_id, msche_title);
         if (!events || events.length === 0) {
-            // 검색 결과가 없는 경우
             res.json({ message: '검색 결과가 없습니다.', events: [] });
-          } else {
-            // 검색 결과가 있는 경우
+        } else {
             req.session.searchResults = events;
-            res.json({ message: null, events: events});
-          }
+            res.json({ message: null, events: events });
+        }
     } catch (error) {
         console.error('실패..', error);
         res.status(500).send('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
 }
 
+// 스케줄을 완료 상태로 변경하는 함수
 async function complete(req, res) {
-    const { mem_id,msche_title, msche_st_dt, msche_ed_dt } = req.body;
+    const { mem_id, msche_title, msche_st_dt, msche_ed_dt } = req.body;
     try {
+        // 해당 스케줄의 상태를 완료로 변경
         const completeData = await scheduleService.completeSchedule(mem_id, msche_title, msche_st_dt, msche_ed_dt);
         res.redirect('/');
     } catch (error) {
@@ -63,29 +68,31 @@ async function complete(req, res) {
     }
 }
 
+// 오늘의 스케줄을 조회하는 함수
 async function getToday(req, res) {
     try {
         const mem_id = req.session.user.mem_id;
+        // 오늘 날짜의 스케줄을 데이터베이스에서 조회
         const events = await scheduleService.getTodaySchedule(mem_id);
         if (!events || events.length === 0) {
-            // 오늘 일정이 없는 경우
             res.json({ message: '오늘 일정이 없습니다.', events: [] });
-          } else {
-            // 오늘 일정이 있는 경우
-            res.json({ message: null, events: events});
-          }
+        } else {
+            res.json({ message: null, events: events });
+        }
     } catch (error) {
         res.status(500).send('Internal Server Error');
     }
 }
 
-
+// 가장 가까운 스케줄을 확인하는 함수
 async function checkClosestEvent(req, res) {
     try {
         const mem_id = req.session.user.mem_id;
+        // 가장 가까운 스케줄을 데이터베이스에서 조회
         const closestEvents = await scheduleService.getClosestEvents(mem_id);
 
         const today = new Date(scheduleService.getToday());
+        // 7일 이내의 스케줄만 필터링
         const filteredEvents = closestEvents.map(event => {
             const eventDate = new Date(event.msche_st_dt);
             const dateDifference = Math.floor((eventDate - today) / (1000 * 60 * 60 * 24));
@@ -115,5 +122,4 @@ async function checkClosestEvent(req, res) {
     }
 }
 
-
-module.exports = {add,remove,mschedule,find,complete,getToday,checkClosestEvent};
+module.exports = { add, remove, mschedule, find, complete, getToday, checkClosestEvent };

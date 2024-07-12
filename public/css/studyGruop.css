@@ -348,23 +348,19 @@ cssCopy.header-container {
 
 .date-separator {
     text-align: center;
-    margin: 20px 0 10px;
-    position: relative;
+    margin: 20px 0;
+    background-color: #f0f0f0;
+    padding: 5px;
+    border-radius: 10px;
+    clear: both;
 }
 
 .date-separator span {
-    background-color: #f1f1f1;
-    padding: 0 10px;
-    position: relative;
-    z-index: 1;
+    font-weight: bold;
+    color: #888;
 }
 
-.date-separator:before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    border-top: 1px solid #ddd;
-    z-index: 0;
+.message {
+    margin-bottom: 10px;
+    clear: both;
 }

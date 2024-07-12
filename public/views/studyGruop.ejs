@@ -246,11 +246,17 @@
                     success: function (messages) {
                         isScrolledToBottom = isAtBottom();
                         $('#chatMessages').empty();
-                        lastMessageDate = null;
+                        let currentDate = null;
+
                         messages.forEach(message => {
                             const chatDate = new Date(message.chat_at);
+                            if (!currentDate || !isSameDay(currentDate, chatDate)) {
+                                addDateSeparator(chatDate);
+                                currentDate = chatDate;
+                            }
                             appendMessage(message.mem_id, message.chat, chatDate);
                         });
+
                         if (isScrolledToBottom) {
                             scrollToBottom();
                         }
@@ -267,52 +273,27 @@
             });
         }
 
-        function getDateSeparatorIfNeeded(messageDate) {
-            if (!lastMessageDate || !isSameDay(lastMessageDate, messageDate)) {
-                lastMessageDate = messageDate;
-                return addDateSeparator(messageDate);
-            }
-            return '';
-        }
-
-        function createMessageHtml(sender, content, time) {
-            const isMyMessage = sender === currentUser;
-            const messageClass = isMyMessage ? 'my-message' : 'other-message';
-            const formattedTime = formatTime(time);
-
-            return `
-        <div class="message ${messageClass}">
-            <div class="message-content">${content}</div>
-            <div class="message-time">${formattedTime}</div>
-        </div>
-    `;
-        }
-
-        function shouldAddDateSeparator(messageDate) {
-            if (!lastMessageDate) return true;
-            return !isSameDay(lastMessageDate, new Date(messageDate));
-        }
-
         function addDateSeparator(date) {
-            return `
-        <div class="date-separator">
-            <span>${formatDate(date)}</span>
+            const formattedDate = formatDate(date);
+            const separatorHtml = `
+        <div class="date-separator" data-date="${date.toISOString()}">
+            <span>${formattedDate}</span>
         </div>
     `;
+            $('#chatMessages').append(separatorHtml);
         }
-
-        function isSameDay(date1, date2) {
-            return date1.getFullYear() === date2.getFullYear() &&
-                date1.getMonth() === date2.getMonth() &&
-                date1.getDate() === date2.getDate();
-        }
-
         function formatDate(date) {
             return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
         }
 
         function formatTime(date) {
             return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function isSameDay(date1, date2) {
+            return date1.getFullYear() === date2.getFullYear() &&
+                date1.getMonth() === date2.getMonth() &&
+                date1.getDate() === date2.getDate();
         }
 
 
@@ -368,28 +349,34 @@
         }
 
         // 메시지 추가
-        function appendMessage(sender, content, time) {
-            let html = '';
-            if (shouldAddDateSeparator(time)) {
-                html += addDateSeparator(time);
-                lastMessageDate = new Date(time);
-            }
+        let currentDateGroup = null;
 
+        function appendMessage(sender, content, time) {
             const isMyMessage = sender === currentUser;
             const messageClass = isMyMessage ? 'my-message' : 'other-message';
             const formattedTime = formatTime(time);
 
-            html += `
+            const messageHtml = `
         <div class="message ${messageClass}">
             <div class="message-content">${content}</div>
             <div class="message-time">${formattedTime}</div>
         </div>
     `;
 
-            $('#chatMessages').append(html);
+            $('#chatMessages').append(messageHtml);
+
             if (isScrolledToBottom) {
                 scrollToBottom();
             }
+        }
+
+        function shouldAddDateSeparator(messageDate) {
+            const lastDateSeparator = $('#chatMessages .date-separator').last();
+            if (!lastDateSeparator.length) {
+                return true;
+            }
+            const lastSeparatorDate = new Date(lastDateSeparator.data('date'));
+            return !isSameDay(lastSeparatorDate, messageDate);
         }
 
         // 스크롤을 항상 아래로
@@ -431,10 +418,15 @@
         // Socket 이벤트 리스너
         socket.on('chat message', function (message) {
             const chatDate = new Date(message.chat_at);
+            const lastSeparator = $('#chatMessages .date-separator').last();
+            const lastSeparatorDate = lastSeparator.length ? new Date(lastSeparator.data('date')) : null;
+
+            if (!lastSeparatorDate || !isSameDay(lastSeparatorDate, chatDate)) {
+                addDateSeparator(chatDate);
+            }
             appendMessage(message.mem_id, message.chat, chatDate);
             scrollToBottom();
         });
-
 
         socket.on('room deleted', function (roomId) {
             $(`[data-id="${roomId}"]`).remove();
